@@ -1,0 +1,151 @@
+.hero {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  &__content {
+    flex-shrink: 0;
+    max-width: 600px;
+    width: 100%;
+    margin-left: var(--controls-margin);
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 800;
+    font-size: 116px;
+    line-height: 80%;
+    letter-spacing: -0.09em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--white);
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+
+    p:last-of-type {
+      width: fit-content;
+      text-align: right;
+    }
+  }
+
+  &__info-text {
+    margin: 0;
+    color: var(--white);
+  }
+
+  &__benf {
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    grid-template-rows: 106px;
+    gap: 24px;
+  }
+
+  &__benf-card {
+    width: 100%;
+
+    img {
+      width: 168px;
+      height: auto;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  &__benf-list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__benf-item {
+    width: fit-content;
+    box-sizing: border-box;
+    border: 1.50px solid var(--white);
+    border-radius: var(--br-s);
+    padding: 7px 11px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      line-height: 133%;
+      letter-spacing: -0.03em;
+      color: var(--white);
+
+    }
+
+    span {
+      width: fit-content;
+      padding: 4px 8px;
+      background-color: var(--white);
+      border-radius: var(--br-xs);
+      font-weight: 700;
+      line-height: 133%;
+      letter-spacing: -0.03em;
+      color: var(--dark);
+    }
+
+    &.empty {
+      flex-grow: 1;
+    }
+
+    &.empty.min {
+      width: 40px;
+      flex-grow: 0;
+      padding: 0;
+    }
+
+    &.with-block {
+      padding: 2px 4px;
+      padding-right: 12px;
+    }
+
+    &:last-of-type {
+      background-color: var(--white);
+
+      padding: 2px 4px;
+      padding-left: 12px;
+
+      p {
+        color: var(--dark);
+      }
+
+      span {
+        padding: 6px;
+        background-image: linear-gradient(180deg, #599cff 0%, #1263da 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  &__img {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right 0 bottom 10%;
+    }
+  }
+}

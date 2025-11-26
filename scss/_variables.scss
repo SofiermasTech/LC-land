@@ -1,0 +1,53 @@
+@use './media' as *;
+
+:root {
+  --white: #fff;
+  --white-trans: rgba(255, 255, 255, 0.5);
+  --dark: #1a1c28;
+  --light: #9396b5;
+  --blue: #599cff;
+  --green: #b2ee51;
+  --bg-light: #f2f2f2;
+  --negative: #e90482;
+
+  --font-family: "Wix Madefor Display", sans-serif;
+  --font-size-body: 15px;
+
+  --br-xs: 6px;
+  --br-s: 10px;
+  --br-m: 24px;
+  --br-l: 32px;
+
+  --container-width: 1272px;
+  --container-padding: 24px;
+  --section-padding: 48px;
+  --section-offset: 96px;
+  --controls-margin: 40px;
+
+  @include desktop {
+    --container-width: 1184px;
+    --controls-margin: 16px;
+  }
+
+  @include laptop {
+    --container-padding: 16px;
+    --container-width: 944px;
+  }
+
+  @include tablet {
+    --container-padding: 16px;
+    --container-width: 800px;
+    --section-offset: 72px;
+  }
+
+  @include tablet-bottom {
+    --section-padding: 24px;
+    --container-width: 608px;
+    --section-offset: 32px;
+    --br-l: 24px;
+  }
+
+  @include mobile {
+    --container-width: 100%;
+  }
+}

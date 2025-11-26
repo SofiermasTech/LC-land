@@ -1,0 +1,73 @@
+@use '../media' as *;
+@use '../mixin' as *;
+
+.together {
+  padding-top: var(--section-offset);
+  margin-bottom: var(--section-offset);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  @include tablet-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__item {
+    background-color: var(--white);
+    border-radius: var(--br-l);
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.02);
+  }
+
+  &__img {
+    width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: var(--br-l);
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__content {
+    padding: 64px;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    grid-template-areas:
+      'title .'
+      '. subtitle'
+      '. btn';
+
+    @include tablet {
+      padding: 32px;
+    }
+  }
+
+  &__content-text {}
+
+  &__content-title {
+    grid-area: title;
+    margin: 0;
+  }
+
+  &__content-subtitle {
+    margin: 0;
+    grid-area: subtitle;
+    line-height: 133%;
+    letter-spacing: -0.03em;
+  }
+
+  &__content-btn {
+    grid-area: btn;
+    margin-top: 24px;
+
+    .base-btn {
+      width: 100%;
+
+      span:first-child {
+        width: 20px;
+        height: 16px;
+      }
+    }
+  }
+}

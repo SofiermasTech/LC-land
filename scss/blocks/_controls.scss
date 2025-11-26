@@ -1,0 +1,122 @@
+.controls {
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 101;
+
+
+  &--right {
+    right: 0;
+  }
+
+  &--left {
+    left: 0;
+
+  }
+
+  &__logo {
+    margin: var(--controls-margin);
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+
+    span {
+      width: 16px;
+      height: 36px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 11px;
+      line-height: 109%;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+  }
+
+  &__tg {
+    margin: var(--controls-margin);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .base-btn {
+      padding: 0;
+      width: 64px;
+      height: 40px;
+      background-image: linear-gradient(180deg, #fff 0%, #eaeaea 100%);
+      box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+
+      span {
+        width: 20px;
+        height: 16px;
+      }
+    }
+
+    span {
+      font-size: 13px;
+      line-height: 138%;
+      letter-spacing: -0.03em;
+      color: var(--white);
+    }
+  }
+
+  &__btn-reg {
+    margin: var(--controls-margin);
+
+    a {
+      margin-left: auto;
+      width: 64px;
+      height: 40px;
+      padding: 0;
+      box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    svg {
+      width: 22px;
+      height: 16px;
+    }
+  }
+
+  &__btn-scroll {
+    margin: var(--controls-margin);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    span {
+      font-size: 13px;
+      line-height: 138%;
+      letter-spacing: -0.03em;
+      text-align: right;
+      color: var(--white);
+    }
+
+    .base-btn {
+      background-image: linear-gradient(180deg, #c3ff63 0%, #80be1c 100%);
+      box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+      width: 64px;
+      height: 40px;
+      padding: 0;
+    }
+
+    .icon-down {
+      svg {
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+        display: block;
+
+        &.rotate {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+}
+
+
+
+.base-btn {}

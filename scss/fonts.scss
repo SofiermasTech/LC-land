@@ -1,0 +1,43 @@
+@font-face {
+  font-family: 'Wix Madefor Display';
+  src:
+    local('Wix Madefor Display'),
+    url('../fonts/WixMadeforDisplay-ExtraBold.woff') format('woff'),
+    url('../fonts/WixMadeforDisplay-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Wix Madefor Display';
+  src:
+    local('Wix Madefor Display'),
+    url('../fonts/WixMadeforDisplay-Bold.woff') format('woff'),
+    url('../fonts/WixMadeforDisplay-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Wix Madefor Display';
+  src:
+    local('Wix Madefor Display'),
+    url('../fonts/WixMadeforDisplay-SemiBold.woff') format('woff'),
+    url('../fonts/WixMadeforDisplay-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Wix Madefor Display';
+  src:
+    local('Wix Madefor Display'),
+    url('../fonts/WixMadeforDisplay-Medium.woff') format('woff'),
+    url('../fonts/WixMadeforDisplay-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

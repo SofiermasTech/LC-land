@@ -1,0 +1,146 @@
+@use '../media' as *;
+@use '../mixin' as *;
+
+.footer {
+  padding-block: var(--section-padding);
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 8px;
+
+  @include tablet {
+    grid-template-columns: 0.8fr 1fr 1fr 1fr;
+  }
+
+  @include tablet-bottom {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'cl1 cl2'
+      'lg cl3';
+    gap: 32px 16px;
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr 1.3fr;
+
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    &:not(:nth-child(1)) {
+      justify-self: center;
+
+      @include tablet-bottom {
+        justify-self: start;
+        gap: 16px;
+      }
+
+
+    }
+
+    &:nth-child(1) {
+      @include tablet-bottom {
+        grid-area: lg;
+      }
+    }
+
+    &:nth-child(2) {
+      @include tablet-bottom {
+        grid-area: cl3;
+      }
+    }
+
+    &:nth-child(3) {
+      @include tablet-bottom {
+        grid-area: cl2;
+      }
+    }
+
+    &:nth-child(4) {
+      margin-left: -30%;
+
+      @include tablet-bottom {
+        margin-left: 0;
+        grid-area: cl1;
+      }
+    }
+  }
+
+  &__logo {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    img {
+      width: 110px;
+      height: 59px;
+
+      @include tablet-bottom {
+        width: 76px;
+        height: 40px;
+      }
+    }
+
+    span {
+      text-transform: uppercase;
+    }
+
+    @include tablet-bottom {
+      flex-direction: column-reverse;
+      gap: 16px;
+    }
+  }
+
+  &__btns {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    letter-spacing: -0.03em;
+
+    @media screen and (max-width: 1200px) {
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    @include tablet-bottom {
+      gap: 12px;
+    }
+
+    @include mobile {
+      gap: 8px;
+    }
+  }
+
+  &__column-title {}
+
+  &__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__links-item {
+    @include fluid-text(15, 13);
+
+    a {
+      color: var(--dark);
+      text-decoration: none;
+      letter-spacing: -0.03em;
+      transition: 0.3s;
+
+
+      @include hover {
+        color: var(--blue);
+      }
+    }
+
+  }
+}
