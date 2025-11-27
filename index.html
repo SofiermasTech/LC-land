@@ -15,6 +15,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="js/gsap.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body class="page">
@@ -30,7 +32,7 @@
         виртуальных<br>
         карт</p>
     </div>
-    <div class="controls__tg">
+    <div class="controls__tg tg">
       <a href="" class="base-btn">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
@@ -40,7 +42,7 @@
           </svg>
         </span>
       </a>
-      <span>Мы всегда<br>
+      <span class="tg__text">Мы всегда<br>
         на связи, кстати</span>
     </div>
   </div>
@@ -83,12 +85,14 @@
     </div>
   </div>
   <div class="menu">
-    <nav class="menu__nav">
-      <a class="menu__link active" href="/">Начало</a>
-      <a class="menu__link" href="/">Условия</a>
-      <a class="menu__link" href="/">Фичи</a>
-      <a class="menu__link" href="/">Вопросы</a>
-    </nav>
+    <div class="menu__wrapper">
+      <nav class="menu__nav">
+        <a class="menu__link active" href="/">Начало</a>
+        <a class="menu__link" href="/">Условия</a>
+        <a class="menu__link" href="/">Фичи</a>
+        <a class="menu__link" href="/">Вопросы</a>
+      </nav>
+    </div>
   </div>
   <main class="main">
     <section class="section">
@@ -182,11 +186,12 @@
           <div class="service__content">
             <div class="swiper">
               <div class="swiper__wrapper">
-                <div class="swiper__slide slide">
-                  <div class="slide__img">
+                <div class="swiper__slide slide slide--1">
+                  <div class="slide__img" data-aos="fade-up" data-aos-duration="600">
                     <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
+                    <span class="slide__number title-s">01 — 05</span>
                   </div>
-                  <div class="slide__content">
+                  <div class="slide__content" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
                     <div class="slide__body">
                       <h3 class="slide__title title-l">
                         <span>Гибкая</span>
@@ -214,18 +219,20 @@
                     </div>
                   </div>
                 </div>
-                <div class="swiper__slide slide">
-                  <div class="slide__img">
+                <div class="swiper__slide slide slide--2">
+                  <div class="slide__img" data-aos="fade-up" data-aos-duration="600">
                     <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
+                    <span class="slide__number title-s">02 — 05</span>
                   </div>
-                  <div class="slide__content">
+                  <div class="slide__content" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
                     <div class="slide__body">
                       <h3 class="slide__title title-l">
-                        <span>Гибкая</span>
-                        <span>система</span>
-                        <span>ролей и прав</span>
+                        <span>удобная</span>
+                        <span>аналитика</span>
+                        <span>и отчетность</span>
                       </h3>
-                      <p class="slide__text">От владельца с полными правами до байера, который видит только свои карты.
+                      <p class="slide__text">Финансовая картина без лишних усилий. Получайте наглядную статистику по
+                        всем транзакциям в один клик, выгружайте детальные отчеты.
                       </p>
                       <div class="slide__btn">
                         <button class="base-btn" type="button">
@@ -246,18 +253,87 @@
                     </div>
                   </div>
                 </div>
-                <div class="swiper__slide slide">
+                <div class="swiper__slide slide slide--3">
                   <div class="slide__img">
                     <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
+                    <span class="slide__number title-s">03 — 05</span>
                   </div>
                   <div class="slide__content">
                     <div class="slide__body">
                       <h3 class="slide__title title-l">
-                        <span>Гибкая</span>
-                        <span>система</span>
-                        <span>ролей и прав</span>
+                        <span>модели</span>
+                        <span>управления</span>
+                        <span>балансом</span>
                       </h3>
-                      <p class="slide__text">От владельца с полными правами до байера, который видит только свои карты.
+                      <p class="slide__text">Единый баланс команды. Персональный баланс участника. Классические
+                        припейд-карты. Гибкая настройка лимитов: на байера, карту или транзакцию.
+                      </p>
+                      <div class="slide__btn">
+                        <button class="base-btn" type="button">
+                          <span>
+                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
+                                fill="white" />
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
+                                fill="white" />
+                            </svg>
+                          </span>
+                          <p>Хочу ваши карты</p>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper__slide slide slide--4">
+                  <div class="slide__img">
+                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
+                    <span class="slide__number title-s">04 — 05</span>
+                  </div>
+                  <div class="slide__content">
+                    <div class="slide__body">
+                      <h3 class="slide__title title-l">
+                        <span>API</span>
+                        <span>интеграция</span>
+                      </h3>
+                      <p class="slide__text">Автоматизируйте рутину и экономьте время. Наш мощный и стабильный API
+                        позволяет легко интегрировать сервис с вашими внутренними CRM, трекерами и системами аналитики.
+                      </p>
+                      <div class="slide__btn">
+                        <button class="base-btn" type="button">
+                          <span>
+                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
+                                fill="white" />
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
+                                fill="white" />
+                            </svg>
+                          </span>
+                          <p>Хочу ваши карты</p>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper__slide slide slide--5">
+                  <div class="slide__img">
+                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
+                    <span class="slide__number title-s">05 — 05</span>
+                  </div>
+                  <div class="slide__content">
+                    <div class="slide__body">
+                      <h3 class="slide__title title-l">
+                        <span>лояльная</span>
+                        <span>политика</span>
+                        <span>по decline rate</span>
+                      </h3>
+                      <p class="slide__text">Анализируем % Decline за 14 дней, списываем по $0,5 только за превышение
+                        Decline свыше 15%
                       </p>
                       <div class="slide__btn">
                         <button class="base-btn" type="button">
@@ -286,10 +362,10 @@
     </section>
     <section class="section container" id="section-4">
       <div class="together">
-        <div class="together__item">
+        <div class="together__item" data-aos="fade-up" data-aos-duration="600">
           <img class="together__img" src="./img/together.png" alt width="1264" height="704" loading="lazy">
         </div>
-        <div class="together__item">
+        <div class="together__item" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
           <div class="together__content">
             <!-- <div class="together__content-text"> -->
             <p class="together__content-title title-s">Расскажите,<br>

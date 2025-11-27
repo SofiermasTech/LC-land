@@ -17,3 +17,5 @@ faqItems.addEventListener('click', (event) => {
 //     item.classList.toggle('open');
 //   });
 // });
+
+console.log(window.innerWidth, window.innerHeight)

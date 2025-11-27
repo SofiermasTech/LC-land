@@ -24,6 +24,10 @@
   --section-offset: 96px;
   --controls-margin: 40px;
 
+  @media screen and (max-height: 740px) and (max-width: 1660px) {
+    --controls-margin: 16px;
+  }
+
   @include desktop {
     --container-width: 1184px;
     --controls-margin: 16px;
