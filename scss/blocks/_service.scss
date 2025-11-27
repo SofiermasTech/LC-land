@@ -1,9 +1,10 @@
 .service {
-  // padding-top: var(--section-offset);
+  padding-top: var(--section-offset);
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  position: relative;
 
   &__wrapper {
     width: 100%;
@@ -15,6 +16,7 @@
   &__title {}
 
   &__content {
+    max-height: clamp(340px, 57vh, 480px);
     height: 100%;
     width: 100%;
   }
@@ -26,7 +28,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  position: relative;
+  // position: relative;
   border-radius: var(--br-l);
 
   &__wrapper {
@@ -41,12 +43,37 @@
     flex-grow: 1;
     width: 100%;
   }
+
+  &__pagination {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    top: 98.8vh;
+    left: 0;
+    right: 0;
+  }
+
+  &__pagination-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--dark);
+    opacity: 0.2;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.active {
+      opacity: 1;
+    }
+  }
 }
 
 .slide {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 480px;
+  grid-template-rows: clamp(340px, 55vh, 480px);
   gap: 8px;
   border-radius: var(--br-l);
 

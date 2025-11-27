@@ -8,30 +8,34 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Lemonad Card</title>
   <link rel="stylesheet" href="css/normalize.css">
+  <script src="js/content.js" defer></script>
   <script src="js/index.js" defer></script>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="js/gsap.js"></script>
+  <script src="js/gsap.js" defer></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body class="page">
   <div class="controls controls--left">
-    <div class="controls__logo">
-      <img src="./img/logo-main.png" alt="LMND Card" width="110" height="59">
-      <span>
+    <a class="controls__logo logo-main" href="/">
+      <div class="logo-main__wrapper">
+        <img class="logo-main__icon" src="/img/logo-icon.svg" alt width="26" height="16">
+        <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="36">
+      </div>
+      <span class="logo-main__split">
         <svg width="16" height="36" viewBox="0 0 16 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
         </svg>
       </span>
-      <p>Сервис<br>
+      <p class="logo-main__text">Сервис<br>
         виртуальных<br>
         карт</p>
-    </div>
+    </a>
     <div class="controls__tg tg">
       <a href="" class="base-btn">
         <span>
@@ -186,176 +190,10 @@
           <div class="service__content">
             <div class="swiper">
               <div class="swiper__wrapper">
-                <div class="swiper__slide slide slide--1">
-                  <div class="slide__img" data-aos="fade-up" data-aos-duration="600">
-                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
-                    <span class="slide__number title-s">01 — 05</span>
-                  </div>
-                  <div class="slide__content" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
-                    <div class="slide__body">
-                      <h3 class="slide__title title-l">
-                        <span>Гибкая</span>
-                        <span>система</span>
-                        <span>ролей и прав</span>
-                      </h3>
-                      <p class="slide__text">От владельца с полными правами до байера, который видит только свои карты.
-                      </p>
-                      <div class="slide__btn">
-                        <button class="base-btn" type="button">
-                          <span>
-                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
-                                fill="white" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
-                                fill="white" />
-                            </svg>
-                          </span>
-                          <p>Хочу ваши карты</p>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper__slide slide slide--2">
-                  <div class="slide__img" data-aos="fade-up" data-aos-duration="600">
-                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
-                    <span class="slide__number title-s">02 — 05</span>
-                  </div>
-                  <div class="slide__content" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
-                    <div class="slide__body">
-                      <h3 class="slide__title title-l">
-                        <span>удобная</span>
-                        <span>аналитика</span>
-                        <span>и отчетность</span>
-                      </h3>
-                      <p class="slide__text">Финансовая картина без лишних усилий. Получайте наглядную статистику по
-                        всем транзакциям в один клик, выгружайте детальные отчеты.
-                      </p>
-                      <div class="slide__btn">
-                        <button class="base-btn" type="button">
-                          <span>
-                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
-                                fill="white" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
-                                fill="white" />
-                            </svg>
-                          </span>
-                          <p>Хочу ваши карты</p>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper__slide slide slide--3">
-                  <div class="slide__img">
-                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
-                    <span class="slide__number title-s">03 — 05</span>
-                  </div>
-                  <div class="slide__content">
-                    <div class="slide__body">
-                      <h3 class="slide__title title-l">
-                        <span>модели</span>
-                        <span>управления</span>
-                        <span>балансом</span>
-                      </h3>
-                      <p class="slide__text">Единый баланс команды. Персональный баланс участника. Классические
-                        припейд-карты. Гибкая настройка лимитов: на байера, карту или транзакцию.
-                      </p>
-                      <div class="slide__btn">
-                        <button class="base-btn" type="button">
-                          <span>
-                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
-                                fill="white" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
-                                fill="white" />
-                            </svg>
-                          </span>
-                          <p>Хочу ваши карты</p>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper__slide slide slide--4">
-                  <div class="slide__img">
-                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
-                    <span class="slide__number title-s">04 — 05</span>
-                  </div>
-                  <div class="slide__content">
-                    <div class="slide__body">
-                      <h3 class="slide__title title-l">
-                        <span>API</span>
-                        <span>интеграция</span>
-                      </h3>
-                      <p class="slide__text">Автоматизируйте рутину и экономьте время. Наш мощный и стабильный API
-                        позволяет легко интегрировать сервис с вашими внутренними CRM, трекерами и системами аналитики.
-                      </p>
-                      <div class="slide__btn">
-                        <button class="base-btn" type="button">
-                          <span>
-                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
-                                fill="white" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
-                                fill="white" />
-                            </svg>
-                          </span>
-                          <p>Хочу ваши карты</p>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper__slide slide slide--5">
-                  <div class="slide__img">
-                    <img src="/img/slide-1.png" alt width="1264" height="960" loading="lazy">
-                    <span class="slide__number title-s">05 — 05</span>
-                  </div>
-                  <div class="slide__content">
-                    <div class="slide__body">
-                      <h3 class="slide__title title-l">
-                        <span>лояльная</span>
-                        <span>политика</span>
-                        <span>по decline rate</span>
-                      </h3>
-                      <p class="slide__text">Анализируем % Decline за 14 дней, списываем по $0,5 только за превышение
-                        Decline свыше 15%
-                      </p>
-                      <div class="slide__btn">
-                        <button class="base-btn" type="button">
-                          <span>
-                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
-                                fill="white" />
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
-                                fill="white" />
-                            </svg>
-                          </span>
-                          <p>Хочу ваши карты</p>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </div>
+            <div class="swiper__pagination"></div>
           </div>
         </div>
       </div>
@@ -551,6 +389,41 @@
     </section>
 
   </main>
+  <template id="slide-template">
+    <div class="swiper__slide slide slide--1">
+      <div class="slide__img" data-aos="fade-up" data-aos-duration="600">
+        <img src="" alt width="1264" height="960" loading="lazy">
+        <span class="slide__number title-s"></span>
+      </div>
+      <div class="slide__content" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+        <div class="slide__body">
+          <h3 class="slide__title title-l">
+            <span>Гибкая</span>
+            <span>система</span>
+            <span>ролей и прав</span>
+          </h3>
+          <p class="slide__text">От владельца с полными правами до байера, который видит только свои
+            карты.
+          </p>
+          <div class="slide__btn">
+            <button class="base-btn" type="button">
+              <span>
+                <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
+                    fill="white" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
+                    fill="white" />
+                </svg>
+              </span>
+              <p>Хочу ваши карты</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </body>
 
 </html>

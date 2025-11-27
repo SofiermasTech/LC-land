@@ -24,24 +24,26 @@
   --section-offset: 96px;
   --controls-margin: 40px;
 
-  @media screen and (max-height: 740px) and (max-width: 1660px) {
+  @media screen and (max-height: 740px) and (max-width: 1600px) {
     --controls-margin: 16px;
+    --section-offset: 80px;
   }
 
   @include desktop {
     --container-width: 1184px;
+    --section-offset: 80px;
     --controls-margin: 16px;
   }
 
   @include laptop {
     --container-padding: 16px;
     --container-width: 944px;
+     --section-offset: 48px;
   }
 
   @include tablet {
     --container-padding: 16px;
     --container-width: 800px;
-    --section-offset: 72px;
   }
 
   @include tablet-bottom {

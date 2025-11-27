@@ -23,20 +23,9 @@
     display: flex;
     align-items: flex-end;
     gap: 24px;
+    text-decoration: none;
+    color: inherit;
 
-    span {
-      width: 16px;
-      height: 36px;
-    }
-
-    p {
-      margin: 0;
-      font-size: 11px;
-      line-height: 109%;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-      color: var(--white);
-    }
   }
 
   &__tg {
@@ -129,6 +118,30 @@
   }
 }
 
+.logo-main {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
+  &__icon {
+    width: 26px;
+    height: 16px;
+    transition: none;
+  }
 
-.base-btn {}
+  &__split {
+    width: 16px;
+    height: 36px;
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 11px;
+    line-height: 109%;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+}

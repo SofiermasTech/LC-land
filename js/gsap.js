@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const lastIndex = sections.length - 1;
   let isAnimating = false;
   let isBottom = false;
+  let logoAnimation = null;
+  let isLogoCompact = false;
 
   // сладер
   const sliderSectionIndex = 2;
@@ -34,9 +36,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
   gsap.set(window, {scrollTo: 0});
   updateControlsScroll();
   AOS.init({});
+
   function goToSection(index) {
     if (isAnimating) return;
     isAnimating = true;
+    currentIndex = index;
+    updateMenuColor();
+    changeLogo();
+    updateControlsScroll();
 
     gsap.to(window, {
       scrollTo: {y: sections[index], autoKill: false},
@@ -45,8 +52,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         isAnimating = false;
         currentIndex = index;
         updateClassMenu();
-        updateMenuColor();
-        updateControlsScroll();
       },
     });
   }
@@ -190,13 +195,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         color: targetColor,
         opacity: 1,
         y: 0,
-        duration: 0.3,
+        duration: 0.6,
         ease: 'power2.out',
       });
       gsap.to(tgBtnText, {
         opacity: 1,
         y: 0,
-        duration: 0.3,
+        duration: 0.6,
         ease: 'power2.out',
       });
     } else {
@@ -208,14 +213,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         gsap.to(tgBtnText, {
           opacity: 0,
           y: -15,
-          duration: 0.3,
+          duration: 0.6,
           ease: 'power2.out',
         });
         gsap.to(nextBtnText, {
           color: targetColor,
           opacity: 1,
           y: 0,
-          duration: 0.3,
+          duration: 0.6,
           ease: 'power2.out',
         });
       } else {
@@ -236,6 +241,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       onComplete() {
         currentSlide = index;
         isAnimating = false;
+
+        window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
       },
     });
   }
@@ -268,6 +275,68 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  function changeLogo() {
+    const secondScreen = currentIndex > 1;
+
+    if (secondScreen === isLogoCompact) return;
+
+    if (logoAnimation) logoAnimation.kill();
+    logoAnimation = gsap.timeline({
+      onComplete: () => {
+        isLogoCompact = secondScreen;
+      },
+    });
+
+    if (secondScreen) {
+      logoAnimation
+        .to(
+          '.logo-main__text',
+          {width: 0, opacity: 0, duration: 0.5, ease: 'power2.in'},
+          0
+        )
+        .to(
+          '.logo-main__name',
+          {width: 0, opacity: 0, duration: 0.5, ease: 'power2.in'},
+          0
+        )
+        .to(
+          '.logo-main__split',
+          {width: 0, opacity: 0, duration: 0.5, ease: 'power2.in'},
+          0
+        )
+        .to(
+          '.logo-main__icon',
+          {width: 64, height: 40, duration: 0.6, ease: 'back.out(1.4)'},
+          '-=0.3'
+        );
+    } else {
+      // Возврат НА первый экран → показываем всё обратно
+      logoAnimation
+        .fromTo(
+          '.logo-main__icon',
+          {width: 64, height: 40},
+          {width: 26, height: 16, duration: 0.5, ease: 'power2.out'},
+          0
+        )
+        .to(
+          '.logo-main__text',
+          {width: 'auto', opacity: 1, duration: 0.6, ease: 'power2.out'},
+          0.3
+        )
+        .to(
+          '.logo-main__name',
+          {width: 110, opacity: 1, duration: 0.6, ease: 'power2.out'},
+          0.3
+        )
+        .to(
+          '.logo-main__split',
+          {width: 'auto', opacity: 1, duration: 0.6, ease: 'power2.out'},
+          0.3
+        );
+    }
+  }
+
+  changeLogo();
   checkScrollPosition();
   updateClassMenu();
   updateMenuColor();
