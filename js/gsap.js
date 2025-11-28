@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const tgBtn = document.querySelectorAll('.controls__tg');
   const tgBtnText = document.querySelectorAll('.tg__text');
 
-  let currentIndex = 0;
   const lastIndex = sections.length - 1;
   let isAnimating = false;
   let isBottom = false;
@@ -31,10 +30,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
   let currentSlide = 0;
   const lastSlide = slides.length - 1;
 
-  lockScroll();
+  function detectCurrentSection() {
+    let idx = 0;
+    sections.forEach((section, i) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.5) idx = i;
+    });
+    return idx;
+  }
 
-  gsap.set(window, {scrollTo: 0});
+  lockScroll();
+  let currentIndex = detectCurrentSection();
+
+  animationOnStart();
+  animFirstSection(currentIndex);
+  changeLogo();
   updateControlsScroll();
+  updateMenuColor();
+  updateClassMenu();
   AOS.init({});
 
   function goToSection(index) {
@@ -44,6 +57,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     updateMenuColor();
     changeLogo();
     updateControlsScroll();
+    animFirstSection(index);
+    animSecondSection(index);
 
     gsap.to(window, {
       scrollTo: {y: sections[index], autoKill: false},
@@ -230,6 +245,178 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  function animationOnStart() {
+    const timelineFirst = gsap.timeline();
+    if (currentIndex === 0) {
+      timelineFirst.from('.hero__content', {
+        duration: 0.7,
+        x: '-150%',
+        ease: 'power2.out',
+      });
+      timelineFirst.from(
+        '.controls--left',
+        {
+          duration: 0.7,
+          x: '-100%',
+          ease: 'power2.out',
+        },
+        '-=0.3'
+      );
+      timelineFirst.from(
+        '.controls--right',
+        {
+          duration: 0.7,
+          x: '100%',
+          ease: 'power2.out',
+        },
+        '<'
+      );
+      timelineFirst.from(
+        '.first-wrapper__img img',
+        {
+          duration: 1,
+          x: '100px',
+          opacity: 0,
+          ease: 'power2.out',
+        },
+        '-=0.4'
+      );
+      timelineFirst.from(
+        '.menu',
+        {
+          duration: 1,
+          y: '200%',
+          ease: 'power2.out',
+        },
+        '<'
+      );
+    }
+  }
+
+  function animFirstSection(index) {
+    const main = document.querySelector('.first-wrapper__img');
+    const mainImg = document.querySelector('.first-wrapper__img img');
+    const overlay = document.querySelector('.numbers__overlay');
+
+    if (index === 0) {
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 50;
+        const y = (e.clientY / window.innerHeight - 0.5) * 50;
+
+        gsap.to(mainImg, {
+          x: -x,
+          y: -y,
+          duration: 1.2,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+      });
+    }
+
+    // убираем темный фон и мужика
+    if (index >= 2) {
+      gsap.to(main, {
+        opacity: 0,
+        background: 'transparent',
+        // y: 0,
+        duration: 0.9,
+        ease: 'back.out',
+        // onStart: () => overlay.classList.add('opacity'),
+      });
+      gsap.to(
+        overlay,
+        {
+          duration: 0.2,
+          opacity: 0,
+          background: 'rgba(1, 3, 16, 0)',
+          ease: 'power2.out',
+        },
+        '<'
+      );
+    } else {
+      gsap.to(main, {
+        opacity: 1,
+        // y: 0,
+        duration: 0.9,
+        ease: 'power4.out',
+        // onStart: () => overlay.classList.remove('opacity'),
+      });
+    }
+  }
+
+  function animSecondSection(index) {
+    const timelineSecond = gsap.timeline();
+
+    if (index === 1) {
+      timelineSecond.to('.hero__content', {
+        duration: 0.5,
+        x: '-150%',
+        opacity: 0,
+        ease: 'power2.out',
+      });
+      timelineSecond.to(
+        '.hero__blur',
+        {
+          duration: 0.7,
+          backdropFilter: 'blur(20px)',
+          opacity: 1,
+          ease: 'power2.out',
+        },
+        '-=0.2'
+      );
+      timelineSecond.to('.numbers__overlay', {
+        duration: 0.5,
+        opacity: 1,
+        background: 'rgba(1, 3, 16, 0.4)',
+        ease: 'power2.out',
+      });
+      timelineSecond.from(
+        '.numbers__big-number',
+        {
+          duration: 0.5,
+          opacity: 0,
+          ease: 'power2.out',
+        },
+        '<'
+      );
+      timelineSecond.from('.numbers__label', {
+        duration: 0.5,
+        opacity: 0,
+        y: '20px',
+        ease: 'power2.out',
+      });
+      timelineSecond.from('.numbers__btn', {
+        duration: 0.5,
+        opacity: 1,
+        y: '40px',
+        ease: 'power2.out',
+      }, '>');
+    } else if (index === 0) {
+      gsap.to('.numbers__overlay', {
+        duration: 0.3,
+        opacity: 0,
+        background: 'rgba(1, 3, 16, 0)',
+        ease: 'power2.out',
+      });
+      gsap.to(
+        '.hero__blur',
+        {
+          duration: 0.7,
+          backdropFilter: 'blur(0)',
+          opacity: 0,
+          ease: 'power2.out',
+        },
+        '<'
+      );
+      gsap.to('.hero__content', {
+        duration: 0.7,
+        x: 0,
+        opacity: 1,
+        ease: 'power2.out',
+      });
+    }
+  }
+
   function goToSlide(index) {
     if (isAnimating) return;
     isAnimating = true;
@@ -291,7 +478,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       logoAnimation
         .to(
           '.logo-main__text',
-          {width: 0, opacity: 0, duration: 0.5, ease: 'power2.in'},
+          {width: 0, opacity: 0, duration: 0.4, ease: 'power2.in'},
           0
         )
         .to(
@@ -301,7 +488,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         )
         .to(
           '.logo-main__split',
-          {width: 0, opacity: 0, duration: 0.5, ease: 'power2.in'},
+          {width: 0, opacity: 0, duration: 0.4, ease: 'power2.in'},
           0
         )
         .to(
