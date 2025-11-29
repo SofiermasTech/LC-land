@@ -28,16 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const lastSlide = slides.length - 1;
 
   // состояния
-
   let isAnimating = false;
   let isBottom = false;
   let mouseMoveHandler = null;
   let currentIndex = detectCurrentSection();
-  let ignoreWheel = false;
 
   let logoAnimation = null;
   let isLogoCompact = false;
-  let initialLoad = true;
 
   // Первый запуск
   lockScroll();
@@ -52,6 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
   updateMenuColor();
   updateClassMenu();
   AOS.init({});
+
+  function lockScroll() {
+    document.documentElement.style.overflowY = 'hidden';
+    document.body.style.overflowY = 'hidden';
+  }
 
   // определение  текущей секции
   function detectCurrentSection() {
@@ -94,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // переходу между секциями + скролл
-  function goToSection(index, callback) {
+  function goToSection(index) {
     if (isAnimating) return;
     isAnimating = true;
 
@@ -113,7 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
         isAnimating = false;
         currentIndex = index;
         updateClassMenu();
-        if (callback) callback();
+
+        if (index === lastIndex) {
+          gsap.to(window, {
+            scrollTo: {y: window.scrollY + window.innerHeight},
+            duration: 1,
+            ease: 'power2.inOut',
+          });
+        }
       },
     });
   }
@@ -124,17 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (ignoreWheel) {
-      evt.preventDefault();
-      return;
-    }
-
     const directionDown = evt.deltaY > 0;
     const directionUp = evt.deltaY < 0;
-
-    if (isBottom) {
-      currentIndex = lastIndex;
-    }
 
     if (currentIndex === sliderSectionIndex) {
       evt.preventDefault();
@@ -159,16 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
       evt.preventDefault();
       goToSection(currentIndex - 1);
     }
-  }
-
-  function lockScroll() {
-    document.documentElement.style.overflowY = 'hidden';
-    document.body.style.overflowY = 'hidden';
-  }
-
-  function unlockScroll() {
-    document.documentElement.style.overflowY = 'auto';
-    document.body.style.overflowY = 'auto';
   }
 
   // паралакс
@@ -226,40 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function checkScrollPosition() {
-    const menu = document.querySelector('.menu');
-    const footer = document.querySelector('.footer').getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-
-    const footerVisible = footer.top < windowHeight && footer.bottom > 0;
-
-    if (footerVisible && !isBottom) {
-      isBottom = true;
-      currentIndex = lastIndex;
-      iconDown.style.display = 'none';
-      iconUp.style.display = 'block';
-      gsap.to(tgBtn, {
-        opacity: 0,
-        x: '-100%',
-        duration: 1,
-        ease: 'power2.out',
-      });
-      gsap.to(menu, {y: windowHeight, duration: 0.8, ease: 'power3.inOut'});
-    } else if (!footerVisible && isBottom) {
-      isBottom = false;
-      currentIndex = lastIndex;
-      gsap.to(tgBtn, {
-        opacity: 1,
-        x: 0,
-        duration: 1,
-        ease: 'power2.out',
-      });
-      gsap.to(menu, {y: 0, duration: 0.7, ease: 'power3.out'});
-      iconDown.style.display = 'block';
-      iconUp.style.display = 'none';
-    }
-  }
-
   function handleScrollBtnClick() {
     if (isBottom) {
       currentIndex = 0;
@@ -273,15 +229,89 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // === УМНЫЙ ПИН + ПЛАВНЫЙ СКРОЛЛ + ОТСЛЕЖИВАНИЕ ДО ФУТЕРА ===
+  ScrollTrigger.create({
+    trigger: '#section-4',
+    start: 'top top',
+    end: () =>
+      `+=${
+        document.querySelector('#section-4').scrollHeight - window.innerHeight
+      }`,
+    pin: true,
+    scrub: 1,
+    anticipatePin: 1,
+    invalidateOnRefresh: true,
+
+    // Отслеживаем, доехали ли до футера
+    onUpdate: (self) => {
+      const progress = self.progress;
+
+      // Если прокрутили секцию почти до конца — включаем isBottom
+      if (progress > 0.95 && !isBottom) {
+        isBottom = true;
+        // Меняем иконку на "вверх"
+        iconDown.style.display = 'none';
+        iconUp.style.display = 'block';
+        gsap.to(nextBtnText, {opacity: 0, y: -20, duration: 0.4});
+
+        // Прячем Telegram и меню (как было)
+        gsap.to(tgBtn, {
+          opacity: 0,
+          x: '-100%',
+          duration: 1,
+          ease: 'power2.out',
+        });
+        gsap.to('.menu', {
+          y: window.innerHeight,
+          duration: 0.8,
+          ease: 'power3.inOut',
+        });
+      }
+      // Если отмотали назад
+      else if (progress <= 0.95 && isBottom) {
+        isBottom = false;
+        iconDown.style.display = 'block';
+        iconUp.style.display = 'none';
+        gsap.to(nextBtnText, {opacity: 1, y: 0, duration: 0.4});
+
+        gsap.to(tgBtn, {opacity: 1, x: 0, duration: 1, ease: 'power2.out'});
+        gsap.to('.menu', {y: 0, duration: 0.7, ease: 'power3.out'});
+      }
+
+      if (self.progress < 0.05 && currentIndex === lastIndex) {
+        currentIndex = lastIndex - 1;
+        updateMenuColor();
+        changeLogo();
+        updateControlsScroll();
+        updateClassMenu();
+        animFirstSection(currentIndex);
+        animSecondSection(currentIndex);
+      }
+    },
+
+    onEnter: () => {
+      // Вошли в последнюю секцию
+      gsap.to(nextBtn, {opacity: 1, pointerEvents: 'auto', duration: 0.6});
+    },
+
+    onLeaveBack: () => {
+      // Вышли назад из последней секции
+      isBottom = false;
+      iconDown.style.display = 'block';
+      iconUp.style.display = 'none';
+      gsap.to(nextBtnText, {opacity: 1, y: 0, duration: 0.4});
+      gsap.to(tgBtn, {opacity: 1, x: 0, duration: 1});
+      gsap.to('.menu', {y: 0, duration: 0.7, ease: 'power3.out'});
+    },
+  });
+
   function updateControlsScroll() {
     const targetColor = currentIndex === 2 ? 'var(--light)' : 'var(--white)';
 
     if (currentIndex === lastIndex) {
-      unlockScroll();
       gsap.to(nextBtnText, {opacity: 0, y: -15, duration: 0.3});
       iconDownSvg.classList.remove('rotate');
     } else if (currentIndex < 2) {
-      lockScroll();
       nextBtnText.innerHTML = nextBtnTexts[currentIndex];
       iconDownSvg.classList.remove('rotate');
       gsap.to(nextBtnText, {
@@ -298,8 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: 'power2.out',
       });
     } else {
-      lockScroll();
-
       if (currentIndex === 2) {
         nextBtnText.innerHTML = nextBtnTexts[2];
         iconDownSvg.classList.add('rotate');
@@ -660,7 +688,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   changeLogo();
-  checkScrollPosition();
+  // checkScrollPosition();
   updateClassMenu();
   updateMenuColor();
 
@@ -680,11 +708,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const index = Number(link.dataset.index);
 
-      ignoreWheel = true;
-
-      goToSection(index, () => {
-        ignoreWheel = false;
-      });
+      goToSection(index);
+      // scrollTo, анимации, лого, фон, overlay
     });
   });
 
@@ -692,7 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.addEventListener('click', handleScrollBtnClick);
   }
 
-  window.addEventListener('scroll', checkScrollPosition);
+  // window.addEventListener('scroll', checkScrollPosition);
   window.addEventListener('wheel', onwheel, {passive: false});
   initialLoad = false;
 });
