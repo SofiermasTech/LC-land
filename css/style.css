@@ -123,6 +123,7 @@
           justify-content: center;
   gap: 12px;
   cursor: pointer;
+  opacity: 1;
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
@@ -1491,6 +1492,7 @@
 }
 .footer__links-item {
   font-size: clamp(0.8125rem, 0.7836538462rem + 0.1282051282vw, 0.9375rem);
+  cursor: pointer;
 }
 .footer__links-item a {
   color: var(--dark);

@@ -1,5 +1,7 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
   const sections = document.querySelectorAll('.section');
+  const lastIndex = sections.length - 1;
+
   // элм кнопки скролла
   const nextBtn = document.querySelector('.btn-scroll');
   const iconDown = document.querySelector('.icon-down');
@@ -16,12 +18,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const menuWrapper = document.querySelector('.menu__wrapper');
   const tgBtn = document.querySelectorAll('.controls__tg');
   const tgBtnText = document.querySelectorAll('.tg__text');
-
-  const lastIndex = sections.length - 1;
-  let isAnimating = false;
-  let isBottom = false;
-  let logoAnimation = null;
-  let isLogoCompact = false;
+  const footerLinks = document.querySelectorAll('.footer__links-item');
 
   // сладер
   const sliderSectionIndex = 2;
@@ -30,8 +27,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
   let currentSlide = 0;
   const lastSlide = slides.length - 1;
 
+  // состояния
+
+  let isAnimating = false;
+  let isBottom = false;
+  let mouseMoveHandler = null;
+  let currentIndex = detectCurrentSection();
+  let ignoreWheel = false;
+
+  let logoAnimation = null;
+  let isLogoCompact = false;
+  let initialLoad = true;
+
+  // Первый запуск
+  lockScroll();
+  setStateForSection(currentIndex);
+
+  if (currentIndex === 0) {
+    animationOnStart();
+  }
+
+  changeLogo();
+  updateControlsScroll();
+  updateMenuColor();
+  updateClassMenu();
+  AOS.init({});
+
+  // определение  текущей секции
   function detectCurrentSection() {
     let idx = 0;
+
     sections.forEach((section, i) => {
       const rect = section.getBoundingClientRect();
       if (rect.top <= window.innerHeight * 0.5) idx = i;
@@ -39,24 +64,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
     return idx;
   }
 
-  lockScroll();
-  let currentIndex = detectCurrentSection();
+  // начальное состояние первых экранов
+  function setStateForSection(index) {
+    if (index === 0) {
+      gsap.set('.hero__content', {x: 0, opacity: 1});
+      gsap.set('.first-wrapper__img', {opacity: 1});
+      gsap.set('.hero__blur', {opacity: 0, backdropFilter: 'blur(0)'});
+      gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
+      return;
+    }
 
-  animationOnStart();
-  animFirstSection(currentIndex);
-  changeLogo();
-  updateControlsScroll();
-  updateMenuColor();
-  updateClassMenu();
-  AOS.init({});
+    if (index === 1) {
+      gsap.set('.hero__content', {x: '-150%', opacity: 0});
+      gsap.set('.first-wrapper__img', {opacity: 1});
+      gsap.set('.hero__blur', {opacity: 1, backdropFilter: 'blur(20px)'});
+      gsap.set('.numbers__overlay', {
+        opacity: 1,
+        background: 'rgba(1,3,16,0.4)',
+      });
+      return;
+    }
 
-  function goToSection(index) {
+    if (index >= 2) {
+      gsap.set('.hero__content', {x: '-150%', opacity: 0});
+      gsap.set('.first-wrapper__img', {opacity: 0});
+      gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
+      gsap.set('.hero__blur', {opacity: 0, backdropFilter: 'blur(0px)'});
+    }
+  }
+
+  // переходу между секциями + скролл
+  function goToSection(index, callback) {
     if (isAnimating) return;
     isAnimating = true;
+
     currentIndex = index;
     updateMenuColor();
     changeLogo();
     updateControlsScroll();
+
     animFirstSection(index);
     animSecondSection(index);
 
@@ -67,6 +113,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         isAnimating = false;
         currentIndex = index;
         updateClassMenu();
+        if (callback) callback();
       },
     });
   }
@@ -77,28 +124,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
       return;
     }
 
+    if (ignoreWheel) {
+      evt.preventDefault();
+      return;
+    }
+
     const directionDown = evt.deltaY > 0;
     const directionUp = evt.deltaY < 0;
+
+    if (isBottom) {
+      currentIndex = lastIndex;
+    }
 
     if (currentIndex === sliderSectionIndex) {
       evt.preventDefault();
 
       if (directionDown) {
-        if (currentSlide < lastSlide) {
-          goToSlide(currentSlide + 1);
-        } else {
-          goToSection(currentIndex + 1);
-        }
-        return;
+        if (currentSlide < lastSlide) return goToSlide(currentSlide + 1);
+        return goToSection(currentIndex + 1);
       }
 
       if (directionUp) {
-        if (currentSlide > 0) {
-          goToSlide(currentSlide - 1);
-        } else {
-          goToSection(currentIndex - 1);
-        }
-        return;
+        if (currentSlide > 0) return goToSlide(currentSlide - 1);
+        return goToSection(currentIndex - 1);
       }
     }
 
@@ -121,6 +169,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
   function unlockScroll() {
     document.documentElement.style.overflowY = 'auto';
     document.body.style.overflowY = 'auto';
+  }
+
+  // паралакс
+  function enableParallax() {
+    const mainImg = document.querySelector('.first-wrapper__img img');
+    if (!mainImg) return;
+
+    mouseMoveHandler = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 50;
+      const y = (e.clientY / window.innerHeight - 0.5) * 50;
+
+      gsap.to(mainImg, {
+        x: -x,
+        y: -y,
+        duration: 1.2,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      });
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+  }
+
+  function disableParallax() {
+    if (mouseMoveHandler) {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      mouseMoveHandler = null;
+    }
   }
 
   function nextScreen() {
@@ -159,6 +235,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (footerVisible && !isBottom) {
       isBottom = true;
+      currentIndex = lastIndex;
       iconDown.style.display = 'none';
       iconUp.style.display = 'block';
       gsap.to(tgBtn, {
@@ -170,6 +247,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       gsap.to(menu, {y: windowHeight, duration: 0.8, ease: 'power3.inOut'});
     } else if (!footerVisible && isBottom) {
       isBottom = false;
+      currentIndex = lastIndex;
       gsap.to(tgBtn, {
         opacity: 1,
         x: 0,
@@ -295,21 +373,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   function animFirstSection(index) {
     const main = document.querySelector('.first-wrapper__img');
-    const mainImg = document.querySelector('.first-wrapper__img img');
+    // const mainImg = document.querySelector('.first-wrapper__img img');
     const overlay = document.querySelector('.numbers__overlay');
 
     if (index === 0) {
-      document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 50;
-        const y = (e.clientY / window.innerHeight - 0.5) * 50;
-
-        gsap.to(mainImg, {
-          x: -x,
-          y: -y,
-          duration: 1.2,
-          ease: 'power2.out',
-          overwrite: 'auto',
-        });
+      enableParallax();
+      gsap.to(main, {
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power4.out',
       });
     }
 
@@ -317,11 +389,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (index >= 2) {
       gsap.to(main, {
         opacity: 0,
-        background: 'transparent',
-        // y: 0,
         duration: 0.9,
         ease: 'back.out',
-        // onStart: () => overlay.classList.add('opacity'),
       });
       gsap.to(
         overlay,
@@ -336,10 +405,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     } else {
       gsap.to(main, {
         opacity: 1,
-        // y: 0,
         duration: 0.9,
         ease: 'power4.out',
-        // onStart: () => overlay.classList.remove('opacity'),
       });
     }
   }
@@ -348,6 +415,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const timelineSecond = gsap.timeline();
 
     if (index === 1) {
+      disableParallax();
       timelineSecond.to('.hero__content', {
         duration: 0.5,
         x: '-150%',
@@ -385,33 +453,43 @@ document.addEventListener('DOMContentLoaded', (event) => {
         y: '20px',
         ease: 'power2.out',
       });
-      timelineSecond.from('.numbers__btn', {
-        duration: 0.5,
-        opacity: 1,
-        y: '40px',
-        ease: 'power2.out',
-      }, '>');
-    } else if (index === 0) {
-      gsap.to('.numbers__overlay', {
-        duration: 0.3,
-        opacity: 0,
-        background: 'rgba(1, 3, 16, 0)',
-        ease: 'power2.out',
-      });
-      gsap.to(
-        '.hero__blur',
+      gsap.from(
+        '.numbers__btn',
         {
-          duration: 0.7,
-          backdropFilter: 'blur(0)',
-          opacity: 0,
+          duration: 0.5,
+
+          y: '40px',
           ease: 'power2.out',
         },
-        '<'
+        '+=0.7'
       );
+    }
+
+    if (index === 0) {
+      gsap.to('.hero__content', {x: 0, opacity: 1, duration: 0.6});
+      gsap.to('.hero__blur', {
+        opacity: 0,
+        backdropFilter: 'blur(0px)',
+        duration: 0.6,
+      });
+      gsap.to('.numbers__overlay', {
+        opacity: 0,
+        background: 'rgba(1,3,16,0)',
+        duration: 0.3,
+      });
+      return;
+    }
+
+    if (index >= 2) {
+      gsap.to('.hero__blur', {
+        opacity: 0,
+        backdropFilter: 'blur(0)',
+        duration: 0.4,
+      });
       gsap.to('.hero__content', {
-        duration: 0.7,
-        x: 0,
-        opacity: 1,
+        x: '-150%',
+        opacity: 0,
+        duration: 0.6,
         ease: 'power2.out',
       });
     }
@@ -421,9 +499,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (isAnimating) return;
     isAnimating = true;
 
+    animateSlide(currentSlide, index);
+
     gsap.to(sliderWrapper, {
       xPercent: -100 * index,
-      duration: 1,
+      duration: 0.7,
       ease: 'power2.inOut',
       onComplete() {
         currentSlide = index;
@@ -432,6 +512,62 @@ document.addEventListener('DOMContentLoaded', (event) => {
         window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
       },
     });
+  }
+
+  function animateSlide(oldIndex, newIndex) {
+    const slides = document.querySelectorAll('.swiper__slide');
+    const oldSlide = slides[oldIndex];
+    const newSlide = slides[newIndex];
+    if (!oldSlide || !newSlide) return;
+
+    // убиваем предыдущую анимацию, если она ещё жива
+    if (animateSlide.tl) {
+      animateSlide.tl.kill();
+    }
+
+    const tl = gsap.timeline({defaults: {ease: 'power2.out'}});
+    animateSlide.tl = tl;
+
+    const oldImg = oldSlide.querySelector('.slide__img');
+    const oldContent = oldSlide.querySelector('.slide__content');
+    const newImg = newSlide.querySelector('.slide__img');
+    const newContent = newSlide.querySelector('.slide__content');
+
+    // направление: true = вперёд (вправо→влево), false = назад (влево→вправо)
+    const forward = newIndex > oldIndex;
+
+    const oldExitX = forward ? '-150%' : '150%';
+    const newEnterX = forward ? '150%' : '-150%';
+
+    // гарантируем стартовые позиции нового слайда (за пределом экрана)
+    gsap.set([newImg, newContent], {x: newEnterX, opacity: 0});
+
+    // === ВПЕРЁД: старый: img -> content ; новый: img <- content ===
+    if (forward) {
+      // старый улетает: сперва картинка
+      tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.3});
+
+      // затем правая часть с небольшой задержкой — создаём эффект "по кускам"
+      tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.3});
+
+      // новый прилетает: сначала картинка (чуть раньше), потом контент
+      tl.to(newImg, {x: '0%', opacity: 1, duration: 0.2}, '<');
+      tl.to(newContent, {x: '0%', opacity: 1, duration: 0.3}, '<');
+
+      return;
+    }
+
+    // === НАЗАД: старый: content -> img ; новый: content <- img ===
+    // при обратном пролистываии порядок зеркальный
+    // старый улетает: сперва content
+    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.3});
+
+    // затем картинка (чуть позже) — эффект по кускам
+    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.2});
+
+    // новый прилетает: сначала контент (въезжает с левой стороны), затем картинка
+    tl.to(newContent, {x: '0%', opacity: 1, duration: 0.2}, '-=0.25');
+    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.3});
   }
 
   function updateClassMenu() {
@@ -529,10 +665,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
   updateMenuColor();
 
   // слушатели
+  menuLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const index = Number(link.dataset.index);
+
+      goToSection(index);
+      // scrollTo, анимации, лого, фон, overlay
+    });
+  });
+
+  footerLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const index = Number(link.dataset.index);
+
+      ignoreWheel = true;
+
+      goToSection(index, () => {
+        ignoreWheel = false;
+      });
+    });
+  });
+
   if (nextBtn) {
     nextBtn.addEventListener('click', handleScrollBtnClick);
   }
 
   window.addEventListener('scroll', checkScrollPosition);
   window.addEventListener('wheel', onwheel, {passive: false});
+  initialLoad = false;
 });

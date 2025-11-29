@@ -129,6 +129,7 @@
 
   &__links-item {
     @include fluid-text(15, 13);
+    cursor: pointer;
 
     a {
       color: var(--dark);
