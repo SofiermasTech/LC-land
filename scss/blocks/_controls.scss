@@ -26,6 +26,10 @@
     text-decoration: none;
     color: inherit;
 
+    // @include laptop {
+    //   display: none;
+    // }
+
   }
 
   &__tg {
@@ -33,6 +37,16 @@
     display: flex;
     align-items: center;
     gap: 16px;
+
+    @include laptop {
+      margin-top: auto;
+    }
+
+    @include tablet {
+      .tg__text {
+        display: none;
+      }
+    }
 
     .base-btn {
       padding: 0;
@@ -58,6 +72,8 @@
       letter-spacing: -0.03em;
       color: var(--white);
     }
+
+
   }
 
   &__btn-reg {
@@ -102,6 +118,7 @@
         background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
         box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
       }
+
     }
 
     .icon-down {
@@ -113,6 +130,12 @@
         &.rotate {
           transform: rotate(-90deg);
         }
+      }
+    }
+
+    @include tablet {
+      .btn-scroll-text {
+        display: none;
       }
     }
   }

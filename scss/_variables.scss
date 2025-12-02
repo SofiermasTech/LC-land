@@ -19,7 +19,7 @@
   --br-l: 32px;
 
   --container-width: 1272px;
-  --container-padding: 24px;
+  --container-padding: 48px;
   --section-padding: 48px;
   --section-offset: 96px;
   --controls-margin: 40px;
@@ -31,18 +31,16 @@
 
   @include desktop {
     --container-width: 1184px;
-    --section-offset: 80px;
+    --section-offset: 64px;
     --controls-margin: 16px;
   }
 
   @include laptop {
-    --container-padding: 16px;
-    --container-width: 944px;
      --section-offset: 48px;
   }
 
   @include tablet {
-    --container-padding: 16px;
+    --container-padding: 24px;
     --container-width: 800px;
   }
 

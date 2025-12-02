@@ -3,7 +3,7 @@
 
 .faq {
   margin-bottom: var(--section-offset);
-  max-width: 100%;
+  max-width: var(--container-width);
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -12,6 +12,8 @@
     'title qa'
     'btn qa';
   gap: 48px 16px;
+  position: relative;
+  z-index: 7;
 
   @media screen and (max-width: 1200px) {
     gap: 16px;

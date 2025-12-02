@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const lastSlide = slides.length - 1;
 
   // состояния
-
   let isAnimating = false;
+  let isIntentionalNavigation = false;
+  let intentionalTargetIndex = null;
   let isBottom = false;
   let mouseMoveHandler = null;
   let currentIndex = detectCurrentSection();
-  // let ignoreWheel = false;
 
   let logoAnimation = null;
   let isLogoCompact = false;
@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 1,
         background: 'rgba(1,3,16,0.4)',
       });
+      const sec2 = document.querySelector('.numbers__overlay');
+      sec2.classList.add('section-fixed');
       return;
     }
 
@@ -89,41 +91,110 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set('.first-wrapper__img', {opacity: 0});
       gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
       gsap.set('.hero__blur', {opacity: 0, backdropFilter: 'blur(0px)'});
+
+      if (window.matchMedia('(max-width: 1300px)').matches) {
+        gsap.set('.logo-main', {opacity: 0});
+      }
     }
   }
 
   // переходу между секциями + скролл
   function goToSection(index) {
     if (isAnimating) return;
-    isAnimating = true;
 
-    if (currentIndex === 1 && index === 2) {
-      handleTransitionFrom1To2(index);
+    isAnimating = true;
+    sliderLocked = true;
+
+    console.log('goToSection', index, currentIndex);
+
+    if (currentIndex === 2 && index === 1) {
+      const tl = thirdScrollUp(index);
+
+      tl.eventCallback('onComplete', () => {
+        gsap.to(window, {
+          scrollTo: sections[1],
+          duration: 1,
+          ease: 'power2.out',
+          onComplete() {
+            isAnimating = false;
+            sliderLocked = false;
+            currentIndex = 1;
+            changeLogo();
+            updateMenuColor();
+            updateClassMenu();
+            updateControlsScroll();
+
+            updatePaginationWhithSlides(currentIndex);
+            console.log('goToSection2 начxxxxx', index, currentIndex);
+          },
+        });
+      });
+
       return;
     }
 
-    if (currentIndex === 2 && index === 1) {
-      handleTransitionFrom2To1(index);
-      return;
+    if ((currentIndex === 2 || currentIndex === 3) && index === 0) {
+      gsap
+        .timeline()
+        .to('.service__content', {
+          y: '100%',
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        })
+        .to(
+          '.service__title',
+          {
+            y: '150%',
+            opacity: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        );
+    }
+
+    if ((currentIndex > 2 || currentIndex < 2) && index === 2) {
+      animThirdSection(currentIndex);
+      console.log('врпврапрапрап', index, currentIndex);
     }
 
     currentIndex = index;
     updateMenuColor();
     changeLogo();
 
-    // setStateForSection(index);
+    if (currentIndex === 0) {
+      animFirstSection(currentIndex);
+      secondScroll(index);
+    }
 
-    animFirstSection(index);
-    animSecondSection(index);
+    if (currentIndex === 1) {
+      animSecondSection(index);
+      console.log('0111');
+    }
+
+    if (currentIndex === 2) {
+      secondScroll(index);
+    }
+
+    if (currentIndex >= 3) {
+      secondScroll(index);
+      thirdScrollUp(index);
+    }
 
     gsap.to(window, {
       scrollTo: {y: sections[index], autoKill: false},
       duration: 1,
       onComplete() {
         isAnimating = false;
+        sliderLocked = false;
         currentIndex = index;
+        firstScroll(index);
         updateClassMenu();
         updateControlsScroll();
+
+        updatePaginationWhithSlides(currentIndex);
+        console.log('goToSection конец', index, currentIndex);
       },
     });
   }
@@ -140,10 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const directionDown = evt.deltaY > 0;
     const directionUp = evt.deltaY < 0;
-
-    if (isBottom) {
-      currentIndex = lastIndex;
-    }
 
     if (currentIndex === sliderSectionIndex) {
       evt.preventDefault();
@@ -166,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (directionUp && currentIndex > 0) {
       evt.preventDefault();
+
       goToSection(currentIndex - 1);
     }
   }
@@ -211,7 +279,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function nextScreen() {
     if (isAnimating) return;
 
+    sliderLocked = true;
+    // isAnimating = true;
+
     if (currentIndex === sliderSectionIndex) {
+      sliderLocked = false;
+
       if (currentSlide < lastSlide) {
         goToSlide(currentSlide + 1);
         return;
@@ -224,13 +297,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (currentIndex < lastIndex) {
-      currentIndex++;
-      goToSection(currentIndex);
+      goToSection(currentIndex + 1);
     } else if (currentIndex === lastIndex) {
       gsap.to(window, {
         scrollTo: {y: window.scrollY + window.innerHeight},
         duration: 1,
         ease: 'power2.inOut',
+        onComplete() {
+          isAnimating = false;
+          sliderLocked = false;
+        },
       });
     }
   }
@@ -244,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (footerVisible && !isBottom) {
       isBottom = true;
-      currentIndex = lastIndex;
+      // currentIndex = lastIndex;
       iconDown.style.display = 'none';
       iconUp.style.display = 'block';
       gsap.to(tgBtn, {
@@ -256,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.to(menu, {y: windowHeight, duration: 0.8, ease: 'power3.inOut'});
     } else if (!footerVisible && isBottom) {
       isBottom = false;
-      currentIndex = lastIndex;
+      // currentIndex = lastIndex;
       gsap.to(tgBtn, {
         opacity: 1,
         x: 0,
@@ -271,15 +347,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function handleScrollBtnClick() {
     if (isBottom) {
-      currentIndex = 0;
-      currentSlide = 0;
-      gsap.set(sliderWrapper, {
-        xPercent: 0,
+      isIntentionalNavigation = true;
+      intentionalTargetIndex = 0;
+      isAnimating = true;
+      sliderLocked = true;
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // Здесь уже всё закончено: анимации + скролл
+          isAnimating = false;
+          sliderLocked = true;
+          currentIndex = 0;
+          scrollImgWrapper(0);
+          firstScroll(0);
+          changeLogo();
+          updateMenuColor();
+          updateClassMenu();
+          updateControlsScroll();
+
+          updatePaginationWhithSlides(0);
+          console.log('Всё завершено: анимации + скролл наверх');
+        },
       });
-      goToSection(0);
-    } else {
-      nextScreen();
+
+      tl.to(window, {
+        scrollTo: sections[0],
+        duration: 0.7,
+        ease: 'power2.out',
+      });
+
+      console.log('0100 — запущена полная цепочка анимаций + скролл');
     }
+
+    nextScreen();
   }
 
   function updateControlsScroll() {
@@ -329,282 +429,414 @@ document.addEventListener('DOMContentLoaded', () => {
         gsap.to(nextBtnText, {opacity: 0, y: -15, duration: 0.3});
         iconDownSvg.classList.remove('rotate');
       }
+
+      if (window.matchMedia('(max-width: 1300px)').matches) {
+        if (currentIndex >= 2) {
+          gsap.set('.logo-main', {opacity: 0});
+        } else {
+          gsap.to('.logo-main', {opacity: 0, duration: 0.3});
+        }
+      }
     }
   }
 
   function animationOnStart() {
     const timelineFirst = gsap.timeline();
+    enableParallax();
+    console.log('animationOnStart нач');
     if (currentIndex === 0) {
-      timelineFirst.from('.hero__content', {
-        duration: 0.7,
-        x: '-150%',
-        ease: 'power2.out',
-      });
-      timelineFirst.from(
-        '.controls--left',
-        {
+      timelineFirst
+        .from('.hero__content', {
           duration: 0.7,
-          x: '-100%',
+          x: '-150%',
           ease: 'power2.out',
-        },
-        '-=0.3'
-      );
-      timelineFirst.from(
-        '.controls--right',
-        {
-          duration: 0.7,
-          x: '100%',
-          ease: 'power2.out',
-        },
-        '<'
-      );
-      timelineFirst.from(
-        '.first-wrapper__img img',
-        {
-          duration: 1.3,
-          x: '150px',
-          opacity: 0,
-          ease: 'power2.out',
-        },
-        '-=0.6'
-      );
-      timelineFirst.from(
-        '.menu',
-        {
-          duration: 1,
-          y: '200%',
-          ease: 'power2.out',
-        },
-        '<'
-      );
+        })
+        .from(
+          '.controls--left',
+          {
+            duration: 0.7,
+            x: '-100%',
+            ease: 'power2.out',
+          },
+          '-=0.3'
+        )
+        .from(
+          '.controls--right',
+          {
+            duration: 0.7,
+            x: '100%',
+            ease: 'power2.out',
+          },
+          '<'
+        )
+        .add(scrollImgWrapper(currentIndex), '-=0.6')
+        .from(
+          '.menu',
+          {
+            duration: 1,
+            y: '200%',
+            ease: 'power2.out',
+          },
+          '<'
+        );
     }
+
+    console.log('animationOnStart конец');
   }
 
   function animFirstSection(index) {
-    const main = document.querySelector('.first-wrapper__img');
-    // const mainImg = document.querySelector('.first-wrapper__img img');
-    const overlay = document.querySelector('.numbers__overlay');
-
+    console.log('animFirstSection нач');
     if (index === 0) {
       enableParallax();
-      gsap.to(main, {
+      scrollImgWrapper(index);
+      firstScroll(index);
+    }
+    console.log('animFirstSection конец');
+  }
+
+  function firstScroll(index) {
+    const firstScrollTL = gsap.timeline({
+      onComplete: function () {
+        if (index >= 2) {
+          document.querySelector('.hero__blur').style.position = 'static';
+        } else {
+          document.querySelector('.hero__blur').style.position = 'fixed';
+          // gsap.to('.logo-main', {opacity: 1, duration: 0.3});
+          if (index === 0) {
+            document
+              .querySelector('.numbers__overlay')
+              .classList.remove('section-fixed');
+            console.log('4564564');
+          }
+        }
+        console.log('firstScroll конец');
+      },
+    });
+
+    console.log('firstScroll нач');
+    if (index > 0) {
+      firstScrollTL.to('.hero__content', {
+        duration: 0.3,
+        x: '-150%',
+        opacity: 0,
+        ease: 'power2.out',
+      });
+    } else {
+      firstScrollTL.to('.hero__content', {
+        duration: 0.7,
+        x: 0,
         opacity: 1,
-        duration: 0.9,
-        ease: 'power4.out',
+        ease: 'power2.out',
       });
     }
+  }
+
+  function secondScroll() {
+    const secondScrollTL = gsap.timeline({
+      onComplete: function () {
+        const sec2 = document.querySelector('.numbers__overlay');
+        // sec2.classList.remove('section-fixed');
+        // console.log('secondScroll конец');
+      },
+    });
+
+    console.log('secondScroll нач');
+    secondScrollTL
+      .to('.numbers__big-number', {
+        duration: 0.2,
+        opacity: 0,
+        ease: 'power2.out',
+      })
+      .to(
+        '.numbers__label',
+        {
+          duration: 0.2,
+          opacity: 0,
+          y: 0,
+          ease: 'power2.out',
+        },
+        '<'
+      )
+      .set(
+        '.numbers__btn',
+        {
+          // duration: 0.2,
+          opacity: 0,
+          ease: 'power2.out',
+        },
+        '-=0.3'
+      )
+      .to('.numbers__overlay', {
+        duration: 0.3,
+        opacity: 0,
+        background: 'rgba(1, 3, 16, 0)',
+        ease: 'power2.out',
+      })
+      .to(
+        '.hero__blur',
+        {
+          opacity: 0,
+          backdropFilter: 'blur(0px)',
+          duration: 0.3,
+        },
+        '<'
+      );
+    // }
+  }
+
+  function scrollImgWrapper(index) {
+    const imgScrollTL = gsap.timeline({
+      onComplete: function () {
+        console.log('scrollImgWrapper конец');
+      },
+    });
+
+    console.log('scrollImgWrapper запущен');
+    if (index === 0) {
+      imgScrollTL
+        .to('.first-wrapper__img', {
+          opacity: 1,
+          duration: 0.1,
+          ease: 'power4.out',
+        })
+        .fromTo(
+          '.first-wrapper__img img',
+          // от
+          {
+            x: '150px',
+            opacity: 0,
+          },
+          // до
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1.3,
+            ease: 'power2.out',
+          },
+          '-=0.1'
+        );
+    } else if (index === 1) {
+      imgScrollTL
+        .set('.first-wrapper__img img', {
+          x: 0,
+          opacity: 1,
+        })
+        .set('.first-wrapper__img', {
+          opacity: 1,
+        });
+    } else {
+      imgScrollTL
+        .to('.first-wrapper__img img', {
+          duration: 0.5,
+          x: '250',
+          ease: 'power2.out',
+        })
+        .to(
+          '.first-wrapper__img img',
+          {
+            duration: 0.3,
+            opacity: 0,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        )
+        .to(
+          '.first-wrapper__img',
+          {
+            opacity: 0,
+            duration: 0.3,
+            ease: 'back.out',
+          },
+          '<'
+        );
+    }
+    return imgScrollTL;
   }
 
   function animSecondSection(index) {
     const timelineSecond = gsap.timeline();
+    console.log('animSecondSection запущен');
+    const sec2 = document.querySelector('.numbers__overlay');
+    sec2.classList.add('section-fixed');
 
     if (index === 1) {
-      const sec1 = sections[1];
-      sec1.classList.remove('section--fixed');
-
       disableParallax();
-      timelineSecond.to('.hero__content', {
-        duration: 0.3,
-        x: '-150%',
-        opacity: 0,
-        ease: 'power2.out',
-      });
-      timelineSecond.to(
-        '.hero__blur',
-        {
-          duration: 0.7,
-          backdropFilter: 'blur(20px)',
-          opacity: 1,
-          ease: 'power2.out',
-        },
-        '-=0.2'
-      );
-      timelineSecond.to('.numbers__overlay', {
-        duration: 0.5,
-        opacity: 1,
-        background: 'rgba(1, 3, 16, 0.4)',
-        ease: 'power2.out',
-      });
-      timelineSecond.from(
-        '.numbers__big-number',
-        {
+      firstScroll(index);
+
+      timelineSecond
+        .add(scrollImgWrapper(index))
+        .to(
+          '.hero__blur',
+          {
+            duration: 0.7,
+            backdropFilter: 'blur(20px)',
+            opacity: 1,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        )
+        .to('.numbers__overlay', {
           duration: 0.5,
-          opacity: 0,
-          ease: 'power2.out',
-        },
-        '<'
-      );
-      timelineSecond.from('.numbers__label', {
-        duration: 0.5,
-        opacity: 0,
-        y: '20px',
-        ease: 'power2.out',
-      });
-      gsap.from(
-        '.numbers__btn',
-        {
-          duration: 0.5,
-
-          y: '40px',
-          ease: 'power2.out',
-        },
-        '+=0.7'
-      );
-    }
-
-    if (index === 0) {
-      gsap.to('.hero__content', {x: 0, opacity: 1, duration: 0.6});
-      gsap.to('.hero__blur', {
-        opacity: 0,
-        backdropFilter: 'blur(0px)',
-        duration: 0.6,
-      });
-      gsap.to('.numbers__overlay', {
-        opacity: 0,
-        background: 'rgba(1,3,16,0)',
-        duration: 0.3,
-      });
-      return;
-    }
-  }
-
-  animThirdSection.tl = null;
-  function handleTransitionFrom1To2(index) {
-    const tl = animThirdSection(index);
-
-    if (!tl) return;
-
-    tl.eventCallback('onComplete', () => {
-      gsap.to(window, {
-        scrollTo: sections[2],
-        duration: 1,
-        ease: 'power2.out',
-        onComplete() {
-          isAnimating = false;
-          currentIndex = 2;
-          updateClassMenu();
-          updateControlsScroll();
-        },
-      });
-    });
-  }
-
-  function handleTransitionFrom2To1(index) {
-    const tl = animThirdSection(index); // Это вызовет backward-анимацию
-
-    if (!tl) return;
-
-    tl.eventCallback('onComplete', () => {
-      gsap.to(window, {
-        scrollTo: sections[1],
-        duration: 1,
-        ease: 'power2.out',
-        onComplete() {
-          isAnimating = false;
-          currentIndex = 1;
-          updateClassMenu();
-          updateControlsScroll();
-        },
-      });
-    });
-  }
-
-  function animThirdSection(index) {
-    // Убиваем предыдущую анимацию
-    if (animThirdSection.tl) animThirdSection.tl.kill();
-
-    const sec1 = sections[1]; // Numbers — только она умеет быть fixed
-    const sec2 = sections[2]; // Service — никогда не fixed
-
-    // 1 → 2 : фиксируем Numbers, убираем её, поднимаем Service
-    if (currentIndex === 1 && index === 2) {
-      sec1.classList.add('section--fixed');
-
-      const tl = gsap.timeline({defaults: {overwrite: true}});
-
-      tl.to('#section-2, .hero__blur, .numbers__overlay, .first-wrapper__img', {
-        opacity: 0,
-        backdropFilter: 'blur(0)',
-        background: 'rgba(1,3,16,0)',
-        duration: 0.8,
-        ease: 'power2.out',
-        stagger: 0.05,
-      }).to(
-        sec2,
-        {
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-        },
-        '-=0.8'
-      );
-
-      animThirdSection.tl = tl;
-      return tl;
-    }
-
-    // 2 → 1 : снимаем fixed с Numbers, возвращаем её из opacity 0 → 1
-    if (currentIndex === 2 && index === 1) {
-      const tl = gsap.timeline({
-        defaults: {overwrite: true},
-        onComplete: () => {
-          sec1.classList.remove('section--fixed'); 
-          gsap.set(sec1, {clearProps: 'transform,opacity'}); 
-        },
-      });
-
-      tl.to(sec2, {
-        y: 150,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power2.out',
-      });
-
-      tl.to(
-        '#section-2, .hero__blur, .numbers__overlay, .first-wrapper__img',
-        {
           opacity: 1,
-          backdropFilter: 'blur(20px)',
-          background: 'rgba(1,3,16,0.4)',
-          duration: 0.9,
+          background: 'rgba(1, 3, 16, 0.4)',
           ease: 'power2.out',
-          stagger: 0.05,
-        },
-        '-=0.7'
-      );
+        })
+        .fromTo(
+          '.numbers__big-number',
+          {
+            opacity: 0,
+          },
+          {duration: 0.3, opacity: 1, ease: 'power2.out'},
+          '<'
+        )
+        .fromTo(
+          '.numbers__label',
+          {
+            opacity: 0,
+            y: '20px',
+          },
+          {
+            duration: 0.3,
+            opacity: 1,
+            y: 0,
+            ease: 'power2.out',
+          }
+        )
+        .fromTo(
+          '.numbers__btn',
+          {
+            opacity: 0,
+          },
+          {
+            duration: 0.2,
+            opacity: 1,
+            ease: 'power2.out',
+          },
+          '<'
+        );
+    }
+    console.log('animSecondSection конец');
+    return timelineSecond;
+  }
 
-      tl.from(
-        '.numbers__big-number',
-        {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power2.out',
-        },
-        '-=0.6'
-      ).from(
-        '.numbers__label',
-        {
-          y: 20,
-          opacity: 0,
-          duration: 0.7,
-          ease: 'power2.out',
-        },
-        '-=0.7'
-      );
+  function animThirdSection(currentIndex) {
+    const thirdSectionTL = gsap.timeline({
+      onComplete() {
+        console.log('animThirdSection конец');
+      },
+    });
+    console.log('animThirdSection нач');
+    if (currentIndex < 2) {
+      thirdSectionTL
+        .add(scrollImgWrapper(2))
+        .fromTo(
+          '.service__title',
+          {
+            y: '150%',
+            opacity: 0,
+          },
+          {duration: 0.7, y: 0, opacity: 1, ease: 'power2.out'}
+        )
+        .fromTo(
+          '.service__content',
+          {
+            y: '100%',
+            opacity: 0,
+          },
+          {duration: 0.7, y: 0, opacity: 1, ease: 'power2.out'}
+        );
+    } else if (currentIndex > 2) {
+      thirdSectionTL
+        .fromTo(
+          '.service__content',
+          {
+            y: '-100%',
+            opacity: 0,
+          },
+          {duration: 0.7, y: 0, opacity: 1, ease: 'power2.out'}
+        )
+        .fromTo(
+          '.service__title',
+          {
+            y: '-100%',
+            opacity: 0,
+          },
+          {duration: 0.7, y: 0, opacity: 1, ease: 'power2.out'},
+          '-=0.2'
+        )
+        .add(scrollImgWrapper(2), '-=0.1');
+    }
+  }
 
-      animThirdSection.tl = tl;
-      return tl;
+  function thirdScrollUp(index) {
+    const thirdScrollUpTL = gsap.timeline({
+      onComplete: function () {
+        updateMenuColor();
+        const sec2 = document.querySelector('.numbers__overlay');
+        sec2.classList.remove('section-fixed');
+        console.log('thirdScrollUp конец');
+      },
+    });
+    console.log('thirdScrollUp нач');
+    if (index < 2) {
+      thirdScrollUpTL
+        .to('.service__content', {
+          y: '100%',
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        })
+        .to(
+          '.service__title',
+          {
+            y: '150%',
+            opacity: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        )
+        .add(scrollImgWrapper(index), '+=0.1')
+        .add(animSecondSection(index), '<');
+
+      // return thirdScrollUpTL;
     }
 
-    return null;
+    if (index > 2) {
+      thirdScrollUpTL
+        .to('.service__title', {
+          y: '-150%',
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.out',
+        })
+        .to(
+          '.service__content',
+          {
+            y: '-100%',
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        )
+        .add(scrollImgWrapper(index), '-=0.1');
+
+      // return thirdScrollUpTL;
+    }
+
+    return thirdScrollUpTL;
   }
+
+  let sliderLocked = false;
 
   function goToSlide(index) {
+    if (sliderLocked) return;
     if (isAnimating) return;
-    isAnimating = true;
+    if (currentSlide === index) return;
 
+    isAnimating = true;
+    console.log('goToSlide нач');
     animateSlide(currentSlide, index);
 
     gsap.to(sliderWrapper, {
@@ -614,7 +846,7 @@ document.addEventListener('DOMContentLoaded', () => {
       onComplete() {
         currentSlide = index;
         isAnimating = false;
-
+        console.log('goToSlide конец');
         window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
       },
     });
@@ -626,7 +858,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const newSlide = slides[newIndex];
     if (!oldSlide || !newSlide) return;
 
-    // убиваем предыдущую анимацию, если она ещё жива
     if (animateSlide.tl) {
       animateSlide.tl.kill();
     }
@@ -639,44 +870,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const newImg = newSlide.querySelector('.slide__img');
     const newContent = newSlide.querySelector('.slide__content');
 
-    // направление: true = вперёд (вправо→влево), false = назад (влево→вправо)
     const forward = newIndex > oldIndex;
 
     const oldExitX = forward ? '-150%' : '150%';
     const newEnterX = forward ? '150%' : '-150%';
 
-    // гарантируем стартовые позиции нового слайда (за пределом экрана)
     gsap.set([newImg, newContent], {x: newEnterX});
-
-    // === ВПЕРЁД: старый: img -> content ; новый: img <- content ===
+    // вперед
     if (forward) {
-      // старый улетает: сперва картинка
-      tl.to(oldImg, {x: oldExitX, duration: 0.3});
+      tl.to(oldImg, {x: oldExitX, duration: 0.4});
+      tl.to(oldContent, {x: oldExitX, duration: 0.4});
 
-      // затем правая часть с небольшой задержкой — создаём эффект "по кускам"
-      tl.to(oldContent, {x: oldExitX, duration: 0.3});
+      tl.to(newImg, {x: '0%', duration: 0.4}, '-=0.15');
+      tl.to(newContent, {x: '0%', duration: 0.4});
 
-      // новый прилетает: сначала картинка (чуть раньше), потом контент
-      tl.to(newImg, {x: '0%', duration: 0.2}, '<');
-      tl.to(newContent, {x: '0%', duration: 0.3}, '<');
-
-      return;
+      return tl;
     }
 
-    // === НАЗАД: старый: content -> img ; новый: content <- img ===
-    // при обратном пролистываии порядок зеркальный
-    // старый улетает: сперва content
-    tl.to(oldContent, {x: oldExitX, duration: 0.3});
+    // назад
+    tl.to(oldContent, {x: oldExitX, duration: 0.4});
+    tl.to(oldImg, {x: oldExitX, duration: 0.3});
 
-    // затем картинка (чуть позже) — эффект по кускам
-    tl.to(oldImg, {x: oldExitX, duration: 0.2});
+    tl.to(newContent, {x: '0%', duration: 0.3}, '-=0.05');
+    tl.to(newImg, {x: '0%', duration: 0.4});
 
-    // новый прилетает: сначала контент (въезжает с левой стороны), затем картинка
-    tl.to(newContent, {x: '0%', duration: 0.2}, '-=0.25');
-    tl.to(newImg, {x: '0%', duration: 0.3});
+    return tl;
   }
 
   function updateClassMenu() {
+    console.log('меню нач');
     menuLinks.forEach((link, index) => {
       if (index === currentIndex) {
         gsap.to(link, {
@@ -697,6 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateMenuColor() {
+    console.log('меню колор нач');
     if (currentIndex >= 2) {
       menuWrapper.classList.add('white');
     } else {
@@ -705,7 +928,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function changeLogo() {
-    const secondScreen = currentIndex > 1;
+    const secondScreen = currentIndex >= 2;
 
     if (secondScreen === isLogoCompact) return;
 
@@ -715,7 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isLogoCompact = secondScreen;
       },
     });
-
+    console.log('changeLogo нач');
     if (secondScreen) {
       logoAnimation
         .to(
@@ -739,7 +962,6 @@ document.addEventListener('DOMContentLoaded', () => {
           '-=0.3'
         );
     } else {
-      // Возврат НА первый экран → показываем всё обратно
       logoAnimation
         .fromTo(
           '.logo-main__icon',
@@ -765,7 +987,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  changeLogo();
+  function updatePaginationWhithSlides(sectionIndex) {
+    console.log('Pagination нач');
+
+    if (sectionIndex === sliderSectionIndex) {
+      // Мы ПРИХОДИМ в секцию со слайдером
+      // → оставляем текущий слайд как есть (пользователь мог листать)
+      return;
+    }
+
+    sliderLocked = true;
+
+    if (sectionIndex < sliderSectionIndex) {
+      // Уходим ВВЕРХ от слайдера → сбрасываем на первый слайд
+      currentSlide = 0;
+      gsap.set(sliderWrapper, {xPercent: 0});
+    } else {
+      // Уходим ВНИЗ от слайдера → ставим на последний слайд
+      currentSlide = lastSlide;
+      gsap.set(sliderWrapper, {xPercent: -100 * lastSlide});
+    }
+
+    // Всегда диспатчим событие — чтобы обновились пагинации, индикаторы и т.д.
+    window.dispatchEvent(
+      new CustomEvent('slidechange', {detail: currentSlide})
+    );
+
+    setTimeout(() => {
+      sliderLocked = false;
+    }, 150);
+  }
+
+  // changeLogo();
   checkScrollPosition();
   updateClassMenu();
   updateMenuColor();
@@ -775,7 +1028,12 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const index = Number(link.dataset.index);
+      sliderLocked = true;
 
+      if (index === 2 || index === 3) {
+        firstScroll(index);
+      }
+      console.log(sliderLocked);
       goToSection(index);
       updateControlsScroll();
     });
@@ -785,8 +1043,15 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const index = Number(link.dataset.index);
+      sliderLocked = true;
+      isIntentionalNavigation = true; // ← ВКЛ
+      intentionalTargetIndex = index;
+
+      // firstScroll(index);
+      // updatePaginationWhithSlides(index);
 
       goToSection(index);
+      updateControlsScroll();
     });
   });
 
@@ -795,42 +1060,131 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('scroll', checkScrollPosition);
-  window.addEventListener('wheel', onwheel, {passive: false});
 
-  function updateCurrentIndexOnLastSection() {
-    const rect = sections[lastIndex].getBoundingClientRect();
+  let wheelTimeout = null;
 
-    if (rect.bottom > 100 && rect.top < window.innerHeight + 300) {
-      const idx = rect.top > 120 ? lastIndex - 1 : lastIndex;
-
-      if (idx !== currentIndex) {
-        currentIndex = idx;
-
-        if (idx === lastIndex) {
-          unlockScroll();
-        } else {
-          lockScroll();
-        }
-
-        updateMenuColor();
-        changeLogo();
-        updateControlsScroll();
-        updateClassMenu();
-        animFirstSection(currentIndex);
-        animSecondSection(currentIndex);
-
-        // if (idx < lastIndex) {
-        //   gsap.to(window, {
-        //     scrollTo: sections[2],
-        //     duration: 0.9,
-        //     ease: 'power3.inOut',
-        //   });
-        // }
+  window.addEventListener(
+    'wheel',
+    (evt) => {
+      if (isAnimating) {
+        evt.preventDefault();
+        return;
       }
-    }
+
+      clearTimeout(wheelTimeout);
+      wheelTimeout = setTimeout(() => {
+        onwheel(evt);
+      }, 50); // небольшая задержка — убирает спам
+    },
+    {passive: false}
+  );
+
+  // window.addEventListener('wheel', onwheel, {passive: false});
+
+  // === Настройки для последней секции ===
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  const last = sections[sections.length - 1];
+  const prev = sections[sections.length - 2];
+
+  // Эта переменная говорит: "мы сейчас в режиме свободного скролла (footer-zone)"
+  let inFooterScroll = false;
+
+  // ----------------------------------------
+  // 1. ВХОД В ПОСЛЕДНЮЮ СЕКЦИЮ
+  // Когда top последней секции коснулся вьюпорта → разрешаем нативный скролл
+  // ----------------------------------------
+  ScrollTrigger.create({
+    trigger: last,
+    start: 'top top',
+    end: 'top top',
+    onEnter: () => {
+      // Вошли в последнюю секцию
+      inFooterScroll = true;
+      try {
+        unlockScroll();
+      } catch (e) {}
+      currentIndex = sections.length - 1;
+
+      updateMenuColor();
+      changeLogo();
+      updateControlsScroll();
+      updateClassMenu();
+    },
+    once: false,
+    markers: false,
+  });
+
+  // ----------------------------------------
+  // 2. ВОЗВРАТ НАЗАД
+  // Когда верх последней секции начинает появляться обратно в viewport
+  // ----------------------------------------
+  ScrollTrigger.create({
+    trigger: last,
+    start: 'top+=1 top',
+    end: 'bottom top',
+
+    onLeaveBack: () => {
+      if (isIntentionalNavigation) {
+        isIntentionalNavigation = false;
+        intentionalTargetIndex = null;
+        return;
+      }
+
+      if (isAnimating) return;
+
+      isAnimating = true;
+      // выходим из свободного скролла
+      inFooterScroll = false;
+      try {
+        lockScroll();
+      } catch (e) {}
+
+      currentIndex = sections.length - 2;
+
+      gsap.to(window, {
+        scrollTo: prev,
+        duration: 0.5,
+        ease: 'power2.out',
+        onComplete() {
+          animThirdSection(3);
+          console.log('фффффффффффффффффффф', currentIndex);
+
+          isAnimating = false;
+          updateMenuColor();
+          changeLogo();
+          updateControlsScroll();
+          updateClassMenu();
+          updatePaginationWhithSlides(currentIndex);
+        },
+      });
+    },
+
+    markers: false,
+  });
+
+  // ----------------------------------------
+  // 3. Детектор футера (входит ли нижняя часть сайта в экран)
+  // Он просто фиксирует, что можно нативно докрутить до конца
+  // ----------------------------------------
+  const footer = document.querySelector('.footer');
+
+  if (footer) {
+    ScrollTrigger.create({
+      trigger: footer,
+      start: 'top bottom', // футер появился снизу
+      end: 'bottom bottom', // полностью виден
+      onEnter: () => {
+        inFooterScroll = true;
+        try {
+          unlockScroll();
+        } catch (e) {}
+      },
+      markers: false,
+    });
   }
 
-  window.addEventListener('scroll', updateCurrentIndexOnLastSection, {
-    passive: true,
+  window.addEventListener('resize', () => {
+    gsap.set(sliderWrapper, {xPercent: -100 * currentSlide});
   });
 });

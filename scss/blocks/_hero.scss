@@ -1,8 +1,12 @@
+@use '../media' as *;
+@use '../mixin' as *;
+
 .hero {
   height: 100vh;
   width: 100%;
   overflow: hidden;
   position: relative;
+  z-index: 9;
 
   &__fix-wrapper {
     position: fixed;
@@ -12,6 +16,9 @@
     justify-content: flex-start;
     align-items: center;
 
+    @include tablet {
+      align-items: flex-end;
+    }
   }
 
   &__content {
@@ -26,7 +33,11 @@
     gap: 32px;
 
     @media screen and (max-height: 680px) and (max-width: 1600px) {
-      gap: 16px;
+      gap: 8px;
+    }
+
+    @include tablet {
+      margin-bottom: 12vh;
     }
   }
 
@@ -39,6 +50,13 @@
     text-transform: uppercase;
     text-align: center;
     color: var(--white);
+
+    @include tablet-bottom {
+      margin-left: 48px;
+      text-orientation: mixed;
+      writing-mode: sideways-lr;
+
+    }
   }
 
   &__info {
@@ -168,7 +186,8 @@
 }
 
 .first-wrapper {
-
+  position: relative;
+  z-index: 8;
 
   &__img {
     height: 120%;

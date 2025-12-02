@@ -1,6 +1,24 @@
 @use './media' as *;
 @use './mixin' as *;
 
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 20px;
+  }
+}
+
 .page {
   background-color: var(--bg-light);
   font-family: var(--font-family);
@@ -39,12 +57,18 @@
   flex-direction: column;
   overflow-x: hidden;
 
+  &:not(#section-4) {
+    overflow: hidden;
+  }
+
+
   &--fixed {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
+    z-index: 99;
   }
 }
 
@@ -124,7 +148,7 @@
 }
 
 .title-l {
-  @include fluid-text(48, 32);
+  @include fluid-text(48, 24);
   margin: 0;
   font-weight: 800;
   line-height: 100%;
@@ -143,7 +167,10 @@
   text-transform: uppercase;
 
   @media screen and (max-height: 740px) and (max-width: 1600px) {
-    font-size: 15px;
+    &.hero__info-text {
+      font-size: 15px;
+      font-weight: 700;
+    }
   }
 }
 

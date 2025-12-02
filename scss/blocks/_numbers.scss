@@ -3,14 +3,19 @@
 
 .numbers {
   height: 100vh;
+  max-width: var(--container-width);
   width: 100%;
-
+  margin: 0 auto;
   overflow: hidden;
   position: relative;
 
+
+
   &__overlay {
+    max-width: 100vw;
     height: 100%;
-    padding-inline: var(--container-padding);
+    margin: 0 auto;
+    // padding-inline: var(--container-padding);
     position: relative;
     z-index: 1;
     display: flex;
@@ -23,39 +28,59 @@
     // backdrop-filter: blur(0);
     background: transparent;
 
+    &.section-fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
+    }
+
     &.opacity {
       opacity: 0;
       transition: opacity 0.3s;
     }
 
-    // &::before {
-    //   content: "";
-    //   position: absolute;
-    //   inset: 0;
-    //   // background: rgba(1, 3, 16, 0);
-
-    //   z-index: -1;
-    // }
-
   }
 
   &__items {
-    width: 100%;
+    // max-width: var(--container-width);
+    margin: 0 auto;
+    // width: 100%;
     display: grid;
-    grid-template-columns: 1fr 0.5fr 1fr;
+    grid-template-columns: 1fr 0.7fr 1.1fr;
     align-items: center;
+    gap: 48px;
     position: relative;
     z-index: 6;
+
+    @include tablet {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__item {
     display: flex;
     flex-direction: column;
     gap: 36px;
+
+    @media screen and (max-height: 680px) and (max-width: 1600px) {
+      gap: 8px;
+    }
+
+    @include tablet {
+      width: 100%;
+      flex-direction: row-reverse;
+      align-items: center;
+      gap: 48px;
+    }
   }
 
   &__big-number {
     margin: 0;
+    flex-grow: 1;
     padding-bottom: 32px;
     font-weight: 800;
     @include fluid-text(220, 96);
@@ -79,6 +104,11 @@
   &__label {
     text-align: center;
     color: var(--white);
+
+    @include tablet {
+      max-width: 210px;
+      text-align: left;
+    }
   }
 
   .base-btn {
