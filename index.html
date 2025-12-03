@@ -118,7 +118,10 @@
                     <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
                   </svg>
                 </span>
-                <p class="hero__info-text title-s">виртуальные карты</p>
+                <div class="hero__info-text-wrapper">
+                  <img src="/img/hero-card-s.png" alt="">
+                  <p class="hero__info-text title-s">виртуальные карты</p>
+                </div>
                 <span class="hero__info-icon">
                   <svg width="16" height="36" viewBox="0 0 16 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
@@ -128,27 +131,27 @@
               </div>
               <div class="hero__benf">
                 <div class="hero__benf-card">
-                  <img src="./img/hero-card.png" alt="LEMONAD CARD" width="336" height="210">
+                  <img src="/img/hero-card-m.png" alt="LEMONAD CARD" width="336" height="210">
                 </div>
                 <div class="hero__benf-list">
-                  <div class="hero__benf-item">
+                  <div class="hero__benf-item order-4">
                     <p>Гибкость управления</p>
                   </div>
-                  <div class="hero__benf-item empty"></div>
-                  <div class="hero__benf-item with-block">
+                  <div class="hero__benf-item empty order-3"></div>
+                  <div class="hero__benf-item with-block order-5">
                     <span>0%</span>
                     <p>Cкрытых комиссий</p>
                   </div>
-                  <div class="hero__benf-item empty min"></div>
+                  <div class="hero__benf-item empty min order-6"></div>
                   <div class="hero__benf-item with-block">
                     <span>2,5%</span>
                     <p>Пополнение c LemonAD</p>
                   </div>
-                  <div class="hero__benf-item empty"></div>
-                  <div class="hero__benf-item">
+                  <div class="hero__benf-item empty order-1"></div>
+                  <div class="hero__benf-item order-2">
                     <p>Стабильные бины</p>
                   </div>
-                  <div class="hero__benf-item empty"></div>
+                  <div class="hero__benf-item empty order-0"></div>
                   <div class="hero__benf-item with-block">
                     <p>Хочу ваши карты</p>
                     <span>
@@ -217,13 +220,13 @@
     </section>
     <section class="section container" id="section-4">
       <div class="together">
-        <div class="together__item" data-aos="fade-up" data-aos-duration="700">
+        <div class="together__item" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200">
           <img class="together__img" src="/img/together.png" alt width="1264" height="704" loading="lazy">
         </div>
-        <div class="together__item" data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+        <div class="together__item" data-aos="fade-up" data-aos-duration="700" data-aos-delay="400">
           <div class="together__content">
             <p class="together__content-title title-s">Расскажите,<br>
-              чего вам не хватает,
+              чего вам не хватает,<br>
               чтобы лить трафик<br>
               еще эффективнее</p>
             <p class="together__content-subtitle">Мы готовы быстро внедрить фичи, которые напрямую влияют на ваш
@@ -441,7 +444,7 @@
     </div>
   </template>
   <template id="slide-template-mob">
-    <div thumbsSlider="" class="swiper-mob__slider slider-img">
+    <div thumbsSlider="" class="swiper-mob__slider slider-img" data-aos="fade-up" data-aos-duration="700">
       <div class="slider-img__wrapper">
         <div class="slider-img__img">
           <img src="" alt="">
@@ -449,7 +452,7 @@
         </div>
       </div>
     </div>
-    <div class="swiper-mob__slider slider-main">
+    <div class="swiper-mob__slider slider-main" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200">
       <div class="slider-main__wrapper">
         <div class="slider-main__slide">
           <div class="slider-main__body">

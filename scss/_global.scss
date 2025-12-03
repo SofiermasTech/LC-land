@@ -41,6 +41,10 @@ html {
   padding-inline: var(--container-padding);
   margin-inline: auto;
   position: relative;
+
+  @include tablet {
+    max-width: var(--container-width);
+  }
 }
 
 .container-mini {
@@ -99,6 +103,10 @@ html {
 
   @include tablet-bottom {
     gap: 8px;
+  }
+
+  @include mobile-bottom {
+    padding-block: 6px;
   }
 
   p {

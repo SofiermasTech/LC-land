@@ -10,6 +10,10 @@
   align-items: center;
   justify-content: center;
 
+  @include mobile {
+    z-index: 110;
+  }
+
   &__wrapper {
     border-radius: var(--br-s);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
@@ -52,7 +56,9 @@
     backdrop-filter: blur(3px);
     box-sizing: border-box;
 
-
+    @include mobile {
+      width: calc(100vw - 16px);
+    }
   }
 
   &__link {
@@ -79,6 +85,12 @@
       backdrop-filter: blur(6px);
       box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 var(--white-trans);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 20.67%, rgba(255, 255, 255, 0.02) 58.17%, rgba(255, 255, 255, 0.01) 100%);
+    }
+
+    @include mobile {
+      padding-block: 6px;
+      font-size: 13px;
+      font-weight: 500;
     }
   }
 }

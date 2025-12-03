@@ -17,6 +17,7 @@
   }
 
   @include tablet-bottom {
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -51,7 +52,14 @@
     overflow: hidden;
 
     @include tablet {
-      padding: 32px;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    @include mobile {
+      padding: 24px;
     }
   }
 
@@ -67,6 +75,14 @@
     grid-area: subtitle;
     line-height: 133%;
     letter-spacing: -0.03em;
+
+    @include tablet-bottom {
+      max-width: 80%;
+    }
+
+    @include mobile {
+      max-width: 100%;
+    }
   }
 
   &__content-btn {
@@ -82,6 +98,10 @@
         width: 20px;
         height: 16px;
       }
+
+      @include tablet {
+        max-width: 208px;
+      }
     }
   }
 
@@ -92,7 +112,10 @@
     max-width: 280px;
     max-height: auto;
     height: fit-content;
-    // margin-top: 24px;
+
+    @include tablet {
+      display: none;
+    }
 
 
     img {

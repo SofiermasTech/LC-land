@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', (evt) => {
   const sections = document.querySelectorAll('.section');
   const lastIndex = sections.length - 1;
 
@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let isLogoCompact = false;
 
   // mobile
-
+  const isMobile = () => window.innerWidth <= 1050;
+  let mobileMode = isMobile();
 
   // Первый запуск
   lockScroll();
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animationOnStart();
   }
 
+  isMobile();
   changeLogo();
   updateControlsScroll();
   updateMenuColor();
@@ -94,6 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set('.first-wrapper__img', {opacity: 0});
       gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
       gsap.set('.hero__blur', {opacity: 0, backdropFilter: 'blur(0px)'});
+      gsap.set('.tg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
+      gsap.set('.controls__btn-reg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
+      gsap.set('.btn-scroll', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
 
       if (window.matchMedia('(max-width: 1300px)').matches) {
         gsap.set('.logo-main', {opacity: 0});
@@ -208,6 +219,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    if (mobileMode && currentIndex === sliderSectionIndex) {
+      // Разрешаем обычный скролл — ничего не делаем
+      return;
+    }
+
     if (currentIndex === lastIndex) {
       return;
     }
@@ -215,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const directionDown = evt.deltaY > 0;
     const directionUp = evt.deltaY < 0;
 
-    if (currentIndex === sliderSectionIndex) {
+    if (currentIndex === sliderSectionIndex && !mobileMode) {
       evt.preventDefault();
 
       if (directionDown) {
@@ -285,7 +301,12 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderLocked = true;
     // isAnimating = true;
 
-    if (currentIndex === sliderSectionIndex) {
+    if (mobileMode && currentIndex === sliderSectionIndex) {
+      window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
+      return;
+    }
+
+    if (currentIndex === sliderSectionIndex && !mobileMode) {
       sliderLocked = false;
 
       if (currentSlide < lastSlide) {
@@ -748,6 +769,15 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {duration: 0.7, y: 0, opacity: 1, ease: 'power2.out'}
         );
+      gsap.to('.tg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
+      gsap.to('.controls__btn-reg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
+      gsap.to('.btn-scroll', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
     } else if (currentIndex > 2) {
       thirdSectionTL
         .fromTo(
@@ -801,8 +831,15 @@ document.addEventListener('DOMContentLoaded', () => {
         )
         .add(scrollImgWrapper(index), '+=0.1')
         .add(animSecondSection(index), '<');
-
-      // return thirdScrollUpTL;
+      gsap.to('.tg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.4)',
+      });
+      gsap.to('.controls__btn-reg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.4)',
+      });
+      gsap.to('.btn-scroll', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.4)',
+      });
     }
 
     if (index > 2) {
@@ -824,8 +861,15 @@ document.addEventListener('DOMContentLoaded', () => {
           '-=0.2'
         )
         .add(scrollImgWrapper(index), '-=0.1');
-
-      // return thirdScrollUpTL;
+      gsap.to('.tg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
+      gsap.to('.controls__btn-reg .base-btn', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
+      gsap.to('.btn-scroll', {
+        boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
+      });
     }
 
     return thirdScrollUpTL;
@@ -1087,107 +1131,172 @@ document.addEventListener('DOMContentLoaded', () => {
   // === Настройки для последней секции ===
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-  const last = sections[sections.length - 1];
-  const prev = sections[sections.length - 2];
+  if (!mobileMode) {
+    const last = sections[sections.length - 1];
+    const prev = sections[sections.length - 2];
 
-  // Эта переменная говорит: "мы сейчас в режиме свободного скролла (footer-zone)"
-  let inFooterScroll = false;
+    // Эта переменная говорит: "мы сейчас в режиме свободного скролла (footer-zone)"
+    let inFooterScroll = false;
 
-  // ----------------------------------------
-  // 1. ВХОД В ПОСЛЕДНЮЮ СЕКЦИЮ
-  // Когда top последней секции коснулся вьюпорта → разрешаем нативный скролл
-  // ----------------------------------------
-  ScrollTrigger.create({
-    trigger: last,
-    start: 'top top',
-    end: 'top top',
-    onEnter: () => {
-      // Вошли в последнюю секцию
-      inFooterScroll = true;
-      try {
-        unlockScroll();
-      } catch (e) {}
-      currentIndex = sections.length - 1;
-
-      updateMenuColor();
-      changeLogo();
-      updateControlsScroll();
-      updateClassMenu();
-    },
-    once: false,
-    markers: false,
-  });
-
-  // ----------------------------------------
-  // 2. ВОЗВРАТ НАЗАД
-  // Когда верх последней секции начинает появляться обратно в viewport
-  // ----------------------------------------
-  ScrollTrigger.create({
-    trigger: last,
-    start: 'top+=1 top',
-    end: 'bottom top',
-
-    onLeaveBack: () => {
-      if (isIntentionalNavigation) {
-        isIntentionalNavigation = false;
-        intentionalTargetIndex = null;
-        return;
-      }
-
-      if (isAnimating) return;
-
-      isAnimating = true;
-      // выходим из свободного скролла
-      inFooterScroll = false;
-      try {
-        lockScroll();
-      } catch (e) {}
-
-      currentIndex = sections.length - 2;
-
-      gsap.to(window, {
-        scrollTo: prev,
-        duration: 0.5,
-        ease: 'power2.out',
-        onComplete() {
-          animThirdSection(3);
-          console.log('фффффффффффффффффффф', currentIndex);
-
-          isAnimating = false;
-          updateMenuColor();
-          changeLogo();
-          updateControlsScroll();
-          updateClassMenu();
-          updatePaginationWhithSlides(currentIndex);
-        },
-      });
-    },
-
-    markers: false,
-  });
-
-  // ----------------------------------------
-  // 3. Детектор футера (входит ли нижняя часть сайта в экран)
-  // Он просто фиксирует, что можно нативно докрутить до конца
-  // ----------------------------------------
-  const footer = document.querySelector('.footer');
-
-  if (footer) {
+    // ----------------------------------------
+    // 1. ВХОД В ПОСЛЕДНЮЮ СЕКЦИЮ
+    // Когда top последней секции коснулся вьюпорта → разрешаем нативный скролл
+    // ----------------------------------------
     ScrollTrigger.create({
-      trigger: footer,
-      start: 'top bottom', // футер появился снизу
-      end: 'bottom bottom', // полностью виден
+      trigger: last,
+      start: 'top top',
+      end: 'top top',
       onEnter: () => {
+        // Вошли в последнюю секцию
         inFooterScroll = true;
         try {
           unlockScroll();
         } catch (e) {}
+        currentIndex = sections.length - 1;
+
+        updateMenuColor();
+        changeLogo();
+        updateControlsScroll();
+        updateClassMenu();
       },
+      once: false,
       markers: false,
     });
+
+    // ----------------------------------------
+    // 2. ВОЗВРАТ НАЗАД
+    // Когда верх последней секции начинает появляться обратно в viewport
+    // ----------------------------------------
+    ScrollTrigger.create({
+      trigger: last,
+      start: 'top+=1 top',
+      end: 'bottom top',
+
+      onLeaveBack: () => {
+        if (isIntentionalNavigation) {
+          isIntentionalNavigation = false;
+          intentionalTargetIndex = null;
+          return;
+        }
+
+        if (isAnimating) return;
+
+        isAnimating = true;
+        // выходим из свободного скролла
+        inFooterScroll = false;
+        try {
+          lockScroll();
+        } catch (e) {}
+
+        currentIndex = sections.length - 2;
+
+        gsap.to(window, {
+          scrollTo: prev,
+          duration: 0.5,
+          ease: 'power2.out',
+          onComplete() {
+            animThirdSection(3);
+            console.log('фффффффффффффффффффф', currentIndex);
+
+            isAnimating = false;
+            updateMenuColor();
+            changeLogo();
+            updateControlsScroll();
+            updateClassMenu();
+            updatePaginationWhithSlides(currentIndex);
+          },
+        });
+      },
+
+      markers: false,
+    });
+
+    // ----------------------------------------
+    // 3. Детектор футера (входит ли нижняя часть сайта в экран)
+    // Он просто фиксирует, что можно нативно докрутить до конца
+    // ----------------------------------------
+    const footer = document.querySelector('.footer');
+
+    if (footer) {
+      ScrollTrigger.create({
+        trigger: footer,
+        start: 'top bottom', // футер появился снизу
+        end: 'bottom bottom', // полностью виден
+        onEnter: () => {
+          inFooterScroll = true;
+          try {
+            unlockScroll();
+          } catch (e) {}
+        },
+        markers: false,
+      });
+    }
   }
 
   window.addEventListener('resize', () => {
     gsap.set(sliderWrapper, {xPercent: -100 * currentSlide});
+    mobileMode = isMobile();
   });
+
+  mobileMode = isMobile();
+  if (mobileMode && currentIndex === sliderSectionIndex) {
+    unlockScroll();
+  } else {
+    lockScroll();
+  }
+
+  // === ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ ===
+  let touchStartY = 0;
+  let touchEndY = 0;
+  const minSwipeDistance = 50; // минимальное расстояние для свайпа
+
+  function handleTouchStart(evt) {
+    touchStartY = evt.changedTouches[0].screenY;
+  }
+
+  function handleTouchEnd(evt) {
+    if (mobileMode && currentIndex === sliderSectionIndex) {
+      // Не блокируем скролл в мобильной секции со свайпером
+      return;
+    }
+
+    if (!touchStartY) return;
+
+    touchEndY = evt.changedTouches[0].screenY;
+    handleSwipe();
+  }
+
+  function handleSwipe() {
+    const distance = touchStartY - touchEndY;
+    const isDownSwipe = distance > minSwipeDistance;
+    const isUpSwipe = distance < -minSwipeDistance;
+
+    // Игнорируем слабые движения
+    if (!isDownSwipe && !isUpSwipe) return;
+
+    // === ТОЛЬКО НА МОБИЛЬНЫХ (≤1050px) ===
+    if (!mobileMode) return;
+
+    // === ТОЛЬКО ЕСЛИ МЫ НЕ В СЕКЦИИ СО СЛАЙДЕРОМ (или в ней — разрешаем обычный скролл) ===
+    if (currentIndex === sliderSectionIndex) {
+      window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
+      return;
+    }
+
+    if (isAnimating) return;
+
+    if (isDownSwipe && currentIndex < lastIndex) {
+      evt.preventDefault();
+      goToSection(currentIndex + 1);
+    } else if (isUpSwipe && currentIndex > 0) {
+      evt.preventDefault();
+      goToSection(currentIndex - 1);
+    }
+
+    touchStartY = 0; // сбрасываем
+  }
+
+  // Подписываемся на touch-события
+  document.addEventListener('touchstart', handleTouchStart, {passive: false});
+  document.addEventListener('touchend', handleTouchEnd, {passive: false});
 });

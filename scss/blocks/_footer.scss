@@ -23,11 +23,11 @@
       'cl1 cl2'
       'lg cl3';
     gap: 32px 16px;
+    margin: 0;
   }
 
   @include mobile {
     grid-template-columns: 1fr 1.3fr;
-
   }
 
   &__column {

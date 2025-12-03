@@ -54,11 +54,11 @@
   @include tablet-bottom {
     --container-padding: 16px;
     --section-padding: 24px;
-    --section-offset: 32px;
+
     --br-l: 24px;
   }
 
   @include mobile {
-    // --container-width: 100%;
+    --section-offset: 32px;
   }
 }

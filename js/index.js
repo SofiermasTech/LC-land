@@ -131,11 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileSwiperMain = new Swiper('.slider-main', {
         slideClass: 'slider-main__slide',
         wrapperClass: 'slider-main__wrapper',
-        spaceBetween: 16,
+        spaceBetween: 4,
         slidesPerView: 'auto',
         loop: false,
         thumbs: {
           swiper: mobileSwiperImg,
+        },
+        breakpoints: {
+          // when window width is >= 320px
+          990: {
+            spaceBetween: 16,
+          },
         },
       });
     } else {

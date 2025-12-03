@@ -24,6 +24,8 @@
   }
 
   @include tablet-bottom {
+    max-width: 100%;
+    width: 100%;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
@@ -31,6 +33,11 @@
       'qa'
       'btn';
     justify-items: center;
+    margin: 0 auto
+  }
+
+  @include mobile {
+    // margin: 0;
   }
 
   &__title {
@@ -47,7 +54,7 @@
       text-align: right;
     }
 
-    @include mobile {
+    @include tablet-bottom {
       width: 100%;
       flex-wrap: wrap;
 
@@ -78,6 +85,7 @@
 
       p {
         margin-block: 0;
+        font-size: 16px;
       }
 
       .base-btn {
@@ -87,7 +95,7 @@
 
     @include mobile {
       gap: 16px;
-
+      justify-content: space-between;
     }
   }
 
