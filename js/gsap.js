@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // сладер
   const sliderSectionIndex = 2;
-  const sliderWrapper = document.querySelector('.swiper__wrapper');
-  const slides = document.querySelectorAll('.swiper__slide');
+  const sliderWrapper = document.querySelector('.service-swiper__wrapper');
+  const slides = document.querySelectorAll('.service-swiper__slide');
   let currentSlide = 0;
   const lastSlide = slides.length - 1;
 
@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let logoAnimation = null;
   let isLogoCompact = false;
+
+  // mobile
+
 
   // Первый запуск
   lockScroll();

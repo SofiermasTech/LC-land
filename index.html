@@ -16,6 +16,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="js/gsap.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
@@ -107,7 +109,8 @@
         <div class="hero" id="section-1">
           <div class="hero__fix-wrapper">
             <div class="hero__content">
-              <h1 class="hero__title"><span>управляй</span><br><span style="letter-spacing: -0.065em;">потоком</span></h1>
+              <h1 class="hero__title"><span>управляй</span><br><span style="letter-spacing: -0.065em;">потоком</span>
+              </h1>
               <div class="hero__info">
                 <p class="hero__info-text title-s">LMND CARD</p>
                 <span class="hero__info-icon">
@@ -170,7 +173,7 @@
             <div class="numbers__items">
               <div class="numbers__item">
                 <h2 class="numbers__big-number">2,5%</h2>
-                <p class="numbers__label title-s">Комиссия за вывод<br>с Lemonad</p>
+                <p class="numbers__label title-s">Комиссия за пополнение<br>с Lemonad</p>
               </div>
               <div class="numbers__item">
                 <h2 class="numbers__big-number">20</h2>
@@ -201,12 +204,13 @@
         <div class="service__wrapper">
           <h2 class="service__title title-l">Фичи сервиса</h2>
           <div class="service__content">
-            <div class="swiper">
-              <div class="swiper__wrapper">
-
-              </div>
+            <div class="service-swiper">
+              <div class="service-swiper__wrapper"></div>
             </div>
-            <div class="swiper__pagination"></div>
+            <div class="service-swiper__pagination"></div>
+            <div class="swiper-mob">
+              <div class="swiper-mob__wrapper"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -343,7 +347,7 @@
       <footer class="footer">
         <div class="footer__column">
           <div class="footer__logo">
-            <img src="./img/logo-footer.svg" alt="LMND CARD" width="110" height="59" loading="lazy">
+            <img src="/img/logo-footer.svg" alt="LMND CARD" width="110" height="59" loading="lazy">
             <span class="text-light">© 2025. LMND CARD</span>
           </div>
           <div class="footer__btns">
@@ -404,21 +408,19 @@
 
   </main>
   <template id="slide-template">
-    <div class="swiper__slide slide slide--1">
+    <div class="service-swiper__slide slide">
       <div class="slide__img">
         <img src="" alt width="1264" height="960" loading="lazy">
-        <span class="slide__number title-s"></span>
+        <span class="slide__number title-s number-slide"></span>
       </div>
       <div class="slide__content">
         <div class="slide__body">
           <h3 class="slide__title title-l">
-            <span>Гибкая</span>
-            <span>система</span>
-            <span>ролей и прав</span>
+            <span></span>
+            <span></span>
+            <span></span>
           </h3>
-          <p class="slide__text">От владельца с полными правами до байера, который видит только свои
-            карты.
-          </p>
+          <p class="slide__text"></p>
           <div class="slide__btn">
             <button class="base-btn" type="button">
               <span>
@@ -437,6 +439,42 @@
         </div>
       </div>
     </div>
+  </template>
+  <template id="slide-template-mob">
+    <div thumbsSlider="" class="swiper-mob__slider slider-img">
+      <div class="slider-img__wrapper">
+        <div class="slider-img__img">
+          <img src="" alt="">
+          <span class="slider-img__number title-s number-slide"></span>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-mob__slider slider-main">
+      <div class="slider-main__wrapper">
+        <div class="slider-main__slide">
+          <div class="slider-main__body">
+            <h3 class="slider-main__title title-l"></h3>
+            <p class="slider-main__text"></p>
+            <div class="slide__btn">
+              <button class="base-btn" type="button">
+                <span>
+                  <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M11 2C11 5.31371 13.6863 8 17 8C13.6863 8 11 10.6863 11 14C11 10.6863 8.31371 8 5 8C8.31371 8 11 5.31371 11 2Z"
+                      fill="white" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V12L21.9951 12.2061C21.8913 14.2512 20.2512 15.8913 18.2061 15.9951L18 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 6.44256e-08 4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V12C1.5 13.3807 2.61929 14.5 4 14.5H18C19.3807 14.5 20.5 13.3807 20.5 12V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z"
+                      fill="white" />
+                  </svg>
+                </span>
+                <p>Хочу ваши карты</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </template>
 </body>
 

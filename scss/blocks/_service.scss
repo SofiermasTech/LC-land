@@ -12,6 +12,18 @@
   position: relative;
   z-index: 10;
 
+  @media screen and (min-height: 1000px) and (max-width: 1440px) {
+    margin: 0 auto;
+  }
+
+  @media screen and (max-height: 1000px) and (max-width: 1440px) {
+    align-items: center;
+  }
+
+  @include tablet {
+    height: 100%;
+  }
+
   &__wrapper {
     width: 100%;
     display: flex;
@@ -19,23 +31,40 @@
     gap: 32px;
   }
 
-  &__title {}
+  &__title {
+
+    @include tablet {
+      &.title-l {
+        max-width: 85%;
+        font-size: 48px;
+      }
+    }
+  }
 
   &__content {
     max-height: clamp(340px, 57vh, 480px);
     height: 100%;
     width: 100%;
+
+    @include tablet {
+      max-height: 75vh;
+    }
   }
 }
 
 .title-l {}
 
-.swiper {
+.service-swiper {
+  display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
   // position: relative;
   border-radius: var(--br-l);
+
+  @include tablet {
+    display: none;
+  }
 
   &__wrapper {
     width: 100%;
@@ -60,6 +89,10 @@
     top: 98.8vh;
     left: 0;
     right: 0;
+
+    @include tablet {
+      display: none;
+    }
   }
 
   &__pagination-dot {
@@ -85,6 +118,11 @@
   gap: 8px;
   border-radius: var(--br-l);
 
+  @include tablet {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__img {
     max-width: 632px;
     width: 100%;
@@ -103,15 +141,7 @@
     }
   }
 
-  &__number {
-    padding: 14px 16px;
-    position: absolute;
-    left: 8px;
-    top: 8px;
-    background-color: var(--dark);
-    border-radius: var(--br-m);
-    color: var(--white);
-  }
+
 
   &__content {
     padding: 64px;

@@ -29,29 +29,36 @@
     --section-offset: 80px;
   }
 
+
+
   @include desktop {
     --container-width: 1184px;
     --section-offset: 64px;
     --controls-margin: 16px;
   }
 
+  @media screen and (min-height: 1000px) and (max-width: 1440px) {
+    --controls-margin: 24px;
+    --section-offset: 104px;
+  }
+
   @include laptop {
-     --section-offset: 48px;
+    --section-offset: 48px;
   }
 
   @include tablet {
     --container-padding: 24px;
-    --container-width: 800px;
+    --container-width: calc(100% - (2 * var(--container-padding)));
   }
 
   @include tablet-bottom {
+    --container-padding: 16px;
     --section-padding: 24px;
-    --container-width: 608px;
     --section-offset: 32px;
     --br-l: 24px;
   }
 
   @include mobile {
-    --container-width: 100%;
+    // --container-width: 100%;
   }
 }

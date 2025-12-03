@@ -9,6 +9,10 @@
   position: relative;
   z-index: 10;
 
+  @media screen and (min-height: 1000px) and (max-width: 1440px) {
+    margin: 0 auto;
+  }
+
   @include tablet {
     grid-template-columns: 0.8fr 1fr 1fr 1fr;
   }

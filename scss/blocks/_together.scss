@@ -12,6 +12,10 @@
   position: relative;
   z-index: 7;
 
+  @media screen and (min-height: 1000px) and (max-width: 1440px) {
+    margin: 0 auto var(--section-offset);
+  }
+
   @include tablet-bottom {
     display: flex;
     flex-direction: column;
