@@ -1,13 +1,12 @@
 @use '../media' as *;
 
 .service {
-  padding-top: var(--section-offset);
   max-width: var(--container-width);
   width: 100%;
   height: 100vh;
-  // margin: 0 auto;
+  margin: 0 auto;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   position: relative;
   z-index: 10;
@@ -18,6 +17,11 @@
 
   @media screen and (max-height: 1000px) and (max-width: 1440px) {
     align-items: center;
+  }
+
+  @include desktop {
+    padding-top: var(--section-offset);
+    align-items: flex-start;
   }
 
   @include tablet {
@@ -71,7 +75,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    // gap: 16px;
+    gap: 4px;
   }
 
   &__slide {
@@ -87,9 +91,13 @@
     justify-content: center;
     pointer-events: none;
     position: absolute;
-    top: 98.8vh;
+    bottom: -16px;
     left: 0;
     right: 0;
+
+    @media screen and (max-height: 760px) {
+      bottom: -8px;
+    }
 
     @include tablet {
       display: none;

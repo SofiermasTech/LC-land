@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+  let mobileSwiperMain = null;
+  let mobileSwiperImg = null;
+
   const isMobile = () => window.innerWidth <= 1050;
   let mobileMode = isMobile();
   console.log(mobileMode);
+
+  mobileMode = isMobile();
+  updateSliders();
+
   // render slide
   function initServiceSwiper() {
     if (!mobileMode) {
@@ -24,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const slideTitle = slide.querySelector('.slide__title');
 
         slideItem.classList.add(`slide--${index + 1}`);
+        slideItem.id = `slide-${index + 1}`;
         slide.querySelector('.slide__number').textContent = data.number;
         slide.querySelector('.slide__img img').src = data.img;
         slideTitle.innerHTML = '';
@@ -66,97 +74,134 @@ document.addEventListener('DOMContentLoaded', () => {
       updatePagination(0);
     }
   }
+
   // Мобильный слайдер
 
-  let mobileSwiperMain = null;
-  let mobileSwiperImg = null;
-
   function initMobileSwiper() {
-    if (mobileMode) {
-      const containerMob = document.querySelector('.swiper-mob__wrapper');
-      const templateMob = document.getElementById('slide-template-mob');
-      const sliderSection = templateMob.content.cloneNode(true);
-      containerMob.appendChild(sliderSection);
+    // if (mobileMode) {
+    if (!mobileMode) return;
+    const containerMob = document.querySelector('.swiper-mob__wrapper');
 
-      const sliderMain = containerMob.querySelector(
-        '.slider-main .slider-main__wrapper'
-      );
-      const sliderThumbs = containerMob.querySelector(
-        '.slider-img .slider-img__wrapper'
-      );
-      const slideTemplateMain = templateMob.content.querySelector(
-        '.slider-main__slide'
-      );
-      const slideTemplateImg =
-        templateMob.content.querySelector('.slider-img__img');
-
-      sliderMain.innerHTML = '';
-      sliderThumbs.innerHTML = '';
-
-      slidesData.forEach((data, index) => {
-        // Основной слайд с контентом
-        const mainSlide = slideTemplateMain.cloneNode(true);
-
-        data.title.forEach((elm) => {
-          const span = document.createElement('span');
-          span.textContent = elm;
-          mainSlide.querySelector('.slider-main__title').appendChild(span);
-        });
-        mainSlide.querySelector('.slider-main__text').textContent = data.text;
-        mainSlide.classList.add(`slider-main__slide--${index + 1}`);
-
-        sliderMain.appendChild(mainSlide);
-
-        // Картинка
-        const thumb = slideTemplateImg.cloneNode(true);
-        const thumbImg = thumb.querySelector('img');
-        // console.log(thumbImg)
-        thumbImg.src = data.img;
-        thumb.querySelector('.number-slide').textContent = data.number;
-        sliderThumbs.appendChild(thumb);
-      });
-
-      // 8. Инициализация свайпера миниатюр
-      mobileSwiperImg = new Swiper('.slider-img', {
-        slideClass: 'slider-img__img',
-        wrapperClass: 'slider-img__wrapper',
-        slidesPerView: 1,
-        spaceBetween: 16,
-        freeMode: true,
-        allowTouchMove: false,
-        watchSlidesProgress: true,
-      });
-
-      // 9. Инициализация основного слайдера с привязкой к миниатюрам
-      mobileSwiperMain = new Swiper('.slider-main', {
-        slideClass: 'slider-main__slide',
-        wrapperClass: 'slider-main__wrapper',
-        spaceBetween: 4,
-        slidesPerView: 'auto',
-        loop: false,
-        thumbs: {
-          swiper: mobileSwiperImg,
-        },
-        breakpoints: {
-          // when window width is >= 320px
-          990: {
-            spaceBetween: 16,
-          },
-        },
-      });
-    } else {
-      mobileSwiperImg = null;
+    if (mobileSwiperMain) {
+      mobileSwiperMain.destroy(true, true);
       mobileSwiperMain = null;
+    }
+    if (mobileSwiperImg) {
+      mobileSwiperImg.destroy(true, true);
+      mobileSwiperImg = null;
+    }
+
+    containerMob.innerHTML = '';
+
+    const templateMob = document.getElementById('slide-template-mob');
+    const sliderSection = templateMob.content.cloneNode(true);
+    containerMob.appendChild(sliderSection);
+
+    const sliderMain = containerMob.querySelector(
+      '.slider-main .slider-main__wrapper'
+    );
+    const sliderThumbs = containerMob.querySelector(
+      '.slider-img .slider-img__wrapper'
+    );
+    const slideTemplateMain = templateMob.content.querySelector(
+      '.slider-main__slide'
+    );
+    const slideTemplateImg =
+      templateMob.content.querySelector('.slider-img__img');
+
+    sliderMain.innerHTML = '';
+    sliderThumbs.innerHTML = '';
+
+    slidesData.forEach((data, index) => {
+      // Основной слайд с контентом
+      const mainSlide = slideTemplateMain.cloneNode(true);
+
+      const titleNode = mainSlide.querySelector('.slider-main__title');
+      titleNode.innerHTML = '';
+      data.title.forEach((elm) => {
+        const span = document.createElement('span');
+        span.textContent = elm;
+        titleNode.appendChild(span);
+      });
+      mainSlide.querySelector('.slider-main__text').textContent = data.text;
+      mainSlide.classList.add(`slider-main__slide--${index + 1}`);
+      mainSlide.id = `slide-${index + 1}`;
+
+      sliderMain.appendChild(mainSlide);
+
+      // Картинка
+      const thumb = slideTemplateImg.cloneNode(true);
+      const thumbImg = thumb.querySelector('img');
+      // console.log(thumbImg)
+      thumbImg.src = data.img;
+      thumb.querySelector('.number-slide').textContent = data.number;
+      sliderThumbs.appendChild(thumb);
+    });
+
+    // Инициализация свайпера миниатюр
+    mobileSwiperImg = new Swiper('.slider-img', {
+      slideClass: 'slider-img__img',
+      wrapperClass: 'slider-img__wrapper',
+      slidesPerView: 1,
+      spaceBetween: 16,
+      freeMode: true,
+      allowTouchMove: false,
+      watchSlidesProgress: true,
+    });
+
+    // Инициализация основного слайдера
+    mobileSwiperMain = new Swiper('.slider-main', {
+      slideClass: 'slider-main__slide',
+      wrapperClass: 'slider-main__wrapper',
+      spaceBetween: 4,
+      slidesPerView: 'auto',
+      loop: false,
+      thumbs: {
+        swiper: mobileSwiperImg,
+      },
+      breakpoints: {
+        990: {
+          spaceBetween: 16,
+        },
+      },
+    });
+
+    mobileSwiperMain.on('slideChangeTransitionEnd', function () {
+      const slides = sliderMain.querySelectorAll('.slider-main__slide');
+
+      slides.forEach((slide) => {
+        const button = slide.querySelector('.slide__btn');
+        if (slide.classList.contains('swiper-slide-active')) {
+          button.style.opacity = '1';
+        } else {
+          button.style.opacity = '0';
+        }
+      });
+    });
+
+    if (mobileSwiperMain) {
+      const activeSlide = sliderMain.querySelector('.swiper-slide-active');
+      if (activeSlide) {
+        const activeBtn = activeSlide.querySelector('.slide__btn');
+        if (activeBtn) {
+          activeBtn.style.opacity = '1';
+        }
+      }
+    }
+  }
+
+  function updateSliders() {
+    if (mobileMode) {
+      initMobileSwiper();
+    } else {
+      initServiceSwiper();
     }
   }
 
   window.addEventListener('resize', () => {
-    initMobileSwiper();
-    initServiceSwiper();
+    mobileMode = isMobile();
+    updateSliders();
   });
-
-  initServiceSwiper();
-  initMobileSwiper();
 });
 
 //  section faq
@@ -164,9 +209,9 @@ const faqItems = document.querySelector('.faq__questions');
 const faqHead = document.querySelectorAll('.faq__item-head');
 
 faqItems.addEventListener('click', (event) => {
-  console.log(event);
-  console.log(event.target);
-  console.log(event.currentTarget);
+  // console.log(event);
+  // console.log(event.target);
+  // console.log(event.currentTarget);
   const item = event.target.closest('.faq__item');
   if (!item) return;
 

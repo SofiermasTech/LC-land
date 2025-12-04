@@ -7,7 +7,7 @@
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
-  z-index: 10;
+  z-index: 7;
 
   @media screen and (min-height: 1000px) and (max-width: 1440px) {
     margin: 0 auto;

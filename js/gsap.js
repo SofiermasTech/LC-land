@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   const menuWrapper = document.querySelector('.menu__wrapper');
   const tgBtn = document.querySelectorAll('.controls__tg');
   const tgBtnText = document.querySelectorAll('.tg__text');
-  const footerLinks = document.querySelectorAll('.footer__links-item a');
+  const footerLinks = document.querySelectorAll('.footer__links-item.m a');
 
   // сладер
   const sliderSectionIndex = 2;
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   const slides = document.querySelectorAll('.service-swiper__slide');
   let currentSlide = 0;
   const lastSlide = slides.length - 1;
+  let sliderLocked = false;
 
   // состояния
   let isAnimating = false;
@@ -41,6 +42,8 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   // mobile
   const isMobile = () => window.innerWidth <= 1050;
   let mobileMode = isMobile();
+
+  ScrollTrigger.saveStyles('*');
 
   // Первый запуск
   lockScroll();
@@ -71,17 +74,28 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   // начальное состояние первых экранов
   function setStateForSection(index) {
     if (index === 0) {
-      gsap.set('.hero__content', {x: 0, opacity: 1});
+      // gsap.set('.hero__fix-wrapper', {x: 0, opacity: 1});
+      gsap.set('.hero__fix-wrapper', {x: 0, opacity: 1});
       gsap.set('.first-wrapper__img', {opacity: 1});
-      gsap.set('.hero__blur', {opacity: 0, backdropFilter: 'blur(0)'});
+      gsap.set('.hero__blur', {
+        opacity: 0,
+        backdropFilter: 'blur(0)',
+        visibility: 'hidden',
+      });
       gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
+      gsap.set('.logo-main', {opacity: 1, visibility: 'visible'});
       return;
     }
 
     if (index === 1) {
-      gsap.set('.hero__content', {x: '-150%', opacity: 0});
+      gsap.set('.logo-main', {opacity: 1, visibility: 'visible'});
+      gsap.set('.hero__fix-wrapper', {x: '-150%', opacity: 0});
       gsap.set('.first-wrapper__img', {opacity: 1});
-      gsap.set('.hero__blur', {opacity: 1, backdropFilter: 'blur(20px)'});
+      gsap.set('.hero__blur', {
+        opacity: 1,
+        backdropFilter: 'blur(20px)',
+        visibility: 'visible',
+      });
       gsap.set('.numbers__overlay', {
         opacity: 1,
         background: 'rgba(1,3,16,0.4)',
@@ -92,10 +106,14 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     }
 
     if (index >= 2) {
-      gsap.set('.hero__content', {x: '-150%', opacity: 0});
+      gsap.set('.hero__fix-wrapper', {x: '-150%', opacity: 0});
       gsap.set('.first-wrapper__img', {opacity: 0});
       gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
-      gsap.set('.hero__blur', {opacity: 0, backdropFilter: 'blur(0px)'});
+      gsap.set('.hero__blur', {
+        opacity: 0,
+        backdropFilter: 'blur(0px)',
+        visibility: 'hidden',
+      });
       gsap.set('.tg .base-btn', {
         boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.1)',
       });
@@ -107,7 +125,12 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       });
 
       if (window.matchMedia('(max-width: 1300px)').matches) {
-        gsap.set('.logo-main', {opacity: 0});
+        gsap.set('.logo-main', {opacity: 0, visibility: 'hidden'});
+      }
+
+      if (index === 3) {
+        const sec2 = document.querySelector('.numbers__overlay');
+        sec2.classList.remove('section-fixed');
       }
     }
   }
@@ -131,19 +154,19 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           ease: 'power2.out',
           onComplete() {
             isAnimating = false;
-            sliderLocked = false;
             currentIndex = 1;
             changeLogo();
             updateMenuColor();
             updateClassMenu();
             updateControlsScroll();
-
+            sliderLocked = false;
             updatePaginationWhithSlides(currentIndex);
             console.log('goToSection2 начxxxxx', index, currentIndex);
           },
         });
       });
 
+      gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
       return;
     }
 
@@ -166,6 +189,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           },
           '-=0.2'
         );
+      gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
     }
 
     if ((currentIndex > 2 || currentIndex < 2) && index === 2) {
@@ -201,12 +225,11 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       duration: 1,
       onComplete() {
         isAnimating = false;
-        sliderLocked = false;
         currentIndex = index;
         firstScroll(index);
         updateClassMenu();
         updateControlsScroll();
-
+        sliderLocked = false;
         updatePaginationWhithSlides(currentIndex);
         console.log('goToSection конец', index, currentIndex);
       },
@@ -380,7 +403,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         onComplete: () => {
           // Здесь уже всё закончено: анимации + скролл
           isAnimating = false;
-          sliderLocked = true;
           currentIndex = 0;
           scrollImgWrapper(0);
           firstScroll(0);
@@ -389,6 +411,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           updateClassMenu();
           updateControlsScroll();
 
+          sliderLocked = false;
           updatePaginationWhithSlides(0);
           console.log('Всё завершено: анимации + скролл наверх');
         },
@@ -431,7 +454,11 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         ease: 'power2.out',
       });
     } else {
-      lockScroll();
+      if (!mobileMode && currentIndex === sliderSectionIndex) {
+        lockScroll();
+      } else {
+        unlockScroll();
+      }
 
       if (currentIndex === 2) {
         nextBtnText.innerHTML = nextBtnTexts[2];
@@ -456,9 +483,13 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
       if (window.matchMedia('(max-width: 1300px)').matches) {
         if (currentIndex >= 2) {
-          gsap.set('.logo-main', {opacity: 0});
+          gsap.set('.logo-main', {opacity: 0, visibility: 'hidden'});
         } else {
-          gsap.to('.logo-main', {opacity: 0, duration: 0.3});
+          gsap.to('.logo-main', {
+            opacity: 1,
+            duration: 0.3,
+            visibility: 'visible',
+          });
         }
       }
     }
@@ -466,11 +497,13 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
   function animationOnStart() {
     const timelineFirst = gsap.timeline();
-    enableParallax();
+    if (!mobileMode) {
+      enableParallax();
+    }
     console.log('animationOnStart нач');
     if (currentIndex === 0) {
       timelineFirst
-        .from('.hero__content', {
+        .from('.hero__fix-wrapper', {
           duration: 0.7,
           x: '-150%',
           ease: 'power2.out',
@@ -511,7 +544,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   function animFirstSection(index) {
     console.log('animFirstSection нач');
     if (index === 0) {
-      enableParallax();
+      if (!mobileMode) {
+        enableParallax();
+      }
       scrollImgWrapper(index);
       firstScroll(index);
     }
@@ -539,14 +574,14 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
     console.log('firstScroll нач');
     if (index > 0) {
-      firstScrollTL.to('.hero__content', {
+      firstScrollTL.to('.hero__fix-wrapper', {
         duration: 0.3,
         x: '-150%',
         opacity: 0,
         ease: 'power2.out',
       });
     } else {
-      firstScrollTL.to('.hero__content', {
+      firstScrollTL.to('.hero__fix-wrapper', {
         duration: 0.7,
         x: 0,
         opacity: 1,
@@ -602,6 +637,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           opacity: 0,
           backdropFilter: 'blur(0px)',
           duration: 0.3,
+          visibility: 'hidden',
         },
         '<'
       );
@@ -639,6 +675,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           },
           '-=0.1'
         );
+      gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
     } else if (index === 1) {
       imgScrollTL
         .set('.first-wrapper__img img', {
@@ -648,6 +685,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         .set('.first-wrapper__img', {
           opacity: 1,
         });
+      gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
     } else {
       imgScrollTL
         .to('.first-wrapper__img img', {
@@ -696,6 +734,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
             backdropFilter: 'blur(20px)',
             opacity: 1,
             ease: 'power2.out',
+            visibility: 'visible',
           },
           '-=0.2'
         )
@@ -738,6 +777,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           },
           '<'
         );
+      // gsap.to('.logo-main', {opacity: 1});
     }
     console.log('animSecondSection конец');
     return timelineSecond;
@@ -840,6 +880,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       gsap.to('.btn-scroll', {
         boxShadow: '0 16px 24px 0 rgba(0, 0, 0, 0.4)',
       });
+      // gsap.to('.logo-main', {opacity: 1});
     }
 
     if (index > 2) {
@@ -875,8 +916,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     return thirdScrollUpTL;
   }
 
-  let sliderLocked = false;
-
   function goToSlide(index) {
     if (sliderLocked) return;
     if (isAnimating) return;
@@ -884,6 +923,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
     isAnimating = true;
     console.log('goToSlide нач');
+    console.log(currentSlide);
+    console.log(index);
+
     animateSlide(currentSlide, index);
 
     gsap.to(sliderWrapper, {
@@ -891,8 +933,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       duration: 0.7,
       ease: 'power2.inOut',
       onComplete() {
-        currentSlide = index;
         isAnimating = false;
+        currentSlide = index;
+
         console.log('goToSlide конец');
         window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
       },
@@ -900,7 +943,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   }
 
   function animateSlide(oldIndex, newIndex) {
-    const slides = document.querySelectorAll('.swiper__slide');
+    const slides = document.querySelectorAll('.service-swiper__slide');
     const oldSlide = slides[oldIndex];
     const newSlide = slides[newIndex];
     if (!oldSlide || !newSlide) return;
@@ -908,6 +951,8 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     if (animateSlide.tl) {
       animateSlide.tl.kill();
     }
+
+    console.log('animateSlide нач');
 
     const tl = gsap.timeline({defaults: {ease: 'power2.out'}});
     animateSlide.tl = tl;
@@ -930,7 +975,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
       tl.to(newImg, {x: '0%', duration: 0.4}, '-=0.15');
       tl.to(newContent, {x: '0%', duration: 0.4});
-
+      console.log('animateSlide конец1');
       return tl;
     }
 
@@ -941,6 +986,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     tl.to(newContent, {x: '0%', duration: 0.3}, '-=0.05');
     tl.to(newImg, {x: '0%', duration: 0.4});
 
+    console.log('animateSlide конец2');
     return tl;
   }
 
@@ -1038,8 +1084,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     console.log('Pagination нач');
 
     if (sectionIndex === sliderSectionIndex) {
-      // Мы ПРИХОДИМ в секцию со слайдером
-      // → оставляем текущий слайд как есть (пользователь мог листать)
       return;
     }
 
@@ -1075,7 +1119,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const index = Number(link.dataset.index);
-      sliderLocked = true;
 
       if (index === 2 || index === 3) {
         firstScroll(index);
@@ -1090,12 +1133,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const index = Number(link.dataset.index);
-      sliderLocked = true;
+
       isIntentionalNavigation = true; // ← ВКЛ
       intentionalTargetIndex = index;
-
-      // firstScroll(index);
-      // updatePaginationWhithSlides(index);
 
       goToSection(index);
       updateControlsScroll();
@@ -1131,13 +1171,17 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   // === Настройки для последней секции ===
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+  if (mobileMode) {
+    ScrollTrigger.disable(true);
+  }
+
   if (!mobileMode) {
     const last = sections[sections.length - 1];
     const prev = sections[sections.length - 2];
 
     // Эта переменная говорит: "мы сейчас в режиме свободного скролла (footer-zone)"
     let inFooterScroll = false;
-
+    // if (!ScrollTrigger) return;
     // ----------------------------------------
     // 1. ВХОД В ПОСЛЕДНЮЮ СЕКЦИЮ
     // Когда top последней секции коснулся вьюпорта → разрешаем нативный скролл
@@ -1234,8 +1278,31 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   }
 
   window.addEventListener('resize', () => {
-    gsap.set(sliderWrapper, {xPercent: -100 * currentSlide});
     mobileMode = isMobile();
+
+    const realCurrentIndex = detectCurrentSection();
+
+    // Если индекс изменился из-за изменения высоты — синхронизируем
+    if (realCurrentIndex !== currentIndex) {
+      currentIndex = realCurrentIndex;
+      console.log('Resize → corrected currentIndex to', currentIndex);
+    }
+
+    gsap.set(sliderWrapper, {xPercent: -100 * currentSlide});
+
+    if (currentIndex === sliderSectionIndex) {
+      if (mobileMode) {
+        unlockScroll(); // на мобильных — всегда свободный скролл
+      } else {
+        lockScroll(); // на десктопе — блокируем, чтобы работало колесо по слайдам
+      }
+    }
+
+    changeLogo();
+    updateMenuColor();
+    updateClassMenu();
+    updateControlsScroll();
+    checkScrollPosition();
   });
 
   mobileMode = isMobile();
@@ -1274,12 +1341,11 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     // Игнорируем слабые движения
     if (!isDownSwipe && !isUpSwipe) return;
 
-    // === ТОЛЬКО НА МОБИЛЬНЫХ (≤1050px) ===
     if (!mobileMode) return;
 
     // === ТОЛЬКО ЕСЛИ МЫ НЕ В СЕКЦИИ СО СЛАЙДЕРОМ (или в ней — разрешаем обычный скролл) ===
-    if (currentIndex === sliderSectionIndex) {
-      window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
+    if (mobileMode && currentIndex === sliderSectionIndex) {
+      // window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
       return;
     }
 
@@ -1295,6 +1361,100 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
     touchStartY = 0; // сбрасываем
   }
+
+  // Только для мобильных — выход вверх из секции со слайдером
+  if (isMobile()) {
+    let lastScrollY = window.scrollY;
+    let userWasInSection2 = false;
+
+    // Фиксируем факт входа в секцию 2
+    window.addEventListener('scroll', () => {
+      if (sections[2].getBoundingClientRect().top <= window.innerHeight * 0.6) {
+        userWasInSection2 = true;
+      }
+    });
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (isAnimating) return;
+        if (!userWasInSection2) return;
+
+        const goingUp = window.scrollY < lastScrollY;
+        lastScrollY = window.scrollY;
+        if (!goingUp) return;
+
+        if (
+          currentIndex === 2 &&
+          sections[2].getBoundingClientRect().top > 30
+        ) {
+          console.log('start');
+          isAnimating = true;
+
+          gsap.to(window, {
+            scrollTo: sections[1],
+            duration: 0.5,
+            ease: 'power2.out',
+            onComplete() {
+              currentIndex = 1;
+              animSecondSection(1);
+              changeLogo();
+              updateMenuColor();
+              updateClassMenu();
+              isAnimating = false;
+              userWasInSection2 = false;
+              lockScroll();
+            },
+          });
+        }
+      },
+      {passive: true}
+    );
+  }
+
+  document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      currentIndex = 3;
+      console.log(link);
+      console.log(currentIndex);
+      console.log(Number(link.dataset.slide));
+      const index = Number(link.dataset.slide) - 1; // 0-based index
+      if (isNaN(index)) return;
+      // isAnimating = true;
+      // Скролл к секции со слайдером
+      gsap.to(window, {
+        scrollTo: sections[2],
+        duration: 0.5,
+        ease: 'power2.out',
+        onComplete() {
+          // --- ДЕСКТОП ---
+          // isAnimating = false;
+          if (!mobileMode) {
+            animThirdSection(3);
+            currentIndex = 2;
+            changeLogo();
+            updateMenuColor();
+            updateClassMenu();
+            isAnimating = false;
+
+            goToSlide(index);
+            lockScroll();
+          }
+
+          // --- МОБИЛКА ---
+          else {
+            animThirdSection(3);
+            currentIndex = 2;
+            changeLogo();
+            updateMenuColor();
+            updateClassMenu();
+          }
+        },
+      });
+    });
+  });
 
   // Подписываемся на touch-события
   document.addEventListener('touchstart', handleTouchStart, {passive: false});
