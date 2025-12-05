@@ -83,11 +83,13 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         visibility: 'hidden',
       });
       gsap.set('.numbers__overlay', {opacity: 0, background: 'rgba(1,3,16,0)'});
+      gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
       gsap.set('.logo-main', {opacity: 1, visibility: 'visible'});
       return;
     }
 
     if (index === 1) {
+      gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
       gsap.set('.logo-main', {opacity: 1, visibility: 'visible'});
       gsap.set('.hero__fix-wrapper', {x: '-150%', opacity: 0});
       gsap.set('.first-wrapper__img', {opacity: 1});
@@ -125,6 +127,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       });
 
       if (window.matchMedia('(max-width: 1300px)').matches) {
+        gsap.set('.controls--left', {opacity: 0, visibility: 'hidden'});
         gsap.set('.logo-main', {opacity: 0, visibility: 'hidden'});
       }
 
@@ -166,6 +169,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         });
       });
 
+      gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
       gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
       return;
     }
@@ -189,6 +193,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           },
           '-=0.2'
         );
+      gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
       gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
     }
 
@@ -229,6 +234,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         firstScroll(index);
         updateClassMenu();
         updateControlsScroll();
+        changeLogo();
         sliderLocked = false;
         updatePaginationWhithSlides(currentIndex);
         console.log('goToSection конец', index, currentIndex);
@@ -243,7 +249,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     }
 
     if (mobileMode && currentIndex === sliderSectionIndex) {
-      // Разрешаем обычный скролл — ничего не делаем
+      // Разрешаем обычный скролл
       return;
     }
 
@@ -401,7 +407,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
       const tl = gsap.timeline({
         onComplete: () => {
-          // Здесь уже всё закончено: анимации + скролл
           isAnimating = false;
           currentIndex = 0;
           scrollImgWrapper(0);
@@ -484,7 +489,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       if (window.matchMedia('(max-width: 1300px)').matches) {
         if (currentIndex >= 2) {
           gsap.set('.logo-main', {opacity: 0, visibility: 'hidden'});
+          gsap.set('.controls--left', {opacity: 0, visibility: 'hidden'});
         } else {
+          gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
           gsap.to('.logo-main', {
             opacity: 1,
             duration: 0.3,
@@ -675,6 +682,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
           },
           '-=0.1'
         );
+      gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
       gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
     } else if (index === 1) {
       imgScrollTL
@@ -685,6 +693,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         .set('.first-wrapper__img', {
           opacity: 1,
         });
+      gsap.set('.controls--left', {opacity: 1, visibility: 'visible'});
       gsap.to('.logo-main', {opacity: 1, visibility: 'visible'});
     } else {
       imgScrollTL
@@ -786,6 +795,11 @@ document.addEventListener('DOMContentLoaded', (evt) => {
   function animThirdSection(currentIndex) {
     const thirdSectionTL = gsap.timeline({
       onComplete() {
+        if (mobileMode) {
+          const sec2 = document.querySelector('.numbers__overlay');
+          sec2.classList.remove('section-fixed');
+          console.log('section-fixed удален');
+        }
         console.log('animThirdSection конец');
       },
     });
@@ -1090,11 +1104,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     sliderLocked = true;
 
     if (sectionIndex < sliderSectionIndex) {
-      // Уходим ВВЕРХ от слайдера → сбрасываем на первый слайд
       currentSlide = 0;
       gsap.set(sliderWrapper, {xPercent: 0});
     } else {
-      // Уходим ВНИЗ от слайдера → ставим на последний слайд
       currentSlide = lastSlide;
       gsap.set(sliderWrapper, {xPercent: -100 * lastSlide});
     }
@@ -1134,7 +1146,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       e.preventDefault();
       const index = Number(link.dataset.index);
 
-      isIntentionalNavigation = true; // ← ВКЛ
+      isIntentionalNavigation = true;
       intentionalTargetIndex = index;
 
       goToSection(index);
@@ -1161,14 +1173,11 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       clearTimeout(wheelTimeout);
       wheelTimeout = setTimeout(() => {
         onwheel(evt);
-      }, 50); // небольшая задержка — убирает спам
+      }, 50);
     },
     {passive: false}
   );
 
-  // window.addEventListener('wheel', onwheel, {passive: false});
-
-  // === Настройки для последней секции ===
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
   if (mobileMode) {
@@ -1179,19 +1188,16 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     const last = sections[sections.length - 1];
     const prev = sections[sections.length - 2];
 
-    // Эта переменная говорит: "мы сейчас в режиме свободного скролла (footer-zone)"
+    // в режиме свободного скролла
     let inFooterScroll = false;
     // if (!ScrollTrigger) return;
-    // ----------------------------------------
-    // 1. ВХОД В ПОСЛЕДНЮЮ СЕКЦИЮ
+
     // Когда top последней секции коснулся вьюпорта → разрешаем нативный скролл
-    // ----------------------------------------
     ScrollTrigger.create({
       trigger: last,
       start: 'top top',
       end: 'top top',
       onEnter: () => {
-        // Вошли в последнюю секцию
         inFooterScroll = true;
         try {
           unlockScroll();
@@ -1207,10 +1213,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       markers: false,
     });
 
-    // ----------------------------------------
-    // 2. ВОЗВРАТ НАЗАД
     // Когда верх последней секции начинает появляться обратно в viewport
-    // ----------------------------------------
     ScrollTrigger.create({
       trigger: last,
       start: 'top+=1 top',
@@ -1255,10 +1258,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       markers: false,
     });
 
-    // ----------------------------------------
-    // 3. Детектор футера (входит ли нижняя часть сайта в экран)
-    // Он просто фиксирует, что можно нативно докрутить до конца
-    // ----------------------------------------
+    //просто фиксирует, что можно нативно докрутить до конца
     const footer = document.querySelector('.footer');
 
     if (footer) {
@@ -1292,9 +1292,9 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
     if (currentIndex === sliderSectionIndex) {
       if (mobileMode) {
-        unlockScroll(); // на мобильных — всегда свободный скролл
+        unlockScroll();
       } else {
-        lockScroll(); // на десктопе — блокируем, чтобы работало колесо по слайдам
+        lockScroll();
       }
     }
 
@@ -1312,10 +1312,10 @@ document.addEventListener('DOMContentLoaded', (evt) => {
     lockScroll();
   }
 
-  // === ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ ===
+  // ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ
   let touchStartY = 0;
   let touchEndY = 0;
-  const minSwipeDistance = 50; // минимальное расстояние для свайпа
+  const minSwipeDistance = 50;
 
   function handleTouchStart(evt) {
     touchStartY = evt.changedTouches[0].screenY;
@@ -1323,7 +1323,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
   function handleTouchEnd(evt) {
     if (mobileMode && currentIndex === sliderSectionIndex) {
-      // Не блокируем скролл в мобильной секции со свайпером
       return;
     }
 
@@ -1343,9 +1342,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
     if (!mobileMode) return;
 
-    // === ТОЛЬКО ЕСЛИ МЫ НЕ В СЕКЦИИ СО СЛАЙДЕРОМ (или в ней — разрешаем обычный скролл) ===
     if (mobileMode && currentIndex === sliderSectionIndex) {
-      // window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
       return;
     }
 
@@ -1359,10 +1356,10 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       goToSection(currentIndex - 1);
     }
 
-    touchStartY = 0; // сбрасываем
+    touchStartY = 0;
   }
 
-  // Только для мобильных — выход вверх из секции со слайдером
+  // выход вверх из секции со слайдером
   if (isMobile()) {
     let lastScrollY = window.scrollY;
     let userWasInSection2 = false;
@@ -1420,7 +1417,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
       console.log(link);
       console.log(currentIndex);
       console.log(Number(link.dataset.slide));
-      const index = Number(link.dataset.slide) - 1; // 0-based index
+      const index = Number(link.dataset.slide) - 1;
       if (isNaN(index)) return;
       // isAnimating = true;
       // Скролл к секции со слайдером
@@ -1429,7 +1426,6 @@ document.addEventListener('DOMContentLoaded', (evt) => {
         duration: 0.5,
         ease: 'power2.out',
         onComplete() {
-          // --- ДЕСКТОП ---
           // isAnimating = false;
           if (!mobileMode) {
             animThirdSection(3);
@@ -1441,10 +1437,7 @@ document.addEventListener('DOMContentLoaded', (evt) => {
 
             goToSlide(index);
             lockScroll();
-          }
-
-          // --- МОБИЛКА ---
-          else {
+          } else {
             animThirdSection(3);
             currentIndex = 2;
             changeLogo();

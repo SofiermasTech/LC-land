@@ -586,8 +586,8 @@ html::-webkit-scrollbar-thumb {
   padding: 1px;
   border-radius: var(--br-s);
   border: 4px solid transparent;
-  -o-border-image: url("../../img/boarder.svg");
-     border-image: url("../../img/boarder.svg");
+  -o-border-image: url("../img/boarder.svg");
+     border-image: url("../img/boarder.svg");
   border-image-slice: 4;
   border-image-repeat: stretch;
   border-image-outset: 0;
