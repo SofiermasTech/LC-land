@@ -1,6 +1,6 @@
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-const sections = Array.from(document.querySelectorAll('.section'));
+const sections = document.querySelectorAll('.section');
 const nextBtn = document.querySelector('.btn-scroll');
 const iconDown = document.querySelector('.icon-down');
 const iconDownSvg = iconDown.querySelector('svg');
@@ -12,6 +12,11 @@ const nextBtnTexts = [
   'Хочешь, покажем<br> еще одну фичу?',
 ];
 
+let currentIndex = 0;
+const lastIndex = sections.length - 1;
+let isAnimating = false;
+let isBottom = false;
+
 // остальные кнопки + меню
 const menuLinks = document.querySelectorAll('.menu__link');
 const menuWrapper = document.querySelector('.menu__wrapper');
@@ -19,78 +24,36 @@ const tgBtn = document.querySelectorAll('.controls__tg');
 const tgBtnText = document.querySelectorAll('.tg__text');
 const footerLinks = document.querySelectorAll('.footer__links-item.m a');
 
-// let currentIndex = 0;
-const lastIndex = sections.length - 1;
-// let isAnimating = false;
-// let isBottom = false;
-
-// сладер
-const sliderSectionIndex = 2;
+// слайдер
+const sliderSectionIndex = 1; // gпотом поменять
 const sliderWrapper = document.querySelector('.service-swiper__wrapper');
-const slides = Array.from(
-  document.querySelectorAll('.service-swiper__slide') || []
-);
+const slides = document.querySelectorAll('.service-swiper__slide');
 let currentSlide = 0;
 const lastSlide = slides.length - 1;
 
 // mobile
 
-const state = {
-  currentIndex: 0,
-  isAnimating: false,
-  isBottom: false,
-  mode: null, // mob - desk
-};
-
-const mobileSize = '(max-width: 1050px))';
-function isMobile() {
-  return window.matchMedia(mobileSize).matches;
-}
-
-/** Возвращает абсолютную позицию секции относительно документа */
-function getSectionTop(index) {
-  const el = sections[index];
-  return el ? el.getBoundingClientRect().top + window.scrollY : 0;
-}
-
-/** Проверяет, имеет ли элемент внутренний скролл (overflow + scrollable content) */
-function isElementScrollable(el) {
-  if (!el) return false;
-  const overflowY = getComputedStyle(el).overflowY;
-  return (
-    (overflowY === 'auto' || overflowY === 'scroll') &&
-    el.scrollHeight > el.clientHeight
-  );
-}
-
 lockScroll();
 
 function goToSection(index) {
-  if (state.isAnimating) return;
-  state.isAnimating = true;
-
+  if (isAnimating) return;
+  isAnimating = true;
   gsap.to(window, {
     scrollTo: {y: sections[index], autoKill: false},
     duration: 0.5,
     onComplete() {
-      state.currentIndex = index;
-      state.isAnimating = false;
+      isAnimating = false;
+      currentIndex = index;
 
-      // updatePaginationWhithSlides(currentIndex);
-      if (index === lastIndex && state.mode === 'desktop') {
+      if (index === lastIndex) {
         unlockScroll();
       }
-    },
-    onInterrupt() {
-      state.isAnimating = false;
     },
   });
 }
 
 function onwheel(evt) {
-  if (isMobile()) return;
-
-  if (state.isAnimating) {
+  if (isAnimating) {
     evt.preventDefault();
     return;
   }
@@ -128,6 +91,7 @@ function onwheel(evt) {
   }
 
   if (currentIndex === lastIndex) {
+    // unlockScroll();
     if (directionDown) return;
 
     if (directionUp) {
@@ -272,7 +236,7 @@ function nextScreen() {
     goToSection(currentIndex + 1);
   } else if (currentIndex === lastIndex) {
     gsap.to(window, {
-      scrollTo: {y: window.scrollY + window.innerHeight},
+      scrollTo: {y: 'max'},
       duration: 1,
       ease: 'power2.inOut',
       onComplete() {
@@ -284,17 +248,21 @@ function nextScreen() {
 
 function checkScrollPosition() {
   const menu = document.querySelector('.menu');
-  const footer = document.querySelector('.footer').getBoundingClientRect();
-  const windowHeight = window.innerHeight;
+  const lastSection = sections[currentIndex];
+  const sectionBottom = lastSection.scrollHeight; // высота контента внутри секции
+  const sectionScrollTop = lastSection.scrollTop; // сколько уже проскроллено внутри
+  const sectionVisibleHeight = lastSection.clientHeight; // видимая высота (100vh)
 
-  const footerVisible = footer.top < windowHeight && footer.bottom > 0;
+  // Проверяем, доскроллил ли пользователь до низа внутри секции
+  const atBottom =
+    sectionScrollTop + sectionVisibleHeight >= sectionBottom - 50;
 
-  // console.log(footer.top);
-  // console.log(footer.bottom);
-  // console.log(footerVisible);
-  // console.log(windowHeight);
+  console.log('scrollTop:', sectionScrollTop);
+  console.log('visible:', sectionVisibleHeight);
+  console.log('content height:', sectionBottom);
+  console.log('atBottom:', atBottom);
 
-  if (footerVisible && !isBottom) {
+  if (!atBottom && !isBottom) {
     isBottom = true;
     // currentIndex = lastIndex;
     iconDown.style.display = 'none';
@@ -305,8 +273,8 @@ function checkScrollPosition() {
       duration: 1,
       ease: 'power2.out',
     });
-    gsap.to(menu, {y: windowHeight, duration: 0.8, ease: 'power3.inOut'});
-  } else if (!footerVisible && isBottom) {
+    gsap.to(menu, {y: 'max', duration: 0.8, ease: 'power3.inOut'});
+  } else {
     isBottom = false;
     // currentIndex = lastIndex;
     gsap.to(tgBtn, {
@@ -329,7 +297,6 @@ function handleScrollBtnClick() {
       onComplete: () => {
         isAnimating = false;
         currentIndex = 0;
-        // updatePaginationWhithSlides(0);
         console.log('Всё завершено: анимации + скролл наверх');
       },
     });
@@ -412,59 +379,6 @@ function updateControlsScroll() {
       }
     }
   }
-}
-
-function updateClassMenu() {
-  console.log('меню нач');
-  menuLinks.forEach((link, index) => {
-    if (index === currentIndex) {
-      gsap.to(link, {
-        duration: 0.6,
-        ease: 'power2.out',
-        overwrite: true,
-        onStart: () => link.classList.add('active'),
-      });
-    } else {
-      gsap.to(link, {
-        duration: 0.6,
-        ease: 'power2.out',
-        overwrite: true,
-        onStart: () => link.classList.remove('active'),
-      });
-    }
-  });
-}
-
-function updateMenuColor() {
-  console.log('меню колор нач');
-  if (currentIndex >= 2) {
-    menuWrapper.classList.add('white');
-  } else {
-    menuWrapper.classList.remove('white');
-  }
-}
-
-function updatePaginationWhithSlides(sectionIndex) {
-  console.log('Pagination нач');
-
-  if (sectionIndex === sliderSectionIndex) {
-    return;
-  }
-
-  if (sectionIndex < sliderSectionIndex) {
-    currentSlide = 0;
-    gsap.set(sliderWrapper, {xPercent: 0});
-  } else {
-    currentSlide = lastSlide;
-    gsap.set(sliderWrapper, {xPercent: -100 * lastSlide});
-  }
-
-  // Всегда диспатчим событие — чтобы обновились пагинации, индикаторы и т.д.
-  window.dispatchEvent(new CustomEvent('slidechange', {detail: currentSlide}));
-
-  // setTimeout(() => {
-  //   sliderLocked = false;
-  // }, 150);
 }
 
 window.addEventListener('wheel', onwheel, {passive: false});

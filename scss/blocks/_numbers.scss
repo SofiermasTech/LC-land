@@ -58,7 +58,7 @@
     align-items: center;
     gap: 120px;
     position: relative;
-    z-index: 6;
+    // z-index: 6;
 
     @include desktop {
       gap: 48px;

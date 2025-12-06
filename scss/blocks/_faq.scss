@@ -2,7 +2,7 @@
 @use '../mixin' as *;
 
 .faq {
-  margin-bottom: var(--section-offset);
+  margin: 0 auto var(--section-offset);
   max-width: var(--container-width);
   width: 100%;
   display: grid;
@@ -13,11 +13,11 @@
     'btn qa';
   gap: 48px 16px;
   position: relative;
-  z-index: 7;
+  // z-index: 7;
 
-  @media screen and (min-height: 1000px) and (max-width: 1440px) {
-    margin: 0 auto var(--section-offset);
-  }
+  // @media screen and (min-height: 1000px) and (max-width: 1440px) {
+  //   margin: 0 auto var(--section-offset);
+  // }
 
   @media screen and (max-width: 1200px) {
     gap: 16px;

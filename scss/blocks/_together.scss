@@ -4,17 +4,17 @@
 .together {
   max-width: var(--container-width);
   padding-top: var(--section-offset);
-  margin-bottom: var(--section-offset);
+  margin: 0 auto var(--section-offset);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 332px;
   gap: 8px;
   position: relative;
-  z-index: 7;
+  // z-index: 7;
 
-  @media screen and (min-height: 1000px) and (max-width: 1440px) {
-    margin: 0 auto var(--section-offset);
-  }
+  // @media screen and (min-height: 1000px) and (max-width: 1440px) {
+  //   margin: 0 auto var(--section-offset);
+  // }
 
   @include tablet-bottom {
     max-width: 100%;

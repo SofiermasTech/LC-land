@@ -2,16 +2,19 @@
 @use '../mixin' as *;
 
 .footer {
+  margin: 0 auto;
+  max-width: var(--container-width);
+  width: 100%;
   padding-block: var(--section-padding);
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
-  z-index: 7;
+  // z-index: 7;
 
-  @media screen and (min-height: 1000px) and (max-width: 1440px) {
-    margin: 0 auto;
-  }
+  // @media screen and (min-height: 1000px) and (max-width: 1440px) {
+  //   margin: 0 auto;
+  // }
 
   @include tablet {
     grid-template-columns: 0.8fr 1fr 1fr 1fr;

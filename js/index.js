@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+// document.addEventListener('DOMContentLoaded', () => {
   let mobileSwiperMain = null;
   let mobileSwiperImg = null;
 
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMode = isMobile();
     updateSliders();
   });
-});
+// });
 
 //  section faq
 const faqItems = document.querySelector('.faq__questions');
