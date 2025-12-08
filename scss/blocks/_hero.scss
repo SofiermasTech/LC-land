@@ -81,12 +81,12 @@
     }
 
     @media screen and (max-width: 450px) and (max-height: 900px) {
-      font-size: 68px;
+      font-size: 64px;
       margin-top: 60px;
     }
 
     @include mobile-bottom {
-      font-size: 48px;
+      font-size: 46px;
     }
 
     @media screen and (max-width: 380px) and (max-height: 700px) {
@@ -336,10 +336,10 @@
     top: -10%;
     left: -10%;
 
-    &.opacity {
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    // &.opacity {
+    //   opacity: 0;
+    //   transition: opacity 0.3s;
+    // }
 
     img {
       width: 100%;

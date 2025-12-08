@@ -15,6 +15,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="js/gsapControlsStates.js" defer></script>
+  <script src="js/gsapSectionsStates.js" defer></script>
   <script src="js/gsap.js" defer></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
@@ -94,15 +96,15 @@
       <nav class="menu__nav">
         <a class="menu__link" data-index="0">Начало</a>
         <a class="menu__link" data-index="1">Условия</a>
-        <a class="menu__link" data-index="2">Фичи</a>
-        <a class="menu__link" data-index="3">Вопросы</a>
+        <a class="menu__link" data-index="2" href="#features">Фичи</a>
+        <a class="menu__link" data-index="3" href="#faq">Вопросы</a>
       </nav>
       <div class="service-swiper__pagination"></div>
     </div>
 
   </div>
   <main class="main">
-    <!-- <div class="first-wrapper">
+    <div class="first-wrapper">
       <div class="first-wrapper__img">
         <img src="/img/hero.png" alt="">
       </div>
@@ -202,223 +204,228 @@
         </div>
 
       </section>
-    </div> -->
-    <section class="section" id="section-1" style="font-size: 98px;">1</section>
-    <section class="section" id="section-2" style="font-size: 98px;">2</section>
+    </div>
+    <!-- <section class="section" id="section-1" style="font-size: 98px;">1</section>
+    <section class="section" id="section-2" style="font-size: 98px;">2</section> -->
 
-    <!-- <div class="for-mobile-wrapper"> -->
-      <section class="section container" id="section-3">
-        <div class="service">
-          <div class="service__wrapper">
-            <h2 class="service__title title-l">Фичи сервиса</h2>
-            <div class="service__content">
-              <div class="service-swiper">
-                <div class="service-swiper__wrapper"></div>
-              </div>
-              <!-- <div class="service-swiper__pagination"></div> -->
-              <div class="swiper-mob">
-                <div class="swiper-mob__wrapper"></div>
+    <div class="for-mobile-wrapper">
+      <div class="section-last-wrapper">
+        <section class="section container" id="section-3">
+          <div class="service" id="features">
+            <div class="service__wrapper">
+              <h2 class="service__title title-l">Фичи сервиса</h2>
+              <div class="service__content">
+                <div class="service-swiper">
+                  <div class="service-swiper__wrapper"></div>
+                </div>
+                <!-- <div class="service-swiper__pagination"></div> -->
+                <div class="swiper-mob">
+                  <div class="swiper-mob__wrapper"></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      <section class="section container" id="section-4">
-        <div class="together">
-          <div class="together__item">
-            <img class="together__img" src="/img/together.png" alt width="1264" height="704" loading="lazy">
-          </div>
-          <div class="together__item">
-            <div class="together__content">
-              <p class="together__content-title title-s">Расскажите,<br>
-                чего вам не хватает,<br>
-                чтобы лить трафик<br>
-                еще эффективнее</p>
-              <p class="together__content-subtitle">Мы готовы быстро внедрить фичи, которые напрямую влияют на ваш
-                результат.</p>
-              <div class="together__content-btn">
+        </section>
+        <section class="section container" id="section-4">
+          <div class="section-last-wrapper">
+            <div class="together">
+              <div class="together__item">
+                <img class="together__img" src="/img/together.png" alt width="1264" height="704" loading="lazy">
+              </div>
+              <div class="together__item">
+                <div class="together__content">
+                  <p class="together__content-title title-s">Расскажите,<br>
+                    чего вам не хватает,<br>
+                    чтобы лить трафик<br>
+                    еще эффективнее</p>
+                  <p class="together__content-subtitle">Мы готовы быстро внедрить фичи, которые напрямую влияют на ваш
+                    результат.</p>
+                  <div class="together__content-btn">
+                    <button class="base-btn" type="button">
+                      <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
+                          <path fill="#fff" fill-rule="evenodd"
+                            d="M15.32 15.824a1.029 1.029 0 0 0 .922.116 1 1 0 0 0 .391-.263.9.9 0 0 0 .213-.41C17.57 12 19.326 3.732 19.986.76a.6.6 0 0 0-.021-.332.6.6 0 0 0-.196-.275.68.68 0 0 0-.664-.112C15.611 1.282 4.85 5.158.452 6.72a.7.7 0 0 0-.333.25.64.64 0 0 0-.119.39c.01.283.209.528.494.61 1.973.567 4.562 1.355 4.562 1.355s1.21 3.508 1.84 5.292c.08.224.263.4.503.461a.75.75 0 0 0 .676-.166l2.58-2.338s2.977 2.095 4.665 3.25M6.145 8.882l1.4 4.43.31-2.805 8.488-7.35a.216.216 0 0 0 .027-.302.245.245 0 0 0-.313-.051z"
+                            clip-rule="evenodd" />
+                        </svg>
+                      </span>
+                      <span>Напишите скорее</span>
+                    </button>
+                  </div>
+                  <div class="together__card">
+                    <img src="/img/card-2.png" alt="black card" width="560" height="208" loading="lazy">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="faq" id="faq">
+              <div class="faq__title title-l">
+                <span>у нас</span>
+                <span>часто спрашивают,</span>
+                <span>а мы отвечаем</span>
+              </div>
+              <div class="faq__else-ask">
+                <p class="title-s">а здесь нет<br>
+                  моего вопроса</p>
                 <button class="base-btn" type="button">
+                  <span>Задать вопрос</span>
                   <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
-                      <path fill="#fff" fill-rule="evenodd"
-                        d="M15.32 15.824a1.029 1.029 0 0 0 .922.116 1 1 0 0 0 .391-.263.9.9 0 0 0 .213-.41C17.57 12 19.326 3.732 19.986.76a.6.6 0 0 0-.021-.332.6.6 0 0 0-.196-.275.68.68 0 0 0-.664-.112C15.611 1.282 4.85 5.158.452 6.72a.7.7 0 0 0-.333.25.64.64 0 0 0-.119.39c.01.283.209.528.494.61 1.973.567 4.562 1.355 4.562 1.355s1.21 3.508 1.84 5.292c.08.224.263.4.503.461a.75.75 0 0 0 .676-.166l2.58-2.338s2.977 2.095 4.665 3.25M6.145 8.882l1.4 4.43.31-2.805 8.488-7.35a.216.216 0 0 0 .027-.302.245.245 0 0 0-.313-.051z"
-                        clip-rule="evenodd" />
+                    <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M17.2197 0.21967C17.5126 -0.0732233 17.9874 -0.0732233 18.2803 0.21967L21.2803 3.21967L21.332 3.27631C21.3584 3.3086 21.3783 3.34456 21.3984 3.37983C21.414 3.40698 21.4303 3.43369 21.4424 3.46283C21.4631 3.51283 21.4779 3.56454 21.4873 3.61713C21.495 3.66026 21.5 3.70459 21.5 3.74994C21.5 3.79333 21.4944 3.83553 21.4873 3.8769C21.4864 3.88232 21.4874 3.88809 21.4863 3.8935C21.4772 3.94064 21.4636 3.98715 21.4453 4.03217C21.4444 4.0343 21.4423 4.0359 21.4414 4.03803C21.4213 4.08629 21.3955 4.13124 21.3662 4.17377C21.3549 4.19024 21.3449 4.20785 21.332 4.22358C21.316 4.24319 21.2986 4.26193 21.2803 4.28022L18.2803 7.28022C17.9874 7.57309 17.5126 7.57309 17.2197 7.28022C16.9268 6.98733 16.9268 6.51256 17.2197 6.21967L18.9395 4.49994H0.75C0.335815 4.49994 4.59034e-05 4.16412 0 3.74994C-3.62116e-08 3.33573 0.335786 2.99994 0.75 2.99994H18.9395L17.2197 1.28022C16.9268 0.987329 16.9268 0.512564 17.2197 0.21967Z"
+                        fill="white" />
                     </svg>
                   </span>
-                  <span>Напишите скорее</span>
                 </button>
               </div>
-              <div class="together__card">
-                <img src="/img/card-2.png" alt="black card" width="560" height="208" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="faq">
-          <div class="faq__title title-l">
-            <span>у нас</span>
-            <span>часто спрашивают,</span>
-            <span>а мы отвечаем</span>
-          </div>
-          <div class="faq__else-ask">
-            <p class="title-s">а здесь нет<br>
-              моего вопроса</p>
-            <button class="base-btn" type="button">
-              <span>Задать вопрос</span>
-              <span>
-                <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M17.2197 0.21967C17.5126 -0.0732233 17.9874 -0.0732233 18.2803 0.21967L21.2803 3.21967L21.332 3.27631C21.3584 3.3086 21.3783 3.34456 21.3984 3.37983C21.414 3.40698 21.4303 3.43369 21.4424 3.46283C21.4631 3.51283 21.4779 3.56454 21.4873 3.61713C21.495 3.66026 21.5 3.70459 21.5 3.74994C21.5 3.79333 21.4944 3.83553 21.4873 3.8769C21.4864 3.88232 21.4874 3.88809 21.4863 3.8935C21.4772 3.94064 21.4636 3.98715 21.4453 4.03217C21.4444 4.0343 21.4423 4.0359 21.4414 4.03803C21.4213 4.08629 21.3955 4.13124 21.3662 4.17377C21.3549 4.19024 21.3449 4.20785 21.332 4.22358C21.316 4.24319 21.2986 4.26193 21.2803 4.28022L18.2803 7.28022C17.9874 7.57309 17.5126 7.57309 17.2197 7.28022C16.9268 6.98733 16.9268 6.51256 17.2197 6.21967L18.9395 4.49994H0.75C0.335815 4.49994 4.59034e-05 4.16412 0 3.74994C-3.62116e-08 3.33573 0.335786 2.99994 0.75 2.99994H18.9395L17.2197 1.28022C16.9268 0.987329 16.9268 0.512564 17.2197 0.21967Z"
-                    fill="white" />
-                </svg>
-              </span>
-            </button>
-          </div>
-          <div class="faq__questions">
-            <div class="faq__item">
-              <div class="faq__item-head">
-                <div class="faq__item-icon">
-                  <span></span>
-                  <span></span>
+              <div class="faq__questions">
+                <div class="faq__item">
+                  <div class="faq__item-head">
+                    <div class="faq__item-icon">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <p>Как выпустить виртуальную карту?</p>
+                  </div>
+                  <div class="faq__item-body">
+                    <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
+                      выпуске
+                      карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
+                    <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
+                      отображается в вашем личном кабинете при создании карты.</p>
+                  </div>
                 </div>
-                <p>Как выпустить виртуальную карту?</p>
-              </div>
-              <div class="faq__item-body">
-                <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
-                  выпуске
-                  карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
-                <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
-                  отображается в вашем личном кабинете при создании карты.</p>
-              </div>
-            </div>
-            <div class="faq__item">
-              <div class="faq__item-head">
-                <div class="faq__item-icon">
-                  <span></span>
-                  <span></span>
+                <div class="faq__item">
+                  <div class="faq__item-head">
+                    <div class="faq__item-icon">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <p>Можно ли удалить виртуальную карту и выпустить новую?</p>
+                  </div>
+                  <div class="faq__item-body">
+                    <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
+                      выпуске
+                      карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
+                    <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
+                      отображается в вашем личном кабинете при создании карты.</p>
+                  </div>
                 </div>
-                <p>Можно ли удалить виртуальную карту и выпустить новую?</p>
-              </div>
-              <div class="faq__item-body">
-                <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
-                  выпуске
-                  карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
-                <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
-                  отображается в вашем личном кабинете при создании карты.</p>
-              </div>
-            </div>
-            <div class="faq__item">
-              <div class="faq__item-head">
-                <div class="faq__item-icon">
-                  <span></span>
-                  <span></span>
+                <div class="faq__item">
+                  <div class="faq__item-head">
+                    <div class="faq__item-icon">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <p>В какой валюте доступны карты?</p>
+                  </div>
+                  <div class="faq__item-body">
+                    <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
+                      выпуске
+                      карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
+                    <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
+                      отображается в вашем личном кабинете при создании карты.</p>
+                  </div>
                 </div>
-                <p>В какой валюте доступны карты?</p>
-              </div>
-              <div class="faq__item-body">
-                <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
-                  выпуске
-                  карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
-                <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
-                  отображается в вашем личном кабинете при создании карты.</p>
-              </div>
-            </div>
-            <div class="faq__item">
-              <div class="faq__item-head">
-                <div class="faq__item-icon">
-                  <span></span>
-                  <span></span>
+                <div class="faq__item">
+                  <div class="faq__item-head">
+                    <div class="faq__item-icon">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <p>Где можно посмотреть реквизиты виртуальной карты?</p>
+                  </div>
+                  <div class="faq__item-body">
+                    <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
+                      выпуске
+                      карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
+                    <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
+                      отображается в вашем личном кабинете при создании карты.</p>
+                  </div>
                 </div>
-                <p>Где можно посмотреть реквизиты виртуальной карты?</p>
-              </div>
-              <div class="faq__item-body">
-                <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
-                  выпуске
-                  карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
-                <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
-                  отображается в вашем личном кабинете при создании карты.</p>
-              </div>
-            </div>
-            <div class="faq__item">
-              <div class="faq__item-head">
-                <div class="faq__item-icon">
-                  <span></span>
-                  <span></span>
+                <div class="faq__item">
+                  <div class="faq__item-head">
+                    <div class="faq__item-icon">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <p>Как выпустить виртуальную карту?</p>
+                  </div>
+                  <div class="faq__item-body">
+                    <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
+                      выпуске
+                      карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
+                    <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
+                      отображается в вашем личном кабинете при создании карты.</p>
+                  </div>
                 </div>
-                <p>Как выпустить виртуальную карту?</p>
-              </div>
-              <div class="faq__item-body">
-                <p>Наши виртуальные карты доступны в основных международных валютах. Вы можете выбрать валюту при
-                  выпуске
-                  карты — это позволит сразу использовать её для онлайн-платежей без дополнительных конвертаций.</p>
-                <p>Также мы регулярно добавляем поддержку новых валют. Актуальный список доступных вариантов всегда
-                  отображается в вашем личном кабинете при создании карты.</p>
               </div>
             </div>
+            <footer class="footer">
+              <div class="footer__column">
+                <div class="footer__logo">
+                  <img src="/img/logo-footer.svg" alt="LMND CARD" width="110" height="59" loading="lazy">
+                  <span class="text-light">© 2025. LMND CARD</span>
+                </div>
+                <div class="footer__btns">
+                  <a href="#" class="second-btn">
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
+                        <path fill="currentColor" fill-rule="evenodd"
+                          d="M15.32 15.824a1.029 1.029 0 0 0 .922.116 1 1 0 0 0 .391-.263.9.9 0 0 0 .213-.41C17.57 12 19.326 3.732 19.986.76a.6.6 0 0 0-.021-.332.6.6 0 0 0-.196-.275.68.68 0 0 0-.664-.112C15.611 1.282 4.85 5.158.452 6.72a.7.7 0 0 0-.333.25.64.64 0 0 0-.119.39c.01.283.209.528.494.61 1.973.567 4.562 1.355 4.562 1.355s1.21 3.508 1.84 5.292c.08.224.263.4.503.461a.75.75 0 0 0 .676-.166l2.58-2.338s2.977 2.095 4.665 3.25M6.145 8.882l1.4 4.43.31-2.805 8.488-7.35a.216.216 0 0 0 .027-.302.245.245 0 0 0-.313-.051z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                    <p>Написать нам</p>
+                  </a>
+                  <button class="second-btn" type="button">
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
+                        <path fill="currentColor" d="M11 2a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6" />
+                        <path fill="currentColor" fill-rule="evenodd"
+                          d="M18.206.005A4 4 0 0 1 22 4v8l-.005.206a4 4 0 0 1-3.789 3.79L18 16H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h14zM4 1.5A2.5 2.5 0 0 0 1.5 4v8A2.5 2.5 0 0 0 4 14.5h14a2.5 2.5 0 0 0 2.5-2.5V4A2.5 2.5 0 0 0 18 1.5z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                    <p>Выпустить карту</p>
+                  </button>
+                </div>
+              </div>
+              <nav class="footer__column">
+                <div class="footer__column-title text-light">Пользователю</div>
+                <ul class="footer__links">
+                  <li class="footer__links-item"><a href="/">Вход / Регистрация</a></li>
+                  <li class="footer__links-item"><a href="/">Защита информации</a></li>
+                  <li class="footer__links-item"><a href="/">Правила пользования сайтом</a></li>
+                  <li class="footer__links-item"><a href="/">Отказ от обязательств</a></li>
+                  <li class="footer__links-item"><a href="/">Политика Cookies</a></li>
+                </ul>
+              </nav>
+              <nav class="footer__column">
+                <div class="footer__column-title text-light">Фичи сервиса</div>
+                <ul class="footer__links">
+                  <li class="footer__links-item s"><a href="#slide-1" data-slide="1">Гибкая система ролей и прав</a>
+                  </li>
+                  <li class="footer__links-item s"><a href="#slide-2" data-slide="2">Аналитика и отчетность</a></li>
+                  <li class="footer__links-item s"><a href="#slide-3" data-slide="3">Управление балансом</a></li>
+                  <li class="footer__links-item s"><a href="#slide-4" data-slide="4">API-интеграция</a></li>
+                  <li class="footer__links-item s"><a href="#slide-5" data-slide="5">Лояльная политика DR</a></li>
+                </ul>
+              </nav>
+              <nav class="footer__column">
+                <div class="footer__column-title text-light">Навигация</div>
+                <ul class="footer__links">
+                  <li class="footer__links-item m"><a data-index="0">Начало</a></li>
+                  <li class="footer__links-item m"><a data-index="1">Условия</a></li>
+                  <li class="footer__links-item m"><a data-index="2">Фичи</a></li>
+                  <li class="footer__links-item m"><a data-index="3">Вопросы</a></li>
+                </ul>
+              </nav>
+            </footer>
           </div>
-        </div>
-        <footer class="footer">
-          <div class="footer__column">
-            <div class="footer__logo">
-              <img src="/img/logo-footer.svg" alt="LMND CARD" width="110" height="59" loading="lazy">
-              <span class="text-light">© 2025. LMND CARD</span>
-            </div>
-            <div class="footer__btns">
-              <a href="#" class="second-btn">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
-                    <path fill="currentColor" fill-rule="evenodd"
-                      d="M15.32 15.824a1.029 1.029 0 0 0 .922.116 1 1 0 0 0 .391-.263.9.9 0 0 0 .213-.41C17.57 12 19.326 3.732 19.986.76a.6.6 0 0 0-.021-.332.6.6 0 0 0-.196-.275.68.68 0 0 0-.664-.112C15.611 1.282 4.85 5.158.452 6.72a.7.7 0 0 0-.333.25.64.64 0 0 0-.119.39c.01.283.209.528.494.61 1.973.567 4.562 1.355 4.562 1.355s1.21 3.508 1.84 5.292c.08.224.263.4.503.461a.75.75 0 0 0 .676-.166l2.58-2.338s2.977 2.095 4.665 3.25M6.145 8.882l1.4 4.43.31-2.805 8.488-7.35a.216.216 0 0 0 .027-.302.245.245 0 0 0-.313-.051z"
-                      clip-rule="evenodd" />
-                  </svg>
-                </span>
-                <p>Написать нам</p>
-              </a>
-              <button class="second-btn" type="button">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
-                    <path fill="currentColor" d="M11 2a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6" />
-                    <path fill="currentColor" fill-rule="evenodd"
-                      d="M18.206.005A4 4 0 0 1 22 4v8l-.005.206a4 4 0 0 1-3.789 3.79L18 16H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4h14zM4 1.5A2.5 2.5 0 0 0 1.5 4v8A2.5 2.5 0 0 0 4 14.5h14a2.5 2.5 0 0 0 2.5-2.5V4A2.5 2.5 0 0 0 18 1.5z"
-                      clip-rule="evenodd" />
-                  </svg>
-                </span>
-                <p>Выпустить карту</p>
-              </button>
-            </div>
-          </div>
-          <nav class="footer__column">
-            <div class="footer__column-title text-light">Пользователю</div>
-            <ul class="footer__links">
-              <li class="footer__links-item"><a href="/">Вход / Регистрация</a></li>
-              <li class="footer__links-item"><a href="/">Защита информации</a></li>
-              <li class="footer__links-item"><a href="/">Правила пользования сайтом</a></li>
-              <li class="footer__links-item"><a href="/">Отказ от обязательств</a></li>
-              <li class="footer__links-item"><a href="/">Политика Cookies</a></li>
-            </ul>
-          </nav>
-          <nav class="footer__column">
-            <div class="footer__column-title text-light">Фичи сервиса</div>
-            <ul class="footer__links">
-              <li class="footer__links-item s"><a href="#slide-1" data-slide="1">Гибкая система ролей и прав</a></li>
-              <li class="footer__links-item s"><a href="#slide-2" data-slide="2">Аналитика и отчетность</a></li>
-              <li class="footer__links-item s"><a href="#slide-3" data-slide="3">Управление балансом</a></li>
-              <li class="footer__links-item s"><a href="#slide-4" data-slide="4">API-интеграция</a></li>
-              <li class="footer__links-item s"><a href="#slide-5" data-slide="5">Лояльная политика DR</a></li>
-            </ul>
-          </nav>
-          <nav class="footer__column">
-            <div class="footer__column-title text-light">Навигация</div>
-            <ul class="footer__links">
-              <li class="footer__links-item m"><a data-index="0">Начало</a></li>
-              <li class="footer__links-item m"><a data-index="1">Условия</a></li>
-              <li class="footer__links-item m"><a data-index="2">Фичи</a></li>
-              <li class="footer__links-item m"><a data-index="3">Вопросы</a></li>
-            </ul>
-          </nav>
-        </footer>
-      </section>
-    <!-- </div> -->
+        </section>
+      </div>
+    </div>
 
   </main>
   <template id="slide-template">

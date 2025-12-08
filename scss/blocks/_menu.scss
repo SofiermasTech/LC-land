@@ -76,6 +76,7 @@
     justify-content: center;
     transition: 0.3s;
     cursor: pointer;
+    user-select: none;
 
     &.active {
       box-shadow: inset 0 1px 0 0 var(--white-trans);

@@ -100,6 +100,12 @@ html {
   }
 }
 
+// #section-1,
+// #section-2 {
+//   background-color: var(--dark);
+//   color: #fff;
+// }
+
 #section-3,
 #section-4 {
 
@@ -118,6 +124,24 @@ html {
 
   @include tablet {
     height: auto
+  }
+}
+
+.section-last-wrapper {
+  overflow-y: auto;
+  height: 100%;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 20px;
   }
 }
 
