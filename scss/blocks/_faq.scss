@@ -112,13 +112,21 @@
   }
 
   &__item {
-    width: fit-content;
+    // max-width: auto;
     padding: 32px 28px;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.02);
     background-color: var(--white);
     border-radius: var(--br-l);
     cursor: pointer;
     position: relative;
+    transition:
+      max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(0);
+
+    &.open {
+      max-width: 100%;
+      transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
     @include hover {
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -129,7 +137,7 @@
     }
 
     @include tablet-bottom {
-      // width: 100%;
+      width: calc(100% - 32px);
       padding: 16px;
     }
   }
@@ -183,7 +191,8 @@
 
   &__item-body {
     max-height: 0;
-    width: 300px;
+    max-width: 300px;
+    width: 100%;
     overflow: hidden;
     margin-left: 32px;
     margin-top: 0;
@@ -191,10 +200,16 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    transition:
-      max-height 0.2s easy,
-      margin-top 0.2s ease,
-      width 0.1s ease 0.5s;
+
+    // transition:
+    //   max-height 0.2s easy,
+    //   margin-top 0.2s ease,
+    //   width 0.1s ease 0.5s;
+    opacity: 0;
+    // transition: 
+    // max-width 0.9s cubic-bezier(0.4, 0, 0.2, 1), 
+    // max-height 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.9s ease;
+    // transform: translateX(0);
 
     p {
       @include fluid-text(15, 13);
@@ -208,7 +223,6 @@
     }
 
     @include tablet-bottom {
-
       width: 100%;
     }
   }
@@ -222,12 +236,12 @@
 
   &__item.open .faq__item-body {
     max-height: 1000px;
-    width: fit-content;
+    max-width: 90%;
     margin-top: 32px;
-    transition:
-      max-height 0.3s ease,
-      margin-top 0.3s ease,
-      width 0.1s ease 0.5s;
+    opacity: 1;
+    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      margin-top 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      max-width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 
     @include tablet-bottom {
       max-width: 94%;
@@ -235,4 +249,13 @@
       margin-top: 16px;
     }
   }
+}
+
+.faq__title,
+.faq__else-ask,
+.faq__item,
+.together__item {
+  opacity: 1;
+  /* ИЗНАЧАЛЬНО видим */
+  transform: none;
 }

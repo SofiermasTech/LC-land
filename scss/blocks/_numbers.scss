@@ -9,6 +9,10 @@
   overflow: hidden;
   position: relative;
 
+  @include mobile {
+    height: 100dvh;
+  }
+
   &__overlay {
     max-width: 100vw;
     height: 100%;
@@ -21,8 +25,10 @@
     justify-content: center;
     gap: 62px;
     opacity: 1;
-    // transition: opacity 0.3s;
     background: transparent;
+    will-change: scroll-position;
+    user-select: none;
+
 
     @include mobile {
       justify-content: flex-end;
@@ -127,12 +133,13 @@
     text-transform: uppercase;
     text-align: center;
     color: rgba(255, 255, 255, 0.1);
-    background: url('../img/hero.png') center/cover no-repeat;
+    background: url('../img/hero.png') top center/cover no-repeat;
     background-clip: text;
     -webkit-background-clip: text;
     background-attachment: fixed;
     position: relative;
     z-index: 2;
+    user-select: none;
 
     @include tablet {
       font-size: 200px;
@@ -167,6 +174,8 @@
 
   .base-btn {
     padding-inline: 16px;
+    opacity: 0;
+    transition: none;
 
     @include mobile {
       margin-bottom: clamp(80px, 18vh, 170px);

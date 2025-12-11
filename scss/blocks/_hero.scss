@@ -8,6 +8,10 @@
   position: relative;
   // z-index: 9;
 
+  @include tablet {
+    height: 100dvh;
+  }
+
   &__fix-wrapper {
     position: fixed;
     width: fit-content;
@@ -80,8 +84,13 @@
       font-size: 76px;
     }
 
+    @media screen and (max-width: 450px) and (max-height: 950px) {
+      font-size: 60px;
+      margin-top: 60px;
+    }
+
     @media screen and (max-width: 450px) and (max-height: 900px) {
-      font-size: 64px;
+      font-size: 54px;
       margin-top: 60px;
     }
 
@@ -317,6 +326,8 @@
     // z-index: 7;
     background-color: transparent;
     backdrop-filter: blur(0);
+    will-change: transform;
+    transform: translateZ(0);
   }
 
 }

@@ -1,20 +1,89 @@
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-// состояния
+// ============================================
+// УТИЛИТЫ ДЛЯ ОПТИМИЗАЦИИ
+// ============================================
 
-let isAnimating = false;
-let isBottom = false;
+// Throttling для ограничения частоты вызовов
+function throttle(func, limit) {
+  let inThrottle;
+  return function (...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+
+// Кеширование getBoundingClientRect
+let cachedRects = {};
+let cacheTimestamp = 0;
+const CACHE_DURATION = 100; // мс
+
+function getCachedRect(element, key) {
+  const now = performance.now();
+  if (now - cacheTimestamp > CACHE_DURATION) {
+    cachedRects = {};
+    cacheTimestamp = now;
+  }
+
+  if (!cachedRects[key] && element) {
+    cachedRects[key] = element.getBoundingClientRect();
+  }
+  return cachedRects[key];
+}
+
+// Оптимизация обновлений UI через requestAnimationFrame
+let rafId = null;
+let pendingUIUpdate = false;
+
+function scheduleUIUpdate() {
+  if (pendingUIUpdate) return;
+  pendingUIUpdate = true;
+
+  if (rafId) cancelAnimationFrame(rafId);
+
+  rafId = requestAnimationFrame(() => {
+    updateUI();
+    updateClassMenu();
+    pendingUIUpdate = false;
+    rafId = null;
+  });
+}
+
+// Проверка поддержки touch
+const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// ============================================
+// КОНФИГУРАЦИЯ
+// ============================================
 
 const config = {
-  // секции и обертка различаются, т.к. на моб #section-3 и #section-4 объединяются в одну
+  _cachedSections: null,
+  _cachedLastWrapper: null,
+  _cacheMode: null,
+
   get sections() {
-    return mobileMode ? this.mobile : this.desktop;
-  },
-  get lastWrapper() {
-    return mobileMode ? this.lastWrapperMobile : this.lastWrapperDesktop;
+    if (this._cachedSections && this._cacheMode === mobileMode) {
+      return this._cachedSections;
+    }
+    this._cachedSections = mobileMode ? this.mobile : this.desktop;
+    this._cacheMode = mobileMode;
+    return this._cachedSections;
   },
   get lastIndex() {
     return this.sections.length - 1;
+  },
+  get lastWrapper() {
+    if (this._cachedLastWrapper && this._cacheMode === mobileMode) {
+      return this._cachedLastWrapper;
+    }
+    this._cachedLastWrapper = mobileMode
+      ? this.lastWrapperMobile
+      : this.lastWrapperDesktop;
+    this._cacheMode = mobileMode;
+    return this._cachedLastWrapper;
   },
 
   lastWrapperDesktop: document.querySelector(
@@ -35,12 +104,12 @@ const config = {
 const sections = config.sections;
 const lastIndex = config.lastIndex;
 const lastWrapper = config.lastWrapper;
-const lastSection = sections[lastIndex];
 
+// состояния
 let currentIndex = detectCurrentSection();
-
-console.log('lastWrapper', lastWrapper);
-console.log('lastSection', lastSection);
+const lastSection = sections[lastIndex];
+let isAnimating = false;
+let isBottom = false;
 
 // остальные кнопки + меню
 const menuLinks = document.querySelectorAll('.menu__link');
@@ -55,18 +124,18 @@ const lastSlide = slides.length - 1;
 
 // mobile
 let mouseMoveHandler = null;
-// lockScroll();
 
-// gsap.defaults({
-//   force3D: true, // Аппаратное ускорение
-// });
+// Настройка GSAP для оптимизации
+gsap.defaults({
+  force3D: true, // Аппаратное ускорение
+});
 
 updateUI();
-// updateSectionsUI(currentIndex);
 updateClassMenu();
-// AOS.init({});
-// console.log(mobileMode);
-// console.log(currentIndex);
+
+// ============================================
+// ОСНОВНЫЕ ФУНКЦИИ
+// ============================================
 
 function goToSection(index) {
   if (isAnimating) return;
@@ -83,29 +152,26 @@ function goToSection(index) {
     scrollTo: {y: sections[nextIndex], autoKill: false},
     duration: 1,
     ease: 'power2.inOut',
+    force3D: true,
   });
 
+  // Создаём ЕДИНЫЙ timeline, который ждёт обе анимации
   const master = gsap.timeline({
     onComplete() {
       currentIndex = nextIndex;
-      // updateUI();
-      // updateSectionsUI(currentIndex);
+      updateUI();
       updateScrollLock();
       updatePaginationWhithSlides(nextIndex);
-      if (index === lastIndex) {
-        lastWrapper.scrollTop = 0;
-      }
+
       isAnimating = false;
     },
   });
 
-  // updateUI((currentIndex = index));
+  // Добавляем переход
   master.add(transitionTl);
-  master.add(updateUI((currentIndex = index)));
-  master.add(scrollTween, '-=0.6');
 
-  console.log(master);
-  console.log('Переход2 длится:', master.totalDuration(), 'сек');
+  // Добавляем скролл строго после перехода
+  master.add(scrollTween, '-=0.6');
 }
 
 function onwheel(evt) {
@@ -118,6 +184,7 @@ function onwheel(evt) {
   const directionUp = evt.deltaY < 0;
 
   if (mobileMode && currentIndex === sliderSectionIndex) {
+    // Разрешаем обычный скролл
     return;
   }
 
@@ -153,12 +220,15 @@ function onwheel(evt) {
 
     if (directionUp) {
       const firstChildInSection = lastSection.children[0];
-      updateClassMenu();
+      if (!firstChildInSection) return;
 
-      const topContentInSection =
-        firstChildInSection.getBoundingClientRect().top;
+      // Используем кешированный rect
+      const topContentInSection = getCachedRect(
+        firstChildInSection,
+        'firstChildInSection'
+      )?.top;
 
-      if (topContentInSection > 10) {
+      if (topContentInSection && topContentInSection > 10) {
         goToSection(lastIndex - 1);
         return;
       }
@@ -168,10 +238,11 @@ function onwheel(evt) {
 
 function detectCurrentSection() {
   let idx = 0;
+  const viewportCenter = window.innerHeight * 0.5;
 
   sections.forEach((section, i) => {
-    const rect = section.getBoundingClientRect();
-    if (rect.top <= window.innerHeight * 0.5) idx = i;
+    const rect = getCachedRect(section, `section-${i}`);
+    if (rect && rect.top <= viewportCenter) idx = i;
   });
   return idx;
 }
@@ -186,24 +257,6 @@ function unlockScroll() {
   document.body.style.overflowY = 'auto';
 }
 
-// Оптимизация обновлений UI через requestAnimationFrame
-let rafId = null;
-let pendingUIUpdate = false;
-
-function scheduleUIUpdate() {
-  if (pendingUIUpdate) return;
-  pendingUIUpdate = true;
-
-  if (rafId) cancelAnimationFrame(rafId);
-
-  rafId = requestAnimationFrame(() => {
-    updateUI();
-    updateClassMenu();
-    pendingUIUpdate = false;
-    rafId = null;
-  });
-}
-
 function goToSlide(index) {
   if (isAnimating) return;
   if (currentSlide === index) return;
@@ -212,7 +265,7 @@ function goToSlide(index) {
 
   const oldIndex = currentSlide;
 
-  // Главный таймлайн
+  // Главный таймлайн — управляет всем
   const masterTl = gsap.timeline({
     onComplete: () => {
       currentSlide = index;
@@ -224,17 +277,19 @@ function goToSlide(index) {
     },
   });
 
+  // Двигаем контейнер
   masterTl.to(
     sliderWrapper,
     {
       xPercent: -100 * index,
       duration: 0.7,
       ease: 'power2.inOut',
-      // force3D: true,
+      force3D: true,
     },
     0
   );
 
+  // Запускаем анимацию контента параллельно
   const contentTl = animateSlide(oldIndex, index);
   if (contentTl) {
     masterTl.add(contentTl, 0);
@@ -251,9 +306,7 @@ function animateSlide(oldIndex, newIndex) {
     animateSlide.tl.kill();
   }
 
-  // console.log('animateSlide нач');
-
-  const tl = gsap.timeline({defaults: {ease: 'power2.out'}});
+  const tl = gsap.timeline({defaults: {ease: 'power2.out', force3D: true}});
   animateSlide.tl = tl;
 
   const oldImg = oldSlide.querySelector('.slide__img');
@@ -266,55 +319,71 @@ function animateSlide(oldIndex, newIndex) {
   const oldExitX = forward ? '-150%' : '150%';
   const newEnterX = forward ? '150%' : '-150%';
 
-  gsap.set([newImg, newContent], {x: newEnterX});
+  gsap.set([newImg, newContent], {x: newEnterX, force3D: true});
   // вперед
   if (forward) {
-    tl.to(oldImg, {x: oldExitX, duration: 0.4});
-    tl.to(oldContent, {x: oldExitX, duration: 0.4});
+    tl.to(oldImg, {x: oldExitX, duration: 0.4, force3D: true});
+    tl.to(oldContent, {x: oldExitX, duration: 0.4, force3D: true});
 
-    tl.to(newImg, {x: '0%', duration: 0.4}, '-=0.15');
-    tl.to(newContent, {x: '0%', duration: 0.4});
-    // console.log('animateSlide конец1');
+    tl.to(newImg, {x: '0%', duration: 0.4, force3D: true}, '-=0.15');
+    tl.to(newContent, {x: '0%', duration: 0.4, force3D: true});
   } else {
     // назад
-    tl.to(oldContent, {x: oldExitX, duration: 0.4});
-    tl.to(oldImg, {x: oldExitX, duration: 0.3});
+    tl.to(oldContent, {x: oldExitX, duration: 0.4, force3D: true});
+    tl.to(oldImg, {x: oldExitX, duration: 0.3, force3D: true});
 
-    tl.to(newContent, {x: '0%', duration: 0.3}, '-=0.05');
-    tl.to(newImg, {x: '0%', duration: 0.4});
-
-    // console.log('animateSlide конец2');
+    tl.to(newContent, {x: '0%', duration: 0.3, force3D: true}, '-=0.05');
+    tl.to(newImg, {x: '0%', duration: 0.4, force3D: true});
   }
   return tl;
 }
 
-const footer = document.querySelector('.footer').getBoundingClientRect();
-const faq = document.querySelector('.faq').getBoundingClientRect();
-const footerTop = footer.top;
-const footerHeight = document.querySelector('.footer').offsetHeight;
-const lastHeight = document.querySelector('.section-last-wrapper').scrollHeight;
-const faqStart = faq.top;
-const faqEnd = faq.bottom;
-const windowHeight = window.innerHeight;
-const targetY = lastWrapper.offsetHeight - windowHeight;
-// // console.log('footerTop', footerTop);
-// // console.log('footerBottom', footer.bottom);
-// // console.log('lastHeight', lastHeight);
-// // console.log('footerHeight', footerHeight);
-// // console.log('faqStart', faqStart);
-// // console.log('faqEnd', faqEnd);
-// // console.log('isBottom', isBottom);
-// // console.log(window.scrollY);
-// // console.log(targetY);
-// // console.log('windowHeight', windowHeight);
+// Ленивая инициализация тяжелых вычислений
+let heavyComputationInitialized = false;
 
-const lastChildInSection = lastSection.lastElementChild;
-console.log(lastSection.children[0]);
-console.log(lastWrapper.children[0]);
+function initHeavyComputations() {
+  if (heavyComputationInitialized) return;
+
+  const footerEl = document.querySelector('.footer');
+  const faqEl = document.querySelector('.faq');
+  const lastWrapperEl = document.querySelector('.section-last-wrapper');
+
+  if (footerEl) {
+    const footer = footerEl.getBoundingClientRect();
+    window.footerTop = footer.top;
+    window.footerHeight = footerEl.offsetHeight;
+  }
+
+  if (faqEl) {
+    const faq = faqEl.getBoundingClientRect();
+    window.faqStart = faq.top;
+    window.faqEnd = faq.bottom;
+  }
+
+  if (lastWrapperEl) {
+    window.lastHeight = lastWrapperEl.scrollHeight;
+  }
+
+  window.windowHeight = window.innerHeight;
+  if (lastWrapper) {
+    window.targetY = lastWrapper.offsetHeight - window.windowHeight;
+  }
+
+  heavyComputationInitialized = true;
+}
+
+// Инициализируем при первом взаимодействии
+document.addEventListener(
+  'touchstart',
+  initHeavyComputations,
+  {once: true, passive: true}
+);
+document.addEventListener('wheel', initHeavyComputations, {once: true});
+
+const lastChildInSection = lastSection?.lastElementChild;
 
 function nextScreen() {
   if (isAnimating) return;
-  // checkScrollPosition();
 
   if (mobileMode && currentIndex === sliderSectionIndex) {
     window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
@@ -332,72 +401,49 @@ function nextScreen() {
   }
 
   if (currentIndex === lastIndex && !footerVisible) {
-    updateUI();
+    scheduleUIUpdate();
     gsap.to(lastWrapper, {
       scrollTo: {y: 'max', autoKill: false},
       duration: 0.7,
       ease: 'power2.inOut',
+      force3D: true,
       onComplete() {
         isAnimating = false;
-        // isBottom = true;
       },
     });
   } else if (currentIndex === lastIndex && footerVisible) {
-    // isBottom = false;
     goToSection(0);
   }
 }
 
 function checkInnerScroll() {
-  const scrollTop = lastWrapper.scrollTop; // текущий скролл
-  const visibleHeight = lastWrapper.offsetHeight; // видимая область
-  const fullHeight = lastWrapper.scrollHeight; // полная высота контента
+  if (!lastWrapper) return false;
+
+  const scrollTop = lastWrapper.scrollTop;
+  const visibleHeight = lastWrapper.offsetHeight;
+  const fullHeight = lastWrapper.scrollHeight;
+  const footerHeight = window.footerHeight || 0;
 
   const bottomDesk =
-    scrollTop + visibleHeight >= fullHeight - footerHeight + 50;
+    scrollTop + visibleHeight >= fullHeight - footerHeight + 100;
   const bottomMob = scrollTop + visibleHeight >= fullHeight - footerHeight;
   const isAtBottom = mobileMode ? bottomMob : bottomDesk;
-
-  // console.log('scrollTop', scrollTop);
-  // console.log('visibleHeight', visibleHeight);
-  // console.log('fullHeight', fullHeight);
-  // console.log('isAtBottom', isAtBottom);
-  // console.log('footerHeight', footerHeight);
 
   return isAtBottom;
 }
 
-lastWrapper.addEventListener('scroll', () => {
+// Оптимизированный обработчик скролла с throttling
+const throttledScrollHandler = throttle(() => {
   footerVisible = checkInnerScroll();
+  scheduleUIUpdate();
+}, 100);
 
-  if (footerVisible) {
-    gsap.to(menu, {y: '200%', duration: 0.5, ease: 'power1.out'});
-  } else {
-    gsap.to(menu, {y: 0, duration: 0.5, ease: 'power1.out'});
-  }
-  updateUI();
+lastWrapper?.addEventListener('scroll', throttledScrollHandler, {
+  passive: true,
 });
 
-if (!mobileMode) {
-  window.addEventListener('wheel', onwheel, {passive: false});
-  lastWrapper.addEventListener('wheel', (e) => {
-    const atTop = lastWrapper.scrollTop <= 0;
-
-    if (e.deltaY < 0) {
-      // Скролл вверх
-      if (!atTop) {
-        // Внутренний контент ещё прокручивается — НЕ передавать скролл родителю
-        e.stopPropagation();
-        return;
-      } else {
-        // Только когда контент реально вверху → разрешить переход на предыдущую секцию
-        goToSection(currentIndex - 1);
-      }
-    }
-  });
-}
-
 window.addEventListener('load', () => {
+  initHeavyComputations();
   currentIndex = detectCurrentSection();
 
   if (currentIndex === 0) {
@@ -406,13 +452,12 @@ window.addEventListener('load', () => {
     updateSectionsUI(currentIndex);
   }
   updateScrollLock();
-  updatePaginationWhithSlides();
+
   footerVisible = checkInnerScroll();
-  // updateUI();
+  updateUI();
 });
 
 function updateClassMenu() {
-  // console.log('меню нач');
   if (!mobileMode) {
     menuLinks.forEach((link, index) => {
       if (index === currentIndex) {
@@ -420,7 +465,7 @@ function updateClassMenu() {
           duration: 0.3,
           ease: 'power2.out',
           overwrite: true,
-          // force3D: true,
+          force3D: true,
           onStart: () => link.classList.add('active'),
         });
       } else {
@@ -428,7 +473,7 @@ function updateClassMenu() {
           duration: 0.3,
           ease: 'power2.out',
           overwrite: true,
-          // force3D: true,
+          force3D: true,
           onStart: () => link.classList.remove('active'),
         });
       }
@@ -442,6 +487,7 @@ function updateClassMenu() {
         duration: 0.6,
         ease: 'power2.out',
         overwrite: true,
+        force3D: true,
         onStart: () => link.classList.toggle('active', isActive),
       });
     });
@@ -454,20 +500,20 @@ function updateClassMenu() {
 
     if (!featuresAnchor || !faqAnchor) return;
 
-    const featuresRect = featuresAnchor.getBoundingClientRect();
-    const faqRect = faqAnchor.getBoundingClientRect();
+    const featuresRect = getCachedRect(featuresAnchor, 'features');
+    const faqRect = getCachedRect(faqAnchor, 'faq');
     const windowHeight = window.innerHeight;
 
-    // console.log(featuresRect.bottom);
-    // console.log(faqRect.top);
-
+    // Определяем, что ближе к верху экрана (или уже прошло)
     let activeLink = null;
 
-    if (featuresRect.top === 0 || featuresRect.top > -400) {
+    // Если #features в зоне видимости или выше середины экрана
+    if (featuresRect && (featuresRect.top === 0 || featuresRect.top > -400)) {
       activeLink = menuLinks[2]; // "Фичи"
     }
 
-    if (faqRect.top <= 1000) {
+    // Если #faq уже виден или прошёл верх экрана
+    if (faqRect && faqRect.top <= 1000) {
       activeLink = menuLinks[3]; // "Вопросы"
     }
 
@@ -497,17 +543,19 @@ function updatePaginationWhithSlides(sectionIndex) {
   currentSlide = targetSlide;
 
   if (targetSlide === 0) {
-    gsap.set(sliderWrapper, {xPercent: 0});
+    gsap.set(sliderWrapper, {xPercent: 0, force3D: true});
   } else {
-    gsap.set(sliderWrapper, {xPercent: -100 * lastSlide});
+    gsap.set(sliderWrapper, {xPercent: -100 * lastSlide, force3D: true});
   }
 
+  // Обязательно сбрасываем внутренние элементы!
   if (!mobileMode) {
     gsap.set(
       '.service-swiper__slide .slide__img, .service-swiper__slide .slide__content',
       {
         x: 0,
         clearProps: 'transform,opacity',
+        force3D: true,
       }
     );
   }
@@ -527,13 +575,11 @@ menuLinks.forEach((link) => {
 
     if (mobileMode && index < 2) {
       goToSection(index);
-      // return;
     }
-    // console.log(href);
+
     if (mobileMode && index === 2) {
       const target = document.querySelector(href);
       if (!target) return;
-      // console.log(target);
       isAnimating = true;
 
       const prevIndex = currentIndex;
@@ -543,18 +589,19 @@ menuLinks.forEach((link) => {
 
       transitionTl.eventCallback('onComplete', () => {
         gsap.to(window, {
-          scrollTo: sections[2], // сначала к секции
+          scrollTo: sections[2],
           duration: 0.9,
           ease: 'power2.inOut',
+          force3D: true,
           onComplete: () => {
             currentIndex = 2;
             updateClassMenu();
             updateScrollLock();
 
-            // потом к якорю
             gsap.to(lastWrapper, {
               scrollTo: {y: target, offsetY: 90},
               duration: 0.8,
+              force3D: true,
               onComplete: () => {
                 isAnimating = false;
               },
@@ -566,7 +613,6 @@ menuLinks.forEach((link) => {
     if (mobileMode && index === 3) {
       const target = document.querySelector(href);
       if (!target) return;
-      // console.log(target);
       isAnimating = true;
 
       const prevIndex = currentIndex;
@@ -581,17 +627,17 @@ menuLinks.forEach((link) => {
           scrollTo: sections[2],
           duration: 0.9,
           ease: 'power2.inOut',
+          force3D: true,
           onComplete: () => {
             currentIndex = 2;
-            // updateClassMenu();
             updateScrollLock();
             setTimeout(() => {
               isAnimating = false;
             }, 150);
-            // потом к якорю
             gsap.to(lastWrapper, {
               scrollTo: {y: target, offsetY: 90},
               duration: 0.8,
+              force3D: true,
               onComplete: () => {},
             });
           },
@@ -622,10 +668,6 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
 
-    // currentIndex = 3;
-    // console.log(link);
-    // console.log(currentIndex);
-    console.log(Number(link.dataset.slide));
     const index = Number(link.dataset.slide) - 1;
     if (isNaN(index)) return;
 
@@ -635,23 +677,20 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
       scrollTo: sections[2],
       duration: 0.7,
       ease: 'power2.out',
+      force3D: true,
       onComplete() {
-        // console.log(link);
         if (!mobileMode) {
           currentIndex = 2;
-          isAnimating = false;
           updatePaginationWhithSlides(index);
-          goToSlide(index);
+
           footerVisible = checkInnerScroll();
-          scheduleUIUpdate();
+          updateUI();
 
           updateClassMenu();
-          // setTimeout(() => {
-
-          // }, 350);
+          isAnimating = false;
+          goToSlide(index);
         } else {
           currentIndex = 2;
-          isAnimating = false;
           updateClassMenu();
         }
       },
@@ -659,13 +698,19 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
   });
 });
 
-// паралакс
+// ============================================
+// ПАРАЛЛАКС (ОПТИМИЗИРОВАН)
+// ============================================
+
 function enableParallax() {
-  if (mobileMode) return;
+  // Отключаем параллакс на мобильных и touch устройствах
+  if (mobileMode || hasTouch) return;
+
   const mainImg = document.querySelector('.first-wrapper__img img');
   if (!mainImg) return;
 
-  mouseMoveHandler = (e) => {
+  // Throttling для mousemove (~60 FPS)
+  mouseMoveHandler = throttle((e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 50;
     const y = (e.clientY / window.innerHeight - 0.5) * 50;
 
@@ -675,10 +720,11 @@ function enableParallax() {
       duration: 1.2,
       ease: 'power2.out',
       overwrite: 'auto',
+      force3D: true,
     });
-  };
+  }, 16);
 
-  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mousemove', mouseMoveHandler, {passive: true});
 }
 
 function disableParallax() {
@@ -691,8 +737,7 @@ function disableParallax() {
 function updateScrollLock() {
   const shouldUnlock =
     (mobileMode && currentIndex === sliderSectionIndex) ||
-    currentIndex === lastIndex ||
-    (mobileMode && currentIndex === lastIndex);
+    currentIndex === lastIndex;
 
   if (shouldUnlock) {
     unlockScroll();
@@ -701,110 +746,70 @@ function updateScrollLock() {
   }
 }
 
-// if (isMobile()) {
-//   let lastScrollY = window.scrollY;
-//   let userWasInSection2 = false;
-
-//   // Фиксируем факт входа в секцию 2
-//   window.addEventListener('scroll', () => {
-//     if (sections[2].getBoundingClientRect().top <= window.innerHeight * 0.6) {
-//       userWasInSection2 = true;
-//     }
-//   });
-
-//   window.addEventListener(
-//     'scroll',
-//     () => {
-//       if (isAnimating) return;
-//       if (!userWasInSection2) return;
-
-//       const goingUp = window.scrollY < lastScrollY;
-//       lastScrollY = window.scrollY;
-//       if (!goingUp) return;
-
-//       if (currentIndex === 2 && sections[2].getBoundingClientRect().top > 30) {
-//         // console.log('start');
-//         isAnimating = true;
-
-//         gsap.to(window, {
-//           scrollTo: sections[1],
-//           duration: 0.5,
-//           ease: 'power2.out',
-//           onComplete() {
-//             currentIndex = 1;
-//             updateUI();
-//             updateClassMenu();
-//             isAnimating = false;
-//             userWasInSection2 = false;
-//             lockScroll();
-//           },
-//         });
-//       }
-//     },
-//     {passive: true}
-//   );
-// }
-
-// === МОБИЛЬНЫЙ ПЕРЕХОД 2 → 1 ПРИ СВАЙПЕ ВВЕРХ ===
+// ============================================
+// МОБИЛЬНЫЕ ОПТИМИЗАЦИИ
+// ============================================
 
 if (isMobile()) {
-  let lastWrapperScrollTop = 0;
+  let lastScrollY = window.scrollY;
+  let userWasInSection2 = false;
 
-  // Следим только за внутренним scroll внутри последней секции
-  lastWrapper.addEventListener('scroll', () => {
-    lastWrapperScrollTop = lastWrapper.scrollTop;
-  });
+  // Throttled обработчик для отслеживания входа в секцию 2
+  const throttledSection2Check = throttle(() => {
+    if (sections[2]) {
+      const rect = getCachedRect(sections[2], 'section-2-check');
+      if (rect && rect.top <= window.innerHeight * 0.6) {
+        userWasInSection2 = true;
+      }
+    }
+  }, 100);
 
-  // Реагируем именно на свайпы, НЕ на обычный скролл!
-  document.addEventListener(
-    'touchend',
-    (e) => {
-      if (isAnimating) return;
-      if (currentIndex !== 2) return; // работаем только в секции 2
+  window.addEventListener('scroll', throttledSection2Check, {passive: true});
 
-      const swipeDistance = touchStartY - touchEndY;
-      const isSwipeUp = swipeDistance < -minSwipeDistance;
+  // Throttled обработчик для скролла вверх
+  const throttledScrollUp = throttle(() => {
+    if (isAnimating) return;
+    if (!userWasInSection2) return;
 
-      if (!isSwipeUp) return;
+    const goingUp = window.scrollY < lastScrollY;
+    lastScrollY = window.scrollY;
+    if (!goingUp) return;
 
-      // Пользователь свайпнул вверх, но внутри секции 2
-      // Разрешаем перейти на секцию 1 ТОЛЬКО если контент прокручен в самый верх
-      const atTop = lastWrapperScrollTop <= 10;
+    if (currentIndex === 2 && sections[2]) {
+      const rect = getCachedRect(sections[2], 'section-2-scroll');
+      if (rect && rect.top > 30) {
+        isAnimating = true;
 
-      if (!atTop) return; // ещё не вверху — не трогаем секции
+        gsap.to(window, {
+          scrollTo: sections[1],
+          duration: 0.5,
+          ease: 'power2.out',
+          force3D: true,
+          onComplete() {
+            currentIndex = 1;
+            scheduleUIUpdate();
+            isAnimating = false;
+            userWasInSection2 = false;
+            lockScroll();
+          },
+        });
+      }
+    }
+  }, 100);
 
-      // Корректный переход
-      isAnimating = true;
-      goToSection(1);
-      // gsap.to(window, {
-      //   scrollTo: sections[1],
-      //   duration: 0.5,
-      //   ease: 'power2.out',
-      //   onComplete() {
-      //     currentIndex = 1;
-      //     updateUI();
-      //     updateClassMenu();
-      //     isAnimating = false;
-
-      //     // В секции 1 скролл должен быть заблокирован
-      //     lockScroll();
-      //   },
-      // });
-    },
-    {passive: true}
-  );
+  window.addEventListener('scroll', throttledScrollUp, {passive: true});
 }
 
+window.addEventListener('wheel', onwheel, {passive: false});
 if (nextBtn) {
   nextBtn.addEventListener('click', nextScreen);
 }
 
-window.addEventListener('scroll', () => {
-  updateUI();
-  updateClassMenu();
-});
+// Оптимизированный обработчик скролла окна
+window.addEventListener('scroll', scheduleUIUpdate, {passive: true});
 
-window.addEventListener('resize', () => {
+// Оптимизированный обработчик resize
+const optimizedResize = throttle(() => {
   const realCurrentIndex = detectCurrentSection();
 
   updateScrollLock();
@@ -812,66 +817,79 @@ window.addEventListener('resize', () => {
   if (realCurrentIndex !== currentIndex) {
     currentIndex = realCurrentIndex;
     goToSection(currentIndex);
-    // console.log('Resize → corrected currentIndex to', currentIndex);
   }
 
   footerVisible = checkInnerScroll();
   scheduleUIUpdate();
 
-  if (mobileMode && currentIndex === lastIndex) {
+  if (mobileMode && currentIndex === lastSection) {
     unlockScroll();
   } else {
     lockScroll();
   }
-});
+}, 250);
 
-// ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ
-let touchStartY = 0;
-let touchEndY = 0;
-const minSwipeDistance = 60;
+window.addEventListener('resize', optimizedResize, {passive: true});
 
-function handleTouchStart(evt) {
-  touchStartY = evt.changedTouches[0].screenY;
-}
+// ============================================
+// TOUCH СОБЫТИЯ (ОПТИМИЗИРОВАНЫ)
+// ============================================
 
-function handleTouchEnd(evt) {
-  if (mobileMode && currentIndex === lastSection) {
-    return;
+if (hasTouch) {
+  let touchStartY = 0;
+  let touchEndY = 0;
+  const minSwipeDistance = 50;
+  let touchTimeout = null;
+
+  function handleTouchStart(evt) {
+    if (isAnimating) return;
+    touchStartY = evt.changedTouches[0].screenY;
   }
 
-  if (!touchStartY) return;
-
-  touchEndY = evt.changedTouches[0].screenY;
-  handleSwipe();
-}
-
-function handleSwipe(evt) {
-  const distance = touchStartY - touchEndY;
-  const isDownSwipe = distance > minSwipeDistance;
-  const isUpSwipe = distance < -minSwipeDistance;
-
-  // Игнорируем слабые движения
-  if (!isDownSwipe && !isUpSwipe) return;
-
-  if (!mobileMode) return;
-
-  if (mobileMode && currentIndex === lastIndex) {
-    if (lastWrapper.scrollTop > 20) {
-      console.log(lastWrapper.scrollTop);
+  function handleTouchEnd(evt) {
+    if (mobileMode && currentIndex === lastSection) {
       return;
     }
+
+    if (!touchStartY || isAnimating) return;
+
+    touchEndY = evt.changedTouches[0].screenY;
+
+    // Debounce для предотвращения множественных срабатываний
+    if (touchTimeout) clearTimeout(touchTimeout);
+    touchTimeout = setTimeout(() => {
+      handleSwipe();
+      touchTimeout = null;
+    }, 50);
   }
 
-  if (isAnimating) return;
+  function handleSwipe() {
+    const distance = touchStartY - touchEndY;
+    const isDownSwipe = distance > minSwipeDistance;
+    const isUpSwipe = distance < -minSwipeDistance;
 
-  if (isDownSwipe && currentIndex < lastIndex) {
-    goToSection(currentIndex + 1);
-  } else if (isUpSwipe && currentIndex > 0) {
-    goToSection(currentIndex - 1);
+    // Игнорируем слабые движения
+    if (!isDownSwipe && !isUpSwipe) return;
+
+    if (!mobileMode) return;
+
+    if (mobileMode && currentIndex === sliderSectionIndex) {
+      return;
+    }
+
+    if (isAnimating) return;
+
+    if (isDownSwipe && currentIndex < lastIndex) {
+      goToSection(currentIndex + 1);
+    } else if (isUpSwipe && currentIndex > 0) {
+      goToSection(currentIndex - 1);
+    }
+
+    touchStartY = 0;
   }
 
-  touchStartY = 0;
+  // Используем passive: true где возможно
+  document.addEventListener('touchstart', handleTouchStart, {passive: true});
+  document.addEventListener('touchend', handleTouchEnd, {passive: true});
 }
 
-document.addEventListener('touchstart', handleTouchStart, {passive: true});
-document.addEventListener('touchend', handleTouchEnd, {passive: true});

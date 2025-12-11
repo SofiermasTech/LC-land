@@ -29,6 +29,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'dark',
+    controlsLeft: {visibility: {default: true, mobile: true}},
   },
 
   firstIndex: {
@@ -43,6 +44,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'dark',
+    controlsLeft: {visibility: {default: true, mobile: true}},
   },
 
   afterSecond: {
@@ -57,6 +59,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'light',
+    controlsLeft: {visibility: {default: true, mobile: false}},
   },
 
   lastSection: {
@@ -71,11 +74,12 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'light',
+    controlsLeft: {visibility: {default: true, mobile: false}},
   },
 
   lastSectionBottom: {
     menuColor: 'white',
-    menuOffset: window.innerHeight,
+    menuOffset: window.height,
     showTg: false,
     showTgText: false,
     nextBtn: {visible: false, rotate: false, textIndex: null},
@@ -85,6 +89,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: false,
     iconUpVisible: true,
     buttonShadow: 'light',
+    controlsLeft: {visibility: {default: true, mobile: false}},
   },
 };
 
@@ -153,35 +158,23 @@ function animateLogo(mode) {
 }
 
 function applyUIState(config) {
-  //
-  // Color / class
-  //
   menuWrapper.classList.toggle('white', config.menuColor === 'white');
 
-  //
-  // Menu moving (last screens)
-  //
   gsap.to('.menu', {
-    y: 0,
+    y: window.height,
     duration: 0.3,
     ease: 'power3.inOut',
   });
 
-  //
-  // Telegram button
-  //
-  tgBtn.forEach((btn) => {
-    gsap.to(btn, {
-      opacity: config.showTg ? 1 : 0,
-      x: config.showTg ? 0 : '-100%',
-      duration: 0.6,
-      ease: 'power2.out',
-    });
+  // tgBtn.forEach((btn) => {
+  gsap.to(tgBtn, {
+    opacity: config.showTg ? 1 : 0,
+    x: config.showTg ? 0 : '-100%',
+    duration: 0.6,
+    ease: 'power2.out',
   });
+  // });
 
-  //
-  // Telegram text
-  //
   tgBtnText.forEach((txt) => {
     gsap.to(txt, {
       opacity: config.showTgText ? 1 : 0,
@@ -191,9 +184,6 @@ function applyUIState(config) {
     });
   });
 
-  //
-  // Next button
-  //
   iconDownSvg.classList.toggle('rotate', config.nextBtn.rotate);
 
   if (config.nextBtn.visible) {
@@ -231,9 +221,6 @@ function applyUIState(config) {
     });
   }
 
-  //
-  // Icons up/down
-  //
   iconDown.style.display = config.iconDownVisible ? 'block' : 'none';
   iconUp.style.display = config.iconUpVisible ? 'block' : 'none';
 
@@ -246,12 +233,8 @@ function applyUIState(config) {
   gsap.to('.controls__btn-reg .base-btn', {boxShadow: shadow, duration: 0.3});
   gsap.to('.btn-scroll', {boxShadow: shadow, duration: 0.3});
 
-  //
-  // Logo
-  //
   const isMobile = window.matchMedia('(max-width: 1300px)').matches;
 
-  // правильная видимость логотипа
   const finalLogoVisible = isMobile
     ? config.mobileLogoVisible
     : config.logoVisible;
@@ -261,18 +244,16 @@ function applyUIState(config) {
     visibility: finalLogoVisible ? 'visible' : 'hidden',
   });
 
-  // Logo full/compact switch
   animateLogo(config.logoMode);
-  //
-  // Left controls
-  //
-  // gsap.set('.controls--left', {
-  //   opacity: config.controlsVisible ? 1 : 0,
-  //   visibility: config.controlsVisible ? 'visible' : 'hidden',
-  // });
+
+  gsap.set('.controls--left', {
+    visibility: isMobile ? 'hidden' : 'visible',
+  });
 }
 
 function updateUI() {
+  console.log('updateUI');
+
   if (!mobileMode) {
     if (currentIndex === 0) return applyUIState(UI_CONTROL_STATES.default);
     if (currentIndex === 1) return applyUIState(UI_CONTROL_STATES.firstIndex);
@@ -289,8 +270,9 @@ function updateUI() {
     if (currentIndex === 0) return applyUIState(UI_CONTROL_STATES.default);
     if (currentIndex === 1) return applyUIState(UI_CONTROL_STATES.firstIndex);
 
-    if (currentIndex === lastIndex && !footerVisible) return applyUIState(UI_CONTROL_STATES.afterSecond);
-    
+    if (currentIndex === lastIndex && !footerVisible)
+      return applyUIState(UI_CONTROL_STATES.afterSecond);
+
     if (currentIndex === lastIndex && footerVisible)
       return applyUIState(UI_CONTROL_STATES.lastSectionBottom);
   }
