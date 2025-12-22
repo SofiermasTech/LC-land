@@ -170,6 +170,7 @@ function applyUIState(config) {
   gsap.to(tgBtn, {
     opacity: config.showTg ? 1 : 0,
     x: config.showTg ? 0 : '-100%',
+    visibility: config.showTg ? 'visible' : 'hidden',
     duration: 0.6,
     ease: 'power2.out',
   });

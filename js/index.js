@@ -78,7 +78,6 @@ function initServiceSwiper() {
 }
 
 // Мобильный слайдер
-
 function initMobileSwiper() {
   // if (mobileMode) {
   if (!mobileMode) return;
@@ -200,8 +199,6 @@ function updateSliders() {
   }
 }
 
-
-
 window.addEventListener('resize', () => {
   mobileMode = isMobile();
   updateSliders();
@@ -223,3 +220,29 @@ faqItems.addEventListener('click', (event) => {
 });
 
 // console.log(window.innerWidth, window.innerHeight);
+
+const scene = document.querySelector('.lightning-scene');
+
+let currentLightning = 0;
+let lightningInterval = null;
+const lightnings = ['lightning-center-active', 'lightning-right-active'];
+
+function lightningStrike(typeClass) {
+  
+  // основной удар
+  scene.classList.add(typeClass);
+
+  // микро-мерцание
+  setTimeout(() => {
+    scene.classList.remove(typeClass);
+  }, 150);
+
+  setTimeout(() => {
+    scene.classList.add(typeClass);
+  }, 300);
+
+  // затухание
+  setTimeout(() => {
+    scene.classList.remove(typeClass);
+  }, 450);
+}

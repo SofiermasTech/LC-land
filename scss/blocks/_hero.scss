@@ -60,6 +60,7 @@
 
   &__title {
     margin: 0;
+    margin-left: -12px;
     font-weight: 800;
     font-size: 116px;
     line-height: 80%;
@@ -105,12 +106,14 @@
   }
 
   &__info {
+    max-width: 600px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 22px;
 
-    p:last-of-type {
+    &>p:last-child {
+      min-width: 270px;
       width: fit-content;
       text-align: right;
     }
@@ -204,6 +207,7 @@
 
   &__benf-item {
     width: fit-content;
+    height: 36px;
     box-sizing: border-box;
     border: 1.50px solid var(--white);
     border-radius: var(--br-s);
@@ -211,15 +215,21 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    line-height: 20px;
+
+    &:not(:nth-child(1), :nth-child(2), :nth-child(3)) {
+      margin-top: -0.75px;
+    }
 
     p {
       margin: 0;
-      line-height: 133%;
+      line-height: 20px;
       letter-spacing: -0.03em;
       color: var(--white);
 
       @include tablet-bottom {
         font-size: 13px;
+        line-height: 18px;
       }
 
     }
@@ -230,9 +240,15 @@
       background-color: var(--white);
       border-radius: var(--br-xs);
       font-weight: 700;
-      line-height: 133%;
+      line-height: 20px;
       letter-spacing: -0.03em;
       color: var(--dark);
+
+
+      @include tablet-bottom {
+        font-size: 13px;
+        line-height: 18px;
+      }
     }
 
     &.empty {
@@ -259,7 +275,9 @@
     }
 
     &.with-block {
-      padding: 2px 4px;
+      margin-left: -0.8px;
+      // border-left: none;
+      padding: 2px 3px;
       padding-right: 12px;
     }
 
@@ -276,6 +294,8 @@
     }
 
     &.order-3 {
+      margin-left: -0.8px;
+
       @include tablet-bottom {
         order: -3;
       }
@@ -288,12 +308,16 @@
     }
 
     &.order-1 {
+      margin-left: -0.8px;
+
       @include tablet-bottom {
         order: -1;
       }
     }
 
     &.order-0 {
+      margin-left: -0.8px;
+
       @include tablet-bottom {
         display: none;
       }
@@ -301,7 +325,7 @@
 
     &:last-of-type {
       background-color: var(--white);
-      padding: 2px 4px;
+      padding: 1px 2px;
       padding-left: 12px;
 
       p {
@@ -319,6 +343,7 @@
   }
 
   &__blur {
+    display: none;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -335,17 +360,18 @@
 .first-wrapper {
   position: relative;
   z-index: 8;
+  // overflow: hidden;
 
   &__img {
-    height: 120%;
-    width: 120%;
+    height: calc(100% + 80px);
+    width: calc(100% + 80px);
     position: fixed;
     top: 0;
     z-index: -1;
     pointer-events: none;
-    background-color: #000;
-    top: -10%;
-    left: -10%;
+    background-color: #000015;
+    top: -40px;
+    left: -40px;
 
     // &.opacity {
     //   opacity: 0;
@@ -364,5 +390,213 @@
         object-position: center 40%;
       }
     }
+  }
+}
+
+.img-gradient,
+.img-paralax {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.img-gradient {}
+
+.img-paralax {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+
+  &--l1 {
+    animation: particles-opacity 10s ease infinite;
+  }
+
+  &--l2 {
+    animation: particles-opacity 16s ease infinite;
+  }
+
+  &--l3 {
+    animation: particles-opacity 22s ease infinite;
+  }
+
+  &--l4-d {
+    opacity: 1;
+  }
+
+  &--l4-light-center {
+    opacity: 0;
+  }
+
+  &--l4-light-right {
+    opacity: 0;
+  }
+}
+
+@keyframes particles-opacity {
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.comets-wrapper {
+  position: absolute;
+  top: -32%;
+  right: 30%;
+  border: 3px solid #599cff;
+  width: 25vw;
+  height: 100vw;
+  transform: rotate(45deg);
+  pointer-events: none;
+  // overflow: hidden;
+
+  .img-comet {
+    position: absolute;
+    top: -5%;
+    left: 0;
+    transform: rotate(-45deg);
+    object-fit: contain;
+
+    animation-name: comet-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+
+    &--1 {
+      width: 300px;
+      height: 220px;
+      animation-duration: 10s;
+      animation-delay: 7s;
+      left: 50%;
+
+      @include mobile {
+        left: 180%;
+      }
+    }
+
+    &--2 {
+      width: 76px;
+      height: 78px;
+      left: 20%;
+      animation-duration: 25s;
+      animation-delay: 14s;
+    }
+
+    &--3 {
+      width: 87px;
+      height: 88px;
+      left: 58%;
+      animation-duration: 20s;
+      animation-delay: 7s;
+
+
+      @include mobile {
+        left: 100%;
+      }
+    }
+
+    &--4 {
+      width: 63px;
+      height: 67px;
+      left: 35%;
+      animation-duration: 24s;
+      animation-delay: 24s;
+    }
+
+    &--5 {
+      width: 50px;
+      height: 54px;
+      left: -2%;
+      animation-duration: 26s;
+      animation-delay: 0s;
+    }
+  }
+}
+
+@keyframes comet-fall {
+  0% {
+    transform: translateY(-5%) rotate(-45deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  95% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(180vh) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+.img-lightening {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.lightening-center,
+.lightening-right {
+  opacity: 0;
+}
+
+/* CENTER */
+.lightning-center-active .lightening-center {
+  opacity: 1;
+}
+
+.lightning-center-active .img-paralax--l4-light-center {
+  opacity: 1;
+}
+
+.lightning-center-active .img-paralax--l4-d {
+  opacity: 0;
+}
+
+/* RIGHT */
+.lightning-right-active .lightening-right {
+  opacity: 1;
+}
+
+.lightning-right-active .img-paralax--l4-light-right {
+  opacity: 1;
+}
+
+.lightning-right-active .img-paralax--l4-d {
+  opacity: 0;
+}
+
+.first-wrapper.no-comets-animation {
+  .img-comet {
+    animation: none;
   }
 }

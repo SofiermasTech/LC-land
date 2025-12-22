@@ -1,7 +1,6 @@
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 // состояния
-
 let isAnimating = false;
 let isBottom = false;
 
@@ -38,13 +37,14 @@ const lastWrapper = config.lastWrapper;
 const lastSection = sections[lastIndex];
 
 let currentIndex = detectCurrentSection();
+// let currentIndex = 0;
 
 console.log('lastWrapper', lastWrapper);
 console.log('lastSection', lastSection);
 
 // остальные кнопки + меню
 const menuLinks = document.querySelectorAll('.menu__link');
-const footerLinks = document.querySelectorAll('.footer__links-item.m a');
+// const footerLinks = document.querySelectorAll('.footer__links-item.m a');
 
 // слайдер
 const sliderSectionIndex = 2;
@@ -55,18 +55,6 @@ const lastSlide = slides.length - 1;
 
 // mobile
 let mouseMoveHandler = null;
-// lockScroll();
-
-// gsap.defaults({
-//   force3D: true, // Аппаратное ускорение
-// });
-
-updateUI();
-// updateSectionsUI(currentIndex);
-updateClassMenu();
-// AOS.init({});
-// console.log(mobileMode);
-// console.log(currentIndex);
 
 function goToSection(index) {
   if (isAnimating) return;
@@ -88,10 +76,18 @@ function goToSection(index) {
   const master = gsap.timeline({
     onComplete() {
       currentIndex = nextIndex;
-      // updateUI();
+      updateUI();
       // updateSectionsUI(currentIndex);
+      updateClassMenu();
       updateScrollLock();
       updatePaginationWhithSlides(nextIndex);
+
+      if (currentIndex === 0) {
+        startLightning();
+      } else {
+        stopLightning();
+      }
+
       if (index === lastIndex) {
         lastWrapper.scrollTop = 0;
       }
@@ -104,10 +100,11 @@ function goToSection(index) {
   master.add(updateUI((currentIndex = index)));
   master.add(scrollTween, '-=0.6');
 
-  console.log(master);
-  console.log('Переход2 длится:', master.totalDuration(), 'сек');
+  // console.log(master);
+  // console.log('Переход2 длится:', master.totalDuration(), 'сек');
 }
 
+// скролл для десктопа
 function onwheel(evt) {
   if (isAnimating) {
     evt.preventDefault();
@@ -316,10 +313,10 @@ function nextScreen() {
   if (isAnimating) return;
   // checkScrollPosition();
 
-  if (mobileMode && currentIndex === sliderSectionIndex) {
-    window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
-    return;
-  }
+  // if (mobileMode && currentIndex === sliderSectionIndex) {
+  //   window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
+  //   return;
+  // }
 
   if (currentIndex === sliderSectionIndex && !mobileMode) {
     if (currentSlide < lastSlide) return goToSlide(currentSlide + 1);
@@ -380,32 +377,42 @@ lastWrapper.addEventListener('scroll', () => {
 
 if (!mobileMode) {
   window.addEventListener('wheel', onwheel, {passive: false});
+
+  // свободный скролл в посл. секции
   lastWrapper.addEventListener('wheel', (e) => {
     const atTop = lastWrapper.scrollTop <= 0;
 
     if (e.deltaY < 0) {
-      // Скролл вверх
       if (!atTop) {
-        // Внутренний контент ещё прокручивается — НЕ передавать скролл родителю
+        // скроллим внутр контент до конца
         e.stopPropagation();
         return;
       } else {
-        // Только когда контент реально вверху → разрешить переход на предыдущую секцию
+        // только когда контент вверху, то переходим на предыдущую секцию
         goToSection(currentIndex - 1);
       }
     }
   });
 }
 
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
   currentIndex = detectCurrentSection();
+  // currentIndex = 0;
 
   if (currentIndex === 0) {
     animationOnStart();
+    startLightning();
   } else {
     updateSectionsUI(currentIndex);
+    stopLightning();
   }
+
   updateScrollLock();
+  updateUI();
+  updateClassMenu();
+});
+
+document.addEventListener('load', () => {
   updatePaginationWhithSlides();
   footerVisible = checkInnerScroll();
   // updateUI();
@@ -420,7 +427,6 @@ function updateClassMenu() {
           duration: 0.3,
           ease: 'power2.out',
           overwrite: true,
-          // force3D: true,
           onStart: () => link.classList.add('active'),
         });
       } else {
@@ -428,13 +434,13 @@ function updateClassMenu() {
           duration: 0.3,
           ease: 'power2.out',
           overwrite: true,
-          // force3D: true,
           onStart: () => link.classList.remove('active'),
         });
       }
     });
   }
 
+  // доп. условия для моб. т.к.последние 2 секции объединяются в одну
   if (mobileMode && currentIndex < 2) {
     menuLinks.forEach((link, index) => {
       const isActive = index === currentIndex;
@@ -448,7 +454,8 @@ function updateClassMenu() {
     return;
   }
 
-  if (currentIndex === 2) {
+  // определяем позицию скролла для переключения активного пункта
+  if (mobileMode && currentIndex === 2) {
     const featuresAnchor = document.querySelector('#features');
     const faqAnchor = document.querySelector('#faq');
 
@@ -456,31 +463,30 @@ function updateClassMenu() {
 
     const featuresRect = featuresAnchor.getBoundingClientRect();
     const faqRect = faqAnchor.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
 
     // console.log(featuresRect.bottom);
     // console.log(faqRect.top);
 
     let activeLink = null;
 
-    if (featuresRect.top === 0 || featuresRect.top > -400) {
+    if (featuresRect.top === 0 || featuresRect.top > -700) {
       activeLink = menuLinks[2]; // "Фичи"
     }
 
-    if (faqRect.top <= 1000) {
+    if (faqRect.top <= 700) {
       activeLink = menuLinks[3]; // "Вопросы"
     }
 
     // Убираем active у всех
     menuLinks.forEach((l) => l.classList.remove('active'));
 
-    // Добавляем нужному
     if (activeLink) {
       activeLink.classList.add('active');
     }
   }
 }
 
+// перематывает слайдер в начало/конец в зависимости от направления перехода по ссылкам
 function updatePaginationWhithSlides(sectionIndex) {
   if (sectionIndex === sliderSectionIndex) return;
 
@@ -514,6 +520,7 @@ function updatePaginationWhithSlides(sectionIndex) {
   window.dispatchEvent(new CustomEvent('slidechange', {detail: targetSlide}));
 }
 
+// переход по меню и ссылкам в футере
 menuLinks.forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
@@ -527,42 +534,16 @@ menuLinks.forEach((link) => {
 
     if (mobileMode && index < 2) {
       goToSection(index);
-      // return;
     }
-    // console.log(href);
+
+    // доп. условия для объединенной секции
     if (mobileMode && index === 2) {
       const target = document.querySelector(href);
       if (!target) return;
       // console.log(target);
-      isAnimating = true;
-
-      const prevIndex = currentIndex;
-      const nextIndex = index;
-
-      const transitionTl = runSectionTransition(prevIndex, nextIndex);
-
-      transitionTl.eventCallback('onComplete', () => {
-        gsap.to(window, {
-          scrollTo: sections[2], // сначала к секции
-          duration: 0.9,
-          ease: 'power2.inOut',
-          onComplete: () => {
-            currentIndex = 2;
-            updateClassMenu();
-            updateScrollLock();
-
-            // потом к якорю
-            gsap.to(lastWrapper, {
-              scrollTo: {y: target, offsetY: 90},
-              duration: 0.8,
-              onComplete: () => {
-                isAnimating = false;
-              },
-            });
-          },
-        });
-      });
+      goToSection(2);
     }
+
     if (mobileMode && index === 3) {
       const target = document.querySelector(href);
       if (!target) return;
@@ -577,13 +558,14 @@ menuLinks.forEach((link) => {
       transitionTl.eventCallback('onComplete', () => {
         menuLinks.forEach((l) => l.classList.remove('active'));
         link.classList.add('active');
+        // переход к секции
         gsap.to(window, {
           scrollTo: sections[2],
           duration: 0.9,
           ease: 'power2.inOut',
           onComplete: () => {
             currentIndex = 2;
-            // updateClassMenu();
+            updateUI();
             updateScrollLock();
             setTimeout(() => {
               isAnimating = false;
@@ -601,80 +583,147 @@ menuLinks.forEach((link) => {
   });
 });
 
-footerLinks.forEach((link) => {
+// .m a - блок ссылок из меню
+document.querySelectorAll('.footer__links-item.m a').forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
     const index = Number(link.dataset.index);
+    const href = link.getAttribute('href');
 
     if (!mobileMode) {
       goToSection(index);
       return;
     }
 
-    if (mobileMode && index < 2) {
+    if (mobileMode && index <= 2) {
       goToSection(index);
       return;
+    }
+
+    if (mobileMode && index === 3) {
+      const target = document.querySelector(href);
+      if (!target) return;
+      // console.log(target);
+      isAnimating = true;
+
+      const prevIndex = currentIndex;
+      const nextIndex = index;
+
+      const transitionTl = runSectionTransition(prevIndex, nextIndex);
+
+      transitionTl.eventCallback('onComplete', () => {
+        // переход к секции
+        gsap.to(window, {
+          scrollTo: sections[2],
+          duration: 0.9,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            currentIndex = 2;
+            updateUI();
+            updateScrollLock();
+            setTimeout(() => {
+              isAnimating = false;
+            }, 150);
+            // потом к якорю
+            gsap.to(lastWrapper, {
+              scrollTo: {y: target, offsetY: 90},
+              duration: 0.8,
+              onComplete: () => {},
+            });
+          },
+        });
+      });
     }
   });
 });
 
+// console.log(mobileSwiperMain);
+
+// footer.s a - блок ссылок для слайдера
 document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
 
-    // currentIndex = 3;
-    // console.log(link);
-    // console.log(currentIndex);
-    console.log(Number(link.dataset.slide));
     const index = Number(link.dataset.slide) - 1;
     if (isNaN(index)) return;
 
-    // Скролл к секции со слайдером
     isAnimating = true;
-    gsap.to(window, {
-      scrollTo: sections[2],
-      duration: 0.7,
-      ease: 'power2.out',
-      onComplete() {
-        // console.log(link);
-        if (!mobileMode) {
-          currentIndex = 2;
-          isAnimating = false;
-          updatePaginationWhithSlides(index);
-          goToSlide(index);
-          footerVisible = checkInnerScroll();
-          scheduleUIUpdate();
 
-          updateClassMenu();
-          // setTimeout(() => {
+    if (!mobileMode) {
+      const prevIndex = lastIndex;
+      const nextIndex = sliderSectionIndex;
+      const transitionTl = runSectionTransition(prevIndex, nextIndex);
 
-          // }, 350);
-        } else {
-          currentIndex = 2;
+      transitionTl.eventCallback('onComplete', () => {
+        gsap.to(window, {
+          scrollTo: sections[2],
+          duration: 0.7,
+          ease: 'power2.out',
+          onComplete() {
+            currentIndex = 2;
+            isAnimating = false;
+
+            currentSlide = index;
+            gsap.set(sliderWrapper, {xPercent: -100 * index});
+            gsap.set(
+              '.service-swiper__slide .slide__img, .service-swiper__slide .slide__content',
+              {
+                x: 0,
+                clearProps: 'transform,opacity', // Чистим все states для всех слайдов
+              }
+            );
+            window.dispatchEvent(
+              new CustomEvent('slidechange', {detail: index})
+            );
+
+            footerVisible = checkInnerScroll();
+            updateUI();
+            updateClassMenu();
+          },
+        });
+      });
+    } else {
+      currentIndex = 2;
+      updateClassMenu();
+
+      gsap.to(lastWrapper, {
+        scrollTo: {y: 0, offsetY: 90},
+        duration: 0.8,
+        onComplete: () => {
+          if (mobileSwiperMain) {
+            mobileSwiperMain.slideTo(index, 600);
+          }
           isAnimating = false;
-          updateClassMenu();
-        }
-      },
-    });
+        },
+      });
+    }
   });
 });
 
 // паралакс
 function enableParallax() {
   if (mobileMode) return;
-  const mainImg = document.querySelector('.first-wrapper__img img');
-  if (!mainImg) return;
+  const paralaxImg = document.querySelectorAll(
+    '.first-wrapper__img .img-paralax'
+  );
+  if (!paralaxImg) return;
 
+  // const PARALLAX_LAYERS = [40, 34, 28, 22, 16, 10, 4];
+  console.log(paralaxImg);
   mouseMoveHandler = (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 50;
-    const y = (e.clientY / window.innerHeight - 0.5) * 50;
+    const x = (e.clientX / window.innerWidth - 0.5) * 2;
+    const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-    gsap.to(mainImg, {
-      x: -x,
-      y: -y,
-      duration: 1.2,
-      ease: 'power2.out',
-      overwrite: 'auto',
+    paralaxImg.forEach((img) => {
+      const layerShift = Number(img.dataset.parallax);
+      // console.log(img, index);
+      gsap.to(img, {
+        x: x * layerShift,
+        y: y * layerShift,
+        duration: 1.5,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      });
     });
   };
 
@@ -688,62 +737,54 @@ function disableParallax() {
   }
 }
 
-function updateScrollLock() {
-  const shouldUnlock =
-    (mobileMode && currentIndex === sliderSectionIndex) ||
-    currentIndex === lastIndex ||
-    (mobileMode && currentIndex === lastIndex);
+// для откл скролла на ios
+function preventScroll(e) {
+  e.preventDefault();
+}
 
-  if (shouldUnlock) {
+function enableTouchBlock() {
+  document.addEventListener('touchmove', preventScroll, {passive: false});
+}
+
+function disableTouchBlock() {
+  document.removeEventListener('touchmove', preventScroll);
+}
+
+// function updateScrollLock() {
+//   const shouldUnlock =
+//     (mobileMode && currentIndex === sliderSectionIndex) ||
+//     currentIndex === lastIndex ||
+//     (mobileMode && currentIndex === lastIndex);
+
+//   if (shouldUnlock) {
+//     unlockScroll();
+//     disableTouchBlock();
+//   } else {
+//     lockScroll();
+//     enableTouchBlock();
+//   }
+// }
+
+function updateScrollLock() {
+  const shouldUnlock = currentIndex === lastIndex;
+
+  if (!mobileMode && shouldUnlock) {
     unlockScroll();
   } else {
     lockScroll();
   }
+
+  if (mobileMode) {
+    lockScroll();
+    enableTouchBlock();
+    // lastSection.classList.remove('fixed-section');
+
+    if (shouldUnlock) {
+      disableTouchBlock();
+      // lastSection.classList.add('fixed-section');
+    }
+  }
 }
-
-// if (isMobile()) {
-//   let lastScrollY = window.scrollY;
-//   let userWasInSection2 = false;
-
-//   // Фиксируем факт входа в секцию 2
-//   window.addEventListener('scroll', () => {
-//     if (sections[2].getBoundingClientRect().top <= window.innerHeight * 0.6) {
-//       userWasInSection2 = true;
-//     }
-//   });
-
-//   window.addEventListener(
-//     'scroll',
-//     () => {
-//       if (isAnimating) return;
-//       if (!userWasInSection2) return;
-
-//       const goingUp = window.scrollY < lastScrollY;
-//       lastScrollY = window.scrollY;
-//       if (!goingUp) return;
-
-//       if (currentIndex === 2 && sections[2].getBoundingClientRect().top > 30) {
-//         // console.log('start');
-//         isAnimating = true;
-
-//         gsap.to(window, {
-//           scrollTo: sections[1],
-//           duration: 0.5,
-//           ease: 'power2.out',
-//           onComplete() {
-//             currentIndex = 1;
-//             updateUI();
-//             updateClassMenu();
-//             isAnimating = false;
-//             userWasInSection2 = false;
-//             lockScroll();
-//           },
-//         });
-//       }
-//     },
-//     {passive: true}
-//   );
-// }
 
 // === МОБИЛЬНЫЙ ПЕРЕХОД 2 → 1 ПРИ СВАЙПЕ ВВЕРХ ===
 
@@ -753,6 +794,13 @@ if (isMobile()) {
   // Следим только за внутренним scroll внутри последней секции
   lastWrapper.addEventListener('scroll', () => {
     lastWrapperScrollTop = lastWrapper.scrollTop;
+    updateClassMenu();
+
+    if (lastWrapperScrollTop < -5) goToSection(1);
+    // if (lastWrapperScrollTop === 0) {
+    //   goToSection(1);
+    // }
+    // console.log(lastWrapperScrollTop);
   });
 
   // Реагируем именно на свайпы, НЕ на обычный скролл!
@@ -761,6 +809,7 @@ if (isMobile()) {
     (e) => {
       if (isAnimating) return;
       if (currentIndex !== 2) return; // работаем только в секции 2
+      lastWrapperScrollTop = lastWrapper.scrollTop;
 
       const swipeDistance = touchStartY - touchEndY;
       const isSwipeUp = swipeDistance < -minSwipeDistance;
@@ -769,27 +818,14 @@ if (isMobile()) {
 
       // Пользователь свайпнул вверх, но внутри секции 2
       // Разрешаем перейти на секцию 1 ТОЛЬКО если контент прокручен в самый верх
-      const atTop = lastWrapperScrollTop <= 10;
+      const atTop = lastWrapperScrollTop <= 5;
 
       if (!atTop) return; // ещё не вверху — не трогаем секции
 
       // Корректный переход
-      isAnimating = true;
-      goToSection(1);
-      // gsap.to(window, {
-      //   scrollTo: sections[1],
-      //   duration: 0.5,
-      //   ease: 'power2.out',
-      //   onComplete() {
-      //     currentIndex = 1;
-      //     updateUI();
-      //     updateClassMenu();
-      //     isAnimating = false;
-
-      //     // В секции 1 скролл должен быть заблокирован
-      //     lockScroll();
-      //   },
-      // });
+      if (atTop) {
+        goToSection(1);
+      }
     },
     {passive: true}
   );
@@ -799,11 +835,12 @@ if (nextBtn) {
   nextBtn.addEventListener('click', nextScreen);
 }
 
-window.addEventListener('scroll', () => {
-  updateUI();
-  updateClassMenu();
-});
-
+if (!mobileMode) {
+  window.addEventListener('scroll', () => {
+    updateUI();
+    updateClassMenu();
+  });
+}
 window.addEventListener('resize', () => {
   const realCurrentIndex = detectCurrentSection();
 
@@ -811,18 +848,14 @@ window.addEventListener('resize', () => {
 
   if (realCurrentIndex !== currentIndex) {
     currentIndex = realCurrentIndex;
+    // currentIndex = 0;
     goToSection(currentIndex);
-    // console.log('Resize → corrected currentIndex to', currentIndex);
+    console.log('Resize → corrected currentIndex to', currentIndex);
   }
 
   footerVisible = checkInnerScroll();
-  scheduleUIUpdate();
-
-  if (mobileMode && currentIndex === lastIndex) {
-    unlockScroll();
-  } else {
-    lockScroll();
-  }
+  updateUI();
+  updateClassMenu();
 });
 
 // ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ
@@ -875,3 +908,24 @@ function handleSwipe(evt) {
 
 document.addEventListener('touchstart', handleTouchStart, {passive: true});
 document.addEventListener('touchend', handleTouchEnd, {passive: true});
+
+// запуск анимации 1го экрана
+function startLightning() {
+  if (lightningInterval) return;
+
+  lightningInterval = setInterval(() => {
+    const type = lightnings[currentLightning];
+    lightningStrike(type);
+    currentLightning = (currentLightning + 1) % lightnings.length;
+  }, 6000);
+}
+
+function stopLightning() {
+  if (!lightningInterval) return;
+
+  clearInterval(lightningInterval);
+  lightningInterval = null;
+
+  // очищаем состояние
+  scene.classList.remove(...lightnings);
+}

@@ -15,7 +15,6 @@
 
   &--left {
     left: 0;
-
   }
 
   &__logo {
@@ -25,6 +24,10 @@
     gap: 24px;
     text-decoration: none;
     color: inherit;
+
+    @media screen and (max-height: 740px) and (max-width: 1600px) {
+      margin-right: 0;
+    }
 
     @include tablet-bottom {
       flex-direction: column;
@@ -47,9 +50,9 @@
     align-items: center;
     gap: 16px;
 
-    @include laptop {
-      margin-top: auto;
-    }
+    // @include laptop {
+    //   margin-top: auto;
+    // }
 
     @include tablet {
       .tg__text {

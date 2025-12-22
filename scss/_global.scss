@@ -31,9 +31,9 @@ html {
   // overflow: hidden;
 }
 
-.main {
-  // display: flex;
-}
+// .main {
+//   overflow: hidden;
+// }
 
 .container {
   max-width: calc(var(--container-width) + (var(--container-padding) * 2));
@@ -100,9 +100,22 @@ html {
     border-radius: 20px;
   }
 
+  &.fixed-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 11;
+  }
+
+  .section-last-wrapper {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   @include tablet {
     height: 100dvh;
-    overflow-y: scroll;
+    overflow: hidden;
   }
 }
 
@@ -136,6 +149,8 @@ html {
 .section-last-wrapper {
   overflow-y: auto;
   height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     width: 0;
@@ -149,6 +164,22 @@ html {
     background-color: transparent;
     border-radius: 20px;
   }
+}
+
+#section-3 {
+
+  @include tablet {
+    overflow-y: hidden;
+  }
+
+}
+
+#section-4 .section-last-wrapper {
+
+  @include tablet {
+    overflow-y: hidden;
+  }
+
 }
 
 .base-btn {
@@ -249,7 +280,7 @@ html {
   letter-spacing: -0.05em;
   text-transform: uppercase;
 
-  @media screen and (max-height: 740px) and (max-width: 1600px) {
+  @media screen and (max-height: 680px) and (max-width: 1600px) {
     &.hero__info-text {
       font-size: 15px;
       font-weight: 700;

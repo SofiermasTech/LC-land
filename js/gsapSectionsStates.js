@@ -131,6 +131,9 @@ function animationOnStart() {
   if (!mobileMode) {
     enableParallax();
   }
+  document
+    .querySelector('.first-wrapper')
+    .classList.remove('no-comets-animation');
   console.log('animationOnStart нач');
   document.querySelector('.service-swiper__pagination').style.opacity = 0;
   document.querySelector('.service-swiper__pagination').style.visibility =
@@ -189,7 +192,7 @@ function scrollImgState0(index) {
       duration: 0.1,
       ease: 'power4.out',
     }).fromTo(
-      '.first-wrapper__img img',
+      '.first-wrapper__img .img-paralax--l4-d',
       {x: '150px', opacity: 0},
       {x: 0, opacity: 1, duration: 0.7, ease: 'power2.out'},
       '-=0.1'
@@ -203,7 +206,7 @@ function scrollImgState1(index) {
   const tl = gsap.timeline();
   console.log('scrollImgWrapper1 запущен');
   if (index === 1) {
-    tl.set('.first-wrapper__img img', {
+    tl.set('.first-wrapper__img .img-paralax--l4-d', {
       x: 0,
       opacity: 1,
     }).set('.first-wrapper__img', {
@@ -217,7 +220,7 @@ function scrollImgState1(index) {
 function scrollImgStateOther() {
   const tl = gsap.timeline();
   console.log('scrollImgWrapper2 запущен');
-  tl.to('.first-wrapper__img img', {
+  tl.to('.first-wrapper__img .img-paralax--l4-d', {
     opacity: 0,
     duration: 0.8,
     ease: 'power2.inOut',
@@ -294,9 +297,20 @@ function section0_enterBackward() {
     enableParallax();
   }
 
-  tl.add(scrollImgState0(0));
-  tl.to(
+  if (currentIndex !== 1) {
+    tl.add(scrollImgState0(0));
+  }
+
+  document
+    .querySelector('.first-wrapper')
+    .classList.remove('no-comets-animation');
+
+  tl.fromTo(
     '.hero__fix-wrapper',
+    {
+      x: '-150%',
+      opacity: 0,
+    },
     {
       duration: 0.7,
       x: 0,
@@ -312,8 +326,10 @@ function section0_enterBackward() {
     ease: 'power2.out',
   });
 
-  const sec2 = document.querySelector('.numbers__overlay');
-  sec2.classList.remove('section-fixed');
+  setTimeout(() => {
+    const sec2 = document.querySelector('.numbers__overlay');
+    sec2.classList.remove('section-fixed');
+  }, 1000);
 
   return tl;
 }
@@ -321,7 +337,11 @@ function section0_enterBackward() {
 function section0_leaveForward() {
   console.log('section0_leaveForward');
   const tl = gsap.timeline();
-  disableParallax();
+  if (!mobileMode) {
+    disableParallax();
+  }
+
+  document.querySelector('.first-wrapper').classList.add('no-comets-animation');
 
   tl.to('.hero__fix-wrapper', {
     duration: 0.3,
@@ -361,14 +381,16 @@ function section1_enterForward() {
   sec2.classList.add('section-fixed');
   document.querySelector('.hero__blur').style.position = 'fixed';
 
-  tl.add(scrollImgState1(1))
-    .to('.hero__blur', {
-      duration: 0.4,
-      backdropFilter: 'blur(20px)',
-      opacity: 1,
-      visibility: 'visible',
-      ease: 'power2.out',
-    })
+  if (currentIndex >= 2) {
+    tl.add(scrollImgState1(1));
+  }
+  tl.to('.hero__blur', {
+    duration: 0.4,
+    backdropFilter: 'blur(20px)',
+    opacity: 1,
+    visibility: 'visible',
+    ease: 'power2.out',
+  })
     .to('.numbers__overlay', {
       duration: 0.4,
       opacity: 1,
@@ -386,43 +408,6 @@ function section1_enterForward() {
   return tl;
 }
 
-// function section1_leaveForward() {
-//   console.log('section1_leaveForward');
-//   const tl = gsap.timeline();
-
-//   tl.to('.numbers__big-number', {opacity: 0, duration: 0.5, ease: 'power4.in'})
-//     .to(
-//       '.numbers__label',
-//       {opacity: 0, y: 0, duration: 0.4, ease: 'power4.in'},
-//       '<'
-//     )
-//     .set('.numbers__btn', {opacity: 0}, '<')
-//     .to(
-//       '.numbers__overlay',
-//       {
-//         opacity: 0,
-//         background: 'rgba(1, 3, 16, 0)',
-//         duration: 0.5,
-//         ease: 'power4.in',
-//       },
-//       '<'
-//     )
-//     .to(
-//       '.hero__blur',
-//       {
-//         opacity: 0,
-//         backdropFilter: 'blur(0px)',
-//         visibility: 'hidden',
-//         duration: 0.7,
-//         ease: 'power4.in',
-//       },
-//       '+=0.1'
-//     );
-//   // .add(scrollImgStateOther(), '-=0.8');
-
-//   return tl;
-// }
-
 function section1_leaveForward() {
   console.log('section1_leaveForward — плавный fade + slide');
   const tl = gsap.timeline();
@@ -432,7 +417,7 @@ function section1_leaveForward() {
       '.hero__blur',
       '.numbers__overlay',
       '.first-wrapper__img',
-      '.first-wrapper__img img',
+      '.first-wrapper__img .img-paralax--l4-d',
     ],
     {
       // x: -150,
@@ -459,6 +444,11 @@ function section1_enterBackward() {
   document.querySelector('.hero__blur').style.position = 'fixed';
 
   tl.add(section1_enterForward());
+  tl.to('.menu', {
+    duration: 0.3,
+    y: 0,
+    ease: 'power2.out',
+  });
 
   return tl;
 }
@@ -467,13 +457,13 @@ function section1_leaveBackward() {
   console.log('section1_leaveBackward');
   const tl = gsap.timeline();
 
-  tl.to('.numbers__overlay', {opacity: 0, duration: 0.2}).to(
+  tl.to('.numbers__overlay', {opacity: 0, duration: 0.3}).to(
     '.hero__blur',
     {
       opacity: 0,
       backdropFilter: 'blur(0px)',
       visibility: 'hidden',
-      duration: 0.2,
+      duration: 0.3,
     },
     '<'
   );
@@ -515,8 +505,7 @@ function section2_enterForward() {
       opacity: 1,
       duration: 0.3,
       ease: 'power2.out',
-    },
-    '-=0.2'
+    }
   );
   // Показываем пагинацию сразу
   tl.set('.service-swiper__pagination', {
@@ -528,7 +517,11 @@ function section2_enterForward() {
     document.querySelector('.hero__blur').style.position = 'static';
     const sec2 = document.querySelector('.numbers__overlay');
     sec2.classList.remove('section-fixed');
-  }, 1000);
+
+    if (mobileMode) {
+      lastSection.classList.add('fixed-section');
+    }
+  }, 1500);
 
   console.log(tl);
   return tl;
@@ -548,6 +541,11 @@ function section2_enterBackward() {
     {y: '150', opacity: 0},
     {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'}
   );
+  tl.to('.menu', {
+    duration: 0.5,
+    y: 0,
+    ease: 'power2.out',
+  });
 
   document.querySelector('.service-swiper__pagination').style.opacity = 1;
   document.querySelector('.service-swiper__pagination').style.visibility =
@@ -593,6 +591,9 @@ function section2_leaveBackward() {
   document.querySelector('.service-swiper__pagination').style.visibility =
     'hidden';
   document.querySelector('.hero__blur').style.position = 'fixed';
+  if (mobileMode) {
+    lastSection.classList.remove('fixed-section');
+  }
   if (!mobileMode) {
     tl.to('.service__content', {
       y: '100%',
@@ -640,37 +641,38 @@ function section3_enterForward() {
         {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'}
       )
       .fromTo(
-        '.a1',
-        {y: '120', opacity: 0},
-        {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'},
+        '.faq__questions',
+        {y: '150%', opacity: 0},
+        {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'},
         '<'
       )
-      .fromTo(
-        '.a2',
-        {y: '240', opacity: 0},
-        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'}
-      )
-      .fromTo(
-        '.a3',
-        {y: window.innerHeight, opacity: 0},
-        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'}
-      )
-      .fromTo(
-        '.a4',
-        {y: window.innerHeight, opacity: 0},
-        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'}
-      )
-      .fromTo(
-        '.a5',
-        {y: window.innerHeight, opacity: 0},
-        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'}
-      )
+      // .fromTo(
+      //   '.a2',
+      //   {y: '240', opacity: 0},
+      //   {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'}
+      // )
+      // .fromTo(
+      //   '.a3',
+      //   {y: window.innerHeight, opacity: 0},
+      //   {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'}
+      // )
+      // .fromTo(
+      //   '.a4',
+      //   {y: window.innerHeight, opacity: 0},
+      //   {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'}
+      // )
+      // .fromTo(
+      //   '.a5',
+      //   {y: window.innerHeight, opacity: 0},
+      //   {y: 0, opacity: 1, duration: 0.1, ease: 'power1.out'}
+      // )
       .fromTo(
         '.faq__else-ask',
-        {y: window.innerHeight, opacity: 0},
-        {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'},
+        {y: '150%', opacity: 0},
+        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
         '+=0.1'
       );
+    document.querySelector('.controls--left').style.width = '85px';
   }
 
   setTimeout(() => {
@@ -685,8 +687,8 @@ function section3_enterForward() {
 function section3_leaveBackward() {
   console.log('section3_leaveBackward');
   const tl = gsap.timeline();
-  updateUI();
-
+  // updateUI();
+  document.querySelector('.controls--left').style.width = 'auto';
   return tl;
 }
 const sectionsMap = {
