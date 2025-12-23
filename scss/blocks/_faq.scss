@@ -18,9 +18,12 @@
     gap: 16px;
   }
 
-  @include tablet-bottom {
+  @include tablet {
     max-width: 100%;
     width: 100%;
+  }
+
+  @include tablet-bottom {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
@@ -28,7 +31,7 @@
       'qa'
       'btn';
     justify-items: center;
-    margin: 0 auto
+    // margin: 0 auto
   }
 
   @include mobile {
@@ -103,6 +106,7 @@
 
     @include tablet-bottom {
       width: 100%;
+      gap: 4px;
     }
   }
 
@@ -120,15 +124,23 @@
     transform: translateX(0);
 
     &.a1 {
-      max-width: 345px;
+      max-width: 380px;
     }
 
     &.a2 {
-      max-width: 525px;
+      max-width: 545px;
     }
 
     &.a3 {
-      max-width: 345px;
+      max-width: 365px;
+    }
+
+    &.a4 {
+      max-width: 525px;
+    }
+
+    &.a5 {
+      max-width: 385px;
     }
 
     &.open {
@@ -136,7 +148,9 @@
 
       &.a1,
       &.a2,
-      &.a3 {
+      &.a3,
+      &.a4,
+      &.a5 {
         max-width: 100%;
       }
 
@@ -157,11 +171,13 @@
 
       &.a1,
       &.a2,
-      &.a3 {
+      &.a3,
+      &.a4,
+      &.a5 {
         max-width: 100%;
       }
 
-      width: calc(100% - 32px);
+      // width: calc(100% - 32px);
       padding: 16px;
     }
 
@@ -181,33 +197,47 @@
     gap: 16px;
 
     p {
-      @include fluid-text(15, 13);
+      font-size: 15px;
       margin: 0;
       font-weight: 700;
-      line-height: 133%;
+      line-height: 20px;
       letter-spacing: -0.03em;
+
+      @include mobile {
+        font-size: 13px;
+        line-height: 18px;
+      }
     }
   }
 
   &__item-icon {
     flex-shrink: 0;
-    width: 15px;
-    height: 15px;
-    position: relative;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 
     @include tablet {
       width: 13px;
       height: 13px;
     }
 
+    div {
+      width: 13.5px;
+      height: 13.5px;
+    }
+
     span {
       position: absolute;
       top: calc(50% - 1px);
       left: 0;
-      width: 15px;
-      height: 2.1px;
+      width: 13.5px;
+      height: 1.5px;
       border-radius: var(--br-l);
       background-color: var(--blue);
+      transition: 0.3s;
 
       @include tablet {
         width: 13px;
@@ -215,7 +245,8 @@
       }
 
       &:last-child {
-        left: 0.2px;
+        left: 0.25px;
+        height: 1.7px;
         transition: .5s ease-in-out;
         transform: rotate(-90deg);
       }
@@ -226,7 +257,7 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 0fr;
-    margin-left: 32px;
+    margin-left: 36px;
     margin-top: 0;
     padding-right: 28px;
     opacity: 0;
@@ -262,6 +293,10 @@
   }
 
   &__item.open .faq__item-icon {
+    span {
+      background-color: var(--dark);
+    }
+
     span:last-child {
       transform: rotate(0deg);
       opacity: 0;

@@ -7,7 +7,7 @@
   width: 100%;
   padding-block: var(--section-padding);
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  grid-template-columns: 1.1fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
   // z-index: 7;
@@ -18,6 +18,9 @@
 
   @include tablet {
     grid-template-columns: 0.8fr 1fr 1fr 1fr;
+    max-width: 100%;
+    width: 100%;
+
   }
 
   @include tablet-bottom {
@@ -109,7 +112,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 32px;
     letter-spacing: -0.03em;
 
     @media screen and (max-width: 1200px) {
@@ -139,15 +142,20 @@
   }
 
   &__links-item {
-    @include fluid-text(15, 13);
+    font-size: 15px;
+    line-height: 20px;
     cursor: pointer;
+
+    @include tablet-bottom {
+      font-size: 13px;
+      line-height: 18px;
+    }
 
     a {
       color: var(--dark);
       text-decoration: none;
       letter-spacing: -0.03em;
       transition: 0.3s;
-
 
       @include hover {
         color: var(--blue);

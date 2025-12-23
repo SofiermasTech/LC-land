@@ -16,8 +16,12 @@
   //   margin: 0 auto var(--section-offset);
   // }
 
-  @include tablet-bottom {
+  @include tablet {
     max-width: 100%;
+  }
+
+  @include tablet-bottom {
+
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -49,7 +53,12 @@
       'title .'
       '. subtitle'
       'btn .';
+    column-gap: 40px;
     overflow: hidden;
+
+    @include laptop {
+      column-gap: 20px;
+    }
 
     @include tablet {
       padding: 48px;
@@ -73,10 +82,11 @@
   &__content-subtitle {
     margin: 0;
     grid-area: subtitle;
+    max-width: 230px;
     line-height: 133%;
     letter-spacing: -0.03em;
 
-    @include tablet-bottom {
+    @include tablet {
       max-width: 80%;
     }
 
@@ -92,7 +102,7 @@
     height: fit-content;
 
     .base-btn {
-      width: 100%;
+      width: 194px;
 
       span:first-child {
         width: 20px;

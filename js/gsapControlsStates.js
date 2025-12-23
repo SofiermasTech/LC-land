@@ -29,7 +29,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'dark',
-    controlsLeft: {visibility: {default: true, mobile: true}},
+    controlsLeft: {visibility: {default: true, mobile: true}, width: 'auto'},
   },
 
   firstIndex: {
@@ -44,7 +44,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'dark',
-    controlsLeft: {visibility: {default: true, mobile: true}},
+    controlsLeft: {visibility: {default: true, mobile: true}, width: 'auto'},
   },
 
   afterSecond: {
@@ -54,18 +54,31 @@ const UI_CONTROL_STATES = {
     showTgText: false,
     nextBtn: {visible: true, rotate: true, textIndex: 2},
     logoVisible: true,
-    mobileLogoVisible: false, // <— важно
+    mobileLogoVisible: false,
     logoMode: 'compact',
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'light',
-    controlsLeft: {visibility: {default: true, mobile: false}},
+    controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
   },
-
+  lastSlide: {
+    menuColor: 'white',
+    menuOffset: 0,
+    showTg: true,
+    showTgText: false,
+    nextBtn: {visible: false, rotate: false, textIndex: null},
+    iconDownVisible: true,
+    logoVisible: true,
+    mobileLogoVisible: false,
+    logoMode: 'compact',
+    iconUpVisible: false,
+    buttonShadow: 'light',
+    controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
+  },
   lastSection: {
     menuColor: 'white',
     menuOffset: 0,
-    showTg: false,
+    showTg: true,
     showTgText: false,
     nextBtn: {visible: false, rotate: false, textIndex: null},
     logoVisible: true,
@@ -74,7 +87,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'light',
-    controlsLeft: {visibility: {default: true, mobile: false}},
+    controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
   },
 
   lastSectionBottom: {
@@ -89,7 +102,7 @@ const UI_CONTROL_STATES = {
     iconDownVisible: false,
     iconUpVisible: true,
     buttonShadow: 'light',
-    controlsLeft: {visibility: {default: true, mobile: false}},
+    controlsLeft: {visibility: {default: true, mobile: false}, width: '80px'},
   },
 };
 
@@ -111,17 +124,35 @@ function animateLogo(mode) {
     logoAnimation
       .to(
         '.logo-main__text',
-        {width: 0, opacity: 0, duration: 0.4, ease: 'power2.in'},
+        {
+          width: 0,
+          opacity: 0,
+          display: 'none',
+          duration: 0.4,
+          ease: 'power2.in',
+        },
         0
       )
       .to(
         '.logo-main__name',
-        {width: 0, opacity: 0, duration: 0.5, ease: 'power2.in'},
+        {
+          width: 0,
+          opacity: 0,
+          display: 'none',
+          duration: 0.5,
+          ease: 'power2.in',
+        },
         0
       )
       .to(
         '.logo-main__split',
-        {width: 0, opacity: 0, duration: 0.4, ease: 'power2.in'},
+        {
+          width: 0,
+          opacity: 0,
+          display: 'none',
+          duration: 0.4,
+          ease: 'power2.in',
+        },
         0
       )
       .to(
@@ -132,6 +163,10 @@ function animateLogo(mode) {
   }
 
   if (mode === 'full') {
+    gsap.set(['.logo-main__text', '.logo-main__name', '.logo-main__split'], {
+      display: 'inline-flex',
+    });
+
     logoAnimation
       .fromTo(
         '.logo-main__icon',
@@ -166,7 +201,6 @@ function applyUIState(config) {
     ease: 'power3.inOut',
   });
 
-  // tgBtn.forEach((btn) => {
   gsap.to(tgBtn, {
     opacity: config.showTg ? 1 : 0,
     x: config.showTg ? 0 : '-100%',
@@ -174,15 +208,13 @@ function applyUIState(config) {
     duration: 0.6,
     ease: 'power2.out',
   });
-  // });
 
-  tgBtnText.forEach((txt) => {
-    gsap.to(txt, {
-      opacity: config.showTgText ? 1 : 0,
-      y: config.showTgText ? 0 : -15,
-      duration: 0.6,
-      ease: 'power2.out',
-    });
+  gsap.to(tgBtnText, {
+    opacity: config.showTgText ? 1 : 0,
+    y: config.showTgText ? 0 : -15,
+    display: config.showTgText ? 'inline-flex' : 'none',
+    duration: 0.6,
+    ease: 'power2.out',
   });
 
   iconDownSvg.classList.toggle('rotate', config.nextBtn.rotate);
@@ -234,9 +266,9 @@ function applyUIState(config) {
   gsap.to('.controls__btn-reg .base-btn', {boxShadow: shadow, duration: 0.3});
   gsap.to('.btn-scroll', {boxShadow: shadow, duration: 0.3});
 
-  const isMobile = window.matchMedia('(max-width: 1300px)').matches;
+  const isLaptop = window.matchMedia('(max-width: 1400px)').matches;
 
-  const finalLogoVisible = isMobile
+  const finalLogoVisible = isLaptop
     ? config.mobileLogoVisible
     : config.logoVisible;
 
@@ -247,8 +279,16 @@ function applyUIState(config) {
 
   animateLogo(config.logoMode);
 
-  gsap.set('.controls--left', {
-    visibility: isMobile ? 'hidden' : 'visible',
+  const controlsVisible = mobileMode
+    ? config.controlsLeft.visibility.mobile
+    : config.controlsLeft.visibility.default;
+
+  gsap.to('.controls--left', {
+    visibility: controlsVisible ? 'visible' : 'hidden',
+    opacity: controlsVisible ? 1 : 0,
+    width: config.controlsLeft.width || 'auto',
+    duration: 0.3,
+    ease: 'power2.out',
   });
 }
 
@@ -259,8 +299,12 @@ function updateUI() {
     if (currentIndex === 0) return applyUIState(UI_CONTROL_STATES.default);
     if (currentIndex === 1) return applyUIState(UI_CONTROL_STATES.firstIndex);
 
-    if (currentIndex === 2) return applyUIState(UI_CONTROL_STATES.afterSecond);
-
+    if (currentIndex === 2 && currentSlide !== lastSlide)
+      return applyUIState(UI_CONTROL_STATES.afterSecond);
+    console.log(lastSlide);
+    console.log(currentSlide);
+    if (currentIndex === 2 && currentSlide === lastSlide)
+      return applyUIState(UI_CONTROL_STATES.lastSlide);
     if (currentIndex === lastIndex && !footerVisible)
       return applyUIState(UI_CONTROL_STATES.lastSection);
     if (currentIndex === lastIndex && footerVisible)

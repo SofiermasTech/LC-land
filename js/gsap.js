@@ -44,6 +44,7 @@ console.log('lastSection', lastSection);
 
 // остальные кнопки + меню
 const menuLinks = document.querySelectorAll('.menu__link');
+const menuIndicator = document.querySelectorAll('.menu__indicator');
 // const footerLinks = document.querySelectorAll('.footer__links-item.m a');
 
 // слайдер
@@ -80,12 +81,17 @@ function goToSection(index) {
       // updateSectionsUI(currentIndex);
       updateClassMenu();
       updateScrollLock();
+
       updatePaginationWhithSlides(nextIndex);
 
       if (currentIndex === 0) {
         startLightning();
       } else {
         stopLightning();
+      }
+
+      if (currentIndex === sliderSectionIndex && !mobileMode) {
+        setActiveSlide(currentSlide);
       }
 
       if (index === lastIndex) {
@@ -120,6 +126,7 @@ function onwheel(evt) {
 
   if (currentIndex === sliderSectionIndex && !mobileMode) {
     evt.preventDefault();
+    setActiveSlide(currentSlide);
 
     if (directionDown) {
       if (currentSlide < lastSlide) return goToSlide(currentSlide + 1);
@@ -201,6 +208,42 @@ function scheduleUIUpdate() {
   });
 }
 
+function setActiveSlide(index) {
+  if (currentIndex !== sliderSectionIndex) return;
+
+  console.log('active slie', index);
+  slides.forEach((slide, i) => {
+    const img = slide.querySelector('.slide__img');
+    const content = slide.querySelector('.slide__content');
+
+    if (i === index) {
+      gsap.to([img, content], {
+        opacity: 1,
+      });
+    } else {
+      gsap.set([img, content], {
+        opacity: 0,
+      });
+    }
+  });
+}
+
+// function refreshSliderState() {
+//   if (mobileMode) return;
+//   if (currentIndex !== sliderSectionIndex) return;
+
+//   const slideWidth = getSlideWidth();
+//   const targetX = -slideWidth * currentSlide;
+
+//   gsap.set(sliderWrapper, {x: targetX});
+
+//   setActiveSlide(currentSlide);
+// }
+
+function getSlideWidth() {
+  return slides[0]?.getBoundingClientRect().width || 0;
+}
+
 function goToSlide(index) {
   if (isAnimating) return;
   if (currentSlide === index) return;
@@ -208,12 +251,17 @@ function goToSlide(index) {
   isAnimating = true;
 
   const oldIndex = currentSlide;
+  const slideWidth = getSlideWidth();
+  const targetX = -slideWidth * index;
 
   // Главный таймлайн
   const masterTl = gsap.timeline({
     onComplete: () => {
       currentSlide = index;
       window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
+      updateUI();
+
+      setActiveSlide(currentSlide);
 
       setTimeout(() => {
         isAnimating = false;
@@ -224,7 +272,7 @@ function goToSlide(index) {
   masterTl.to(
     sliderWrapper,
     {
-      xPercent: -100 * index,
+      x: targetX,
       duration: 0.7,
       ease: 'power2.inOut',
       // force3D: true,
@@ -239,7 +287,6 @@ function goToSlide(index) {
 }
 
 function animateSlide(oldIndex, newIndex) {
-  const slides = document.querySelectorAll('.service-swiper__slide');
   const oldSlide = slides[oldIndex];
   const newSlide = slides[newIndex];
   if (!oldSlide || !newSlide) return;
@@ -263,22 +310,22 @@ function animateSlide(oldIndex, newIndex) {
   const oldExitX = forward ? '-150%' : '150%';
   const newEnterX = forward ? '150%' : '-150%';
 
-  gsap.set([newImg, newContent], {x: newEnterX});
+  gsap.set([newImg, newContent], {x: newEnterX, opacity: 1});
   // вперед
   if (forward) {
-    tl.to(oldImg, {x: oldExitX, duration: 0.4});
-    tl.to(oldContent, {x: oldExitX, duration: 0.4});
+    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.4});
+    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.4});
 
-    tl.to(newImg, {x: '0%', duration: 0.4}, '-=0.15');
-    tl.to(newContent, {x: '0%', duration: 0.4});
+    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.4}, '-=0.15');
+    tl.to(newContent, {x: '0%', opacity: 1, duration: 0.4});
     // console.log('animateSlide конец1');
   } else {
     // назад
-    tl.to(oldContent, {x: oldExitX, duration: 0.4});
-    tl.to(oldImg, {x: oldExitX, duration: 0.3});
+    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.4});
+    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.3});
 
-    tl.to(newContent, {x: '0%', duration: 0.3}, '-=0.05');
-    tl.to(newImg, {x: '0%', duration: 0.4});
+    tl.to(newContent, {x: '0%', opacity: 1, duration: 0.3}, '-=0.05');
+    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.4});
 
     // console.log('animateSlide конец2');
   }
@@ -351,7 +398,7 @@ function checkInnerScroll() {
   const fullHeight = lastWrapper.scrollHeight; // полная высота контента
 
   const bottomDesk =
-    scrollTop + visibleHeight >= fullHeight - footerHeight + 50;
+    scrollTop + visibleHeight >= fullHeight - footerHeight + 150;
   const bottomMob = scrollTop + visibleHeight >= fullHeight - footerHeight;
   const isAtBottom = mobileMode ? bottomMob : bottomDesk;
 
@@ -410,17 +457,42 @@ document.addEventListener('DOMContentLoaded', () => {
   updateScrollLock();
   updateUI();
   updateClassMenu();
+  if (currentIndex === sliderSectionIndex && !mobileMode) {
+    setActiveSlide(currentSlide);
+  }
 });
 
 document.addEventListener('load', () => {
   updatePaginationWhithSlides();
+
   footerVisible = checkInnerScroll();
   // updateUI();
 });
 
+// передвигает активный пункт меню
+function moveIndicatorMenu(link) {
+  const nav = link.parentElement;
+  const navRect = nav.getBoundingClientRect();
+  const linkRect = link.getBoundingClientRect();
+
+  const x = linkRect.left - navRect.left - 4;
+
+  gsap.to(menuIndicator, {
+    x,
+    duration: 0.45,
+    ease: 'power3.out',
+  });
+}
+
+// добавляет актив класс + вызов индикатора
 function updateClassMenu() {
   // console.log('меню нач');
+
+  let activeLink = null;
+
   if (!mobileMode) {
+    activeLink = menuLinks[currentIndex];
+
     menuLinks.forEach((link, index) => {
       if (index === currentIndex) {
         gsap.to(link, {
@@ -438,10 +510,15 @@ function updateClassMenu() {
         });
       }
     });
+
+    moveIndicatorMenu(activeLink);
+    return;
   }
 
   // доп. условия для моб. т.к.последние 2 секции объединяются в одну
   if (mobileMode && currentIndex < 2) {
+    activeLink = menuLinks[currentIndex];
+
     menuLinks.forEach((link, index) => {
       const isActive = index === currentIndex;
       gsap.to(link, {
@@ -451,6 +528,8 @@ function updateClassMenu() {
         onStart: () => link.classList.toggle('active', isActive),
       });
     });
+
+    moveIndicatorMenu(activeLink);
     return;
   }
 
@@ -467,8 +546,6 @@ function updateClassMenu() {
     // console.log(featuresRect.bottom);
     // console.log(faqRect.top);
 
-    let activeLink = null;
-
     if (featuresRect.top === 0 || featuresRect.top > -700) {
       activeLink = menuLinks[2]; // "Фичи"
     }
@@ -483,40 +560,49 @@ function updateClassMenu() {
     if (activeLink) {
       activeLink.classList.add('active');
     }
+
+    moveIndicatorMenu(activeLink);
   }
 }
 
 // перематывает слайдер в начало/конец в зависимости от направления перехода по ссылкам
 function updatePaginationWhithSlides(sectionIndex) {
+  if (mobileMode) return;
   if (sectionIndex === sliderSectionIndex) return;
 
   let targetSlide;
 
   if (sectionIndex < sliderSectionIndex) {
     targetSlide = 0;
+    // setActiveSlide(0);
   } else {
     targetSlide = lastSlide;
+    // setActiveSlide(lastSlide);
+    updateUI();
   }
 
   if (currentSlide === targetSlide) return;
 
   currentSlide = targetSlide;
+  const slideWidth = getSlideWidth();
+  const targetX = -slideWidth * targetSlide;
 
   if (targetSlide === 0) {
-    gsap.set(sliderWrapper, {xPercent: 0});
+    gsap.set(sliderWrapper, {x: 0});
   } else {
-    gsap.set(sliderWrapper, {xPercent: -100 * lastSlide});
+    gsap.set(sliderWrapper, {x: targetX});
   }
 
-  if (!mobileMode) {
-    gsap.set(
-      '.service-swiper__slide .slide__img, .service-swiper__slide .slide__content',
-      {
-        x: 0,
-        clearProps: 'transform,opacity',
-      }
-    );
-  }
+  // if (!mobileMode) {
+  gsap.set(
+    '.service-swiper__slide .slide__img, .service-swiper__slide .slide__content',
+    {
+      x: 0,
+      clearProps: 'transform,opacity',
+    }
+  );
+  // }
+  setActiveSlide(currentSlide);
   window.dispatchEvent(new CustomEvent('slidechange', {detail: targetSlide}));
 }
 
@@ -664,14 +750,18 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
             isAnimating = false;
 
             currentSlide = index;
-            gsap.set(sliderWrapper, {xPercent: -100 * index});
+            const slideWidth = getSlideWidth();
+            const targetX = -slideWidth * index;
+
+            gsap.set(sliderWrapper, {x: targetX});
             gsap.set(
               '.service-swiper__slide .slide__img, .service-swiper__slide .slide__content',
               {
                 x: 0,
-                clearProps: 'transform,opacity', // Чистим все states для всех слайдов
+                clearProps: 'transform,opacity',
               }
             );
+            setActiveSlide(currentSlide);
             window.dispatchEvent(
               new CustomEvent('slidechange', {detail: index})
             );
@@ -749,21 +839,6 @@ function enableTouchBlock() {
 function disableTouchBlock() {
   document.removeEventListener('touchmove', preventScroll);
 }
-
-// function updateScrollLock() {
-//   const shouldUnlock =
-//     (mobileMode && currentIndex === sliderSectionIndex) ||
-//     currentIndex === lastIndex ||
-//     (mobileMode && currentIndex === lastIndex);
-
-//   if (shouldUnlock) {
-//     unlockScroll();
-//     disableTouchBlock();
-//   } else {
-//     lockScroll();
-//     enableTouchBlock();
-//   }
-// }
 
 function updateScrollLock() {
   const shouldUnlock = currentIndex === lastIndex;
@@ -856,6 +931,9 @@ window.addEventListener('resize', () => {
   footerVisible = checkInnerScroll();
   updateUI();
   updateClassMenu();
+  if (currentIndex === sliderSectionIndex) {
+    setActiveSlide(currentSlide);
+  }
 });
 
 // ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ

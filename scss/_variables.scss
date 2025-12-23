@@ -32,7 +32,7 @@
 
 
   @include desktop {
-    --container-width: 1184px;
+    // --container-width: 1184px;
     --section-offset: 64px;
     --controls-margin: 16px;
   }
@@ -54,7 +54,7 @@
   @include tablet-bottom {
     --container-padding: 16px;
     --section-padding: 24px;
-
+    --controls-margin: 16px;
     --br-l: 24px;
   }
 

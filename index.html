@@ -28,7 +28,7 @@
     <a class="controls__logo logo-main" href="/">
       <div class="logo-main__wrapper">
         <img class="logo-main__icon" src="/img/logo-icon.svg" alt width="26" height="16">
-        <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="36">
+        <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="35">
       </div>
       <span class="logo-main__split">
         <svg width="16" height="36" viewBox="0 0 16 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,6 +94,8 @@
   <div class="menu">
     <div class="menu__wrapper">
       <nav class="menu__nav">
+        <span class="menu__indicator"></span>
+
         <a class="menu__link" data-index="0">Начало</a>
         <a class="menu__link" data-index="1">Условия</a>
         <a class="menu__link" data-index="2" href="#features">Фичи</a>
@@ -175,7 +177,7 @@
                     <p>Стабильные бины</p>
                   </div>
                   <div class="hero__benf-item empty order-0"></div>
-                  <div class="hero__benf-item with-block">
+                  <a class="hero__benf-item with-block link" href="https://t.me/LemonadCPA" target="_blank">
                     <p>Хочу ваши карты</p>
                     <span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
@@ -185,7 +187,7 @@
                           clip-rule="evenodd" />
                       </svg>
                     </span>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -210,7 +212,7 @@
                 <p class="numbers__label title-s">Комиссия за пополнение<br>с крипты</p>
               </div>
             </div>
-            <button class="numbers__btn base-btn">
+            <a class="numbers__btn base-btn" href="https://t.me/LemonadCPA" target="_blank">
               <span>
                 <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -219,7 +221,7 @@
                 </svg>
               </span>
               <p>Хочу индивидуальные условия</p>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -230,7 +232,7 @@
 
     <div class="for-mobile-wrapper">
       <div class="section-last-wrapper">
-        <section class="section container" id="section-3">
+        <section class="section" id="section-3">
           <div class="service" id="features">
             <div class="service__wrapper">
               <h2 class="service__title title-l">Фичи сервиса</h2>
@@ -261,7 +263,7 @@
                   <p class="together__content-subtitle">Мы готовы быстро внедрить фичи, которые напрямую влияют на ваш
                     результат.</p>
                   <div class="together__content-btn">
-                    <button class="base-btn" type="button">
+                    <a class="base-btn" href="https://t.me/LemonadCPA" target="_blank">
                       <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
                           <path fill="#fff" fill-rule="evenodd"
@@ -270,7 +272,7 @@
                         </svg>
                       </span>
                       <span>Напишите скорее</span>
-                    </button>
+                    </a>
                   </div>
                   <div class="together__card">
                     <img src="/img/card-2.png" alt="black card" width="560" height="208" loading="lazy">
@@ -287,7 +289,7 @@
               <div class="faq__else-ask">
                 <p class="title-s">а здесь нет<br>
                   моего вопроса</p>
-                <button class="base-btn" type="button">
+                <a class="base-btn" href="https://t.me/LemonadCPA" target="_blank">
                   <span>Задать вопрос</span>
                   <span>
                     <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -296,15 +298,17 @@
                         fill="white" />
                     </svg>
                   </span>
-                </button>
+                </a>
               </div>
               <div class="faq__questions">
                 <div class="faq__item a1">
 
                   <div class="faq__item-head">
                     <div class="faq__item-icon">
-                      <span></span>
-                      <span></span>
+                      <div style="position: relative;">
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                     <p>Как выпустить виртуальную карту?</p>
                   </div>
@@ -325,8 +329,10 @@
                 <div class="faq__item a2">
                   <div class="faq__item-head">
                     <div class="faq__item-icon">
-                      <span></span>
-                      <span></span>
+                      <div style="position: relative;">
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                     <p>Можно ли удалить виртуальную карту и выпустить новую?</p>
                   </div>
@@ -345,8 +351,10 @@
                 <div class="faq__item a3">
                   <div class="faq__item-head">
                     <div class="faq__item-icon">
-                      <span></span>
-                      <span></span>
+                      <div style="position: relative;">
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                     <p>В какой валюте доступны карты?</p>
                   </div>
@@ -365,8 +373,10 @@
                 <div class="faq__item a4">
                   <div class="faq__item-head">
                     <div class="faq__item-icon">
-                      <span></span>
-                      <span></span>
+                      <div style="position: relative;">
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                     <p>Где можно посмотреть реквизиты виртуальной карты?</p>
                   </div>
@@ -385,8 +395,10 @@
                 <div class="faq__item a5">
                   <div class="faq__item-head">
                     <div class="faq__item-icon">
-                      <span></span>
-                      <span></span>
+                      <div style="position: relative;">
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                     <p>Как выпустить виртуальную карту?</p>
                   </div>
@@ -423,7 +435,7 @@
                     </span>
                     <p>Написать нам</p>
                   </a>
-                  <button class="second-btn" type="button">
+                  <a class="second-btn" href="https://t.me/LemonadCPA" target="_blank">
                     <span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
                         <path fill="currentColor" d="M11 2a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6" />
@@ -433,7 +445,7 @@
                       </svg>
                     </span>
                     <p>Выпустить карту</p>
-                  </button>
+                  </a>
                 </div>
               </div>
               <nav class="footer__column">
@@ -488,7 +500,7 @@
           </h3>
           <p class="slide__text"></p>
           <div class="slide__btn">
-            <button class="base-btn" type="button">
+            <a class="base-btn" href="https://t.me/LemonadCPA" target="_blank">
               <span>
                 <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -500,7 +512,7 @@
                 </svg>
               </span>
               <p>Хочу ваши карты</p>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -522,7 +534,7 @@
             <h3 class="slider-main__title title-l"></h3>
             <p class="slider-main__text"></p>
             <div class="slide__btn">
-              <button class="base-btn" type="button">
+              <a class="base-btn" href="https://t.me/LemonadCPA" target="_blank">
                 <span>
                   <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -534,7 +546,7 @@
                   </svg>
                 </span>
                 <p>Хочу ваши карты</p>
-              </button>
+              </a>
             </div>
           </div>
         </div>

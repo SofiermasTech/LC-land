@@ -42,17 +42,13 @@ html {
   margin-inline: auto;
   position: relative;
 
+  @include desktop {
+    max-width: calc(100vw - (var(--container-padding) * 2));
+  }
+
   @include tablet {
     max-width: var(--container-width);
   }
-}
-
-.container-mini {
-  max-width: var(--container-width);
-  width: 100%;
-  // padding-inline: var(--container-padding);
-  margin-inline: auto;
-  position: relative;
 }
 
 .section {
@@ -86,6 +82,8 @@ html {
 
 .for-mobile-wrapper {
   height: auto;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
 
   &::-webkit-scrollbar {
     width: 0;
@@ -111,6 +109,22 @@ html {
   .section-last-wrapper {
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      border-radius: 20px;
+    }
+
   }
 
   @include tablet {
@@ -127,6 +141,9 @@ html {
 
 #section-3,
 #section-4 {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+
 
   &::-webkit-scrollbar {
     width: 0;
@@ -151,6 +168,9 @@ html {
   height: 100%;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+
 
   &::-webkit-scrollbar {
     width: 0;
@@ -187,17 +207,19 @@ html {
   padding: 10px;
   border-radius: var(--br-s);
   border: none;
+  box-sizing: border-box;
   box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
   background-image: linear-gradient(180deg, var(--blue) 0%, #1263da 100%);
-  @include fluid-text(15, 13);
+  font-size: 15px;
   font-weight: 700;
-  line-height: 133%;
+  line-height: 20px;
   letter-spacing: -0.03em;
   color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
+  text-decoration: none;
   cursor: pointer;
   opacity: 1;
   transition: 0.5s;
@@ -209,6 +231,8 @@ html {
 
   @include tablet-bottom {
     gap: 8px;
+    font-size: 13px;
+    line-height: 18px;
   }
 
   @include mobile-bottom {
@@ -222,12 +246,13 @@ html {
 
 .second-btn {
   width: fit-content;
+  // height: auto;
   padding: 0;
   border: none;
   background-color: transparent;
-  @include fluid-text(15, 13);
+  font-size: 15px;
   font-weight: 500;
-  line-height: 133%;
+  line-height: 20px;
   letter-spacing: -0.03em;
   color: var(--dark);
   display: flex;
@@ -258,17 +283,49 @@ html {
 
   @include tablet-bottom {
     gap: 8px;
+    font-size: 13px;
+    line-height: 18px;
   }
 }
 
 .title-l {
-  @include fluid-text(48, 24);
+  font-size: 48px;
   margin: 0;
   font-weight: 800;
-  line-height: 100%;
+  line-height: 1;
   letter-spacing: -0.06em;
   text-transform: uppercase;
   color: var(--dark);
+
+  // @media screen and (max-height: 680px) and (max-width: 1440px) {
+  //   &.slide__title {
+  //     font-size: 32px;
+  //   }
+  // }
+  &.slide__title {
+    @include desktop {
+      font-size: 32px;
+    }
+  }
+
+  &.slider-main__title {
+    @include desktop {
+      font-size: 32px;
+    }
+
+    @include tablet-bottom {
+      font-size: 24px;
+    }
+  }
+
+
+  @include tablet {
+    line-height: 95%;
+
+    &.faq__title {
+      font-size: 32px;
+    }
+  }
 }
 
 .title-s {
@@ -280,11 +337,25 @@ html {
   letter-spacing: -0.05em;
   text-transform: uppercase;
 
-  @media screen and (max-height: 680px) and (max-width: 1600px) {
-    &.hero__info-text {
+  // @media screen and (max-height: 680px) and (max-width: 1440px) {
+  //   &.hero__info-text {
+  //     font-size: 15px;
+  //     font-weight: 700;
+  //   }
+  // }
+  &.hero__info-text {
+    @include desktop {
       font-size: 15px;
       font-weight: 700;
     }
+
+    @include mobile {
+      font-size: 16px;
+    }
+  }
+
+  @include tablet-bottom {
+    font-size: 16px;
   }
 }
 

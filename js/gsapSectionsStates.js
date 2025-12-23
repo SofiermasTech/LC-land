@@ -37,8 +37,10 @@ const UI_SECTION_STATES = {
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 0},
+    numBtn: {opacity: 0},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 0, visible: 'hidden'},
+    // sliderTitle: {opacity: 0},
   },
 };
 
@@ -50,25 +52,22 @@ function applySectionUIState(config, animate = true) {
   tl.set('.hero__fix-wrapper', {
     x: config.heroFix.x,
     opacity: config.heroFix.opacity,
-    // duration: animate ? 0.6 : 0,
-    // ease: 'power2.out',
+  });
+
+  gsap.set('.hero__blur', {
+    display: config.heroBlur.visible ? 'block' : 'none',
   });
 
   tl.set('.hero__blur', {
     visibility: config.heroBlur.visible ? 'visible' : 'hidden',
-  });
-
-  tl.set('.hero__blur', {
     opacity: config.heroBlur.opacity,
     backdropFilter: `blur(${
       config.heroBlur.blur[mobileMode ? 'mobile' : 'default']
     }px)`,
-    // duration: animate ? 0.6 : 0,
   });
 
   tl.set('.first-wrapper__img', {
     opacity: config.firstImg.opacity,
-    // duration: animate ? 0.6 : 0,
   });
 
   if (config.numbersOverlay.fixed) {
@@ -86,7 +85,6 @@ function applySectionUIState(config, animate = true) {
   tl.to('.numbers__overlay', {
     opacity: config.numbersOverlay.opacity,
     background: config.numbersOverlay.bg,
-    // duration: animate ? 0.6 : 0,
   });
   tl.to('.service__title', {
     opacity: config.sliderTitle.opacity,
@@ -174,6 +172,16 @@ function animationOnStart() {
           duration: 1,
           y: 0,
           ease: 'power2.out',
+        },
+        '<'
+      )
+      .to(
+        '.hero__blur',
+        {
+          opacity: 0,
+          backdropFilter: 'blur(0px)',
+          visibility: 'hidden',
+          duration: 0.3,
         },
         '<'
       );
@@ -324,7 +332,16 @@ function section0_enterBackward() {
     duration: 0.3,
     y: 0,
     ease: 'power2.out',
-  });
+  }).to(
+    '.hero__blur',
+    {
+      opacity: 0,
+      backdropFilter: 'blur(0px)',
+      visibility: 'hidden',
+      duration: 0.3,
+    },
+    '<'
+  );
 
   setTimeout(() => {
     const sec2 = document.querySelector('.numbers__overlay');
@@ -672,7 +689,7 @@ function section3_enterForward() {
         {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
         '+=0.1'
       );
-    document.querySelector('.controls--left').style.width = '85px';
+    // document.querySelector('.controls--left').style.width = '85px';
   }
 
   setTimeout(() => {
@@ -688,7 +705,7 @@ function section3_leaveBackward() {
   console.log('section3_leaveBackward');
   const tl = gsap.timeline();
   // updateUI();
-  document.querySelector('.controls--left').style.width = 'auto';
+  // document.querySelector('.controls--left').style.width = 'auto';
   return tl;
 }
 const sectionsMap = {

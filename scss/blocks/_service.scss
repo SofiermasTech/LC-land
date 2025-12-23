@@ -1,7 +1,7 @@
 @use '../media' as *;
 
 .service {
-  max-width: var(--container-width);
+  // max-width: var(--container-width);
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -20,8 +20,8 @@
   }
 
   @include desktop {
-    padding-top: var(--section-offset);
-    align-items: flex-start;
+    // padding-top: var(--section-offset);
+    // align-items: flex-start;
   }
 
   @include tablet {
@@ -35,13 +35,34 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
+    margin-top: -80px;
+
+    @include tablet {
+      margin-top: 0;
+    }
+
+    @include mobile {
+      gap: 16px;
+    }
   }
 
   &__title {
+    margin: 0 auto;
+    padding-inline: var(--container-padding);
+    max-width: calc(var(--container-width));
+    width: 100%;
+
+    @include desktop {
+      max-width: calc(100vw - (var(--container-padding) * 2));
+    }
 
     @include tablet {
+      padding-inline: 0;
+      padding-top: 24px;
+      // max-width: calc(100vw - (var(--container-padding) * 2));
+
       &.title-l {
-        max-width: 85%;
+        // max-width: 85%;
         font-size: 48px;
       }
     }
@@ -50,7 +71,14 @@
   &__content {
     max-height: clamp(340px, 57vh, 480px);
     height: 100%;
+    max-width: var(--container-width);
     width: 100%;
+    padding-inline: var(--container-padding);
+    margin: 0 auto;
+
+    @include desktop {
+      max-width: calc(100vw - (var(--container-padding) * 2));
+    }
 
     @include tablet {
       max-height: 100%;
@@ -62,9 +90,11 @@
 
 .service-swiper {
   display: block;
+  max-width: var(--container-width);
   width: 100%;
+  margin: 0 auto;
   height: 100%;
-  overflow: hidden;
+  // overflow: hidden;
   // position: relative;
   border-radius: var(--br-l);
 
@@ -123,10 +153,14 @@
   max-width: var(--container-width);
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(588px, 632px));
+  grid-template-columns: repeat(2, minmax(460px, 632px));
   grid-template-rows: clamp(355px, 55vh, 480px);
   gap: 8px;
   border-radius: var(--br-l);
+
+  @include desktop {
+    max-width: calc(100vw - (var(--container-padding) * 2));
+  }
 
   @include tablet {
     display: flex;
@@ -140,6 +174,7 @@
     background-color: var(--white);
     border-radius: var(--br-l);
     position: relative;
+    opacity: 0;
 
 
     img {
@@ -161,6 +196,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
   }
 
   &__body {
@@ -175,7 +211,7 @@
   &__title {
     margin: 0;
     flex-shrink: 0;
-    min-width: 345px;
+    min-width: 325px;
     display: flex;
     flex-direction: column;
     white-space: nowrap;
@@ -184,14 +220,16 @@
       width: 100%;
     }
 
-    span:nth-child(2) {
+    span:nth-child(2),
+    span:nth-child(3) {
       text-align: right;
     }
 
     @include desktop {
       // max-width: fit-content;
 
-      span:nth-child(2) {
+      span:nth-child(2),
+      span:nth-child(3) {
         text-align: left;
       }
     }
@@ -219,6 +257,13 @@
       p {
         margin: 0;
       }
+    }
+  }
+
+
+  &--4 {
+    .slide__title {
+      min-width: 380px;
     }
   }
 }
