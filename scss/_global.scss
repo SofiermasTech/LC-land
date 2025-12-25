@@ -236,7 +236,7 @@ html {
   }
 
   @include mobile-bottom {
-    padding-block: 6px;
+    padding-block: 7px;
   }
 
   p {
@@ -286,6 +286,12 @@ html {
     font-size: 13px;
     line-height: 18px;
   }
+
+  @include mobile-bottom {
+    .margin-min {
+      margin-right: -8px;
+    }
+  }
 }
 
 .title-l {
@@ -323,6 +329,7 @@ html {
     line-height: 95%;
 
     &.faq__title {
+      line-height: 1;
       font-size: 32px;
     }
   }

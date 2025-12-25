@@ -12,7 +12,7 @@
 
   @include mobile {
     z-index: 110;
-    top: calc(100dvh - var(--controls-margin) - 46px);
+    top: calc(100dvh - var(--controls-margin) - 38px);
   }
 
   &__wrapper {
@@ -61,7 +61,11 @@
     box-sizing: border-box;
 
     @include mobile {
-      width: calc(100vw - 16px);
+      width: calc(100vw - 32px);
+      gap: 0;
+      border-width: 3px;
+      border-image-slice: 3.5;
+      // border-radius: 4px;
     }
   }
 
@@ -114,5 +118,9 @@
 
     box-shadow: inset 0 1px 0 0 var(--white-trans);
     background-image: linear-gradient(180deg, #5a5d70 0%, #1a1c28 100%);
+
+    @include mobile {
+      width: calc(100% / 4);
+    }
   }
 }

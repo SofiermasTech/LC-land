@@ -8,6 +8,10 @@
   justify-content: space-between;
   z-index: 101;
 
+  @include tablet-bottom {
+    height: auto;
+  }
+
 
   &--right {
     right: 0;
@@ -75,7 +79,7 @@
 
       @include hover {
         background-image: linear-gradient(180deg, #eaeaea 0%, #fff 100%);
-        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
       }
 
       // @include tablet-bottom {
@@ -113,6 +117,17 @@
       }
     }
 
+    .base-btn {
+      @include hover {
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+      }
+    }
+
+    span {
+      width: 22px;
+      height: 16px;
+    }
+
     svg {
       width: 22px;
       height: 16px;
@@ -142,7 +157,7 @@
 
       @include hover {
         background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
-        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
       }
 
       @include tablet-bottom {
@@ -186,6 +201,11 @@
     width: 26px;
     height: 16px;
     transition: none;
+    // border-radius: 6px;
+
+    @include hover {
+      // box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    }
   }
 
   &__split {
@@ -193,7 +213,7 @@
     height: 36px;
 
     @include tablet-bottom {
-      display: none;
+      display: none !important;
     }
   }
 

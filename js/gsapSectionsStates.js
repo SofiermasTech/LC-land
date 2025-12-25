@@ -40,11 +40,11 @@ const UI_SECTION_STATES = {
     numBtn: {opacity: 0},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 0, visible: 'hidden'},
-    // sliderTitle: {opacity: 0},
+    sliderTitle: {opacity: 0},
   },
 };
 
-function applySectionUIState(config, animate = true) {
+function applySectionUIState(config) {
   if (!config) return;
 
   const tl = gsap.timeline();
@@ -54,11 +54,12 @@ function applySectionUIState(config, animate = true) {
     opacity: config.heroFix.opacity,
   });
 
-  gsap.set('.hero__blur', {
-    display: config.heroBlur.visible ? 'block' : 'none',
-  });
+  // gsap.set('.hero__blur', {
+  //   display: config.heroBlur.visible ? 'block' : 'none',
+  // });
 
   tl.set('.hero__blur', {
+    display: config.heroBlur.visible ? 'block' : 'none',
     visibility: config.heroBlur.visible ? 'visible' : 'hidden',
     opacity: config.heroBlur.opacity,
     backdropFilter: `blur(${
@@ -193,6 +194,10 @@ function animationOnStart() {
 function scrollImgState0(index) {
   const tl = gsap.timeline();
 
+  gsap.set('.hero__blur', {
+    display: UI_SECTION_STATES.screen0.heroBlur.visible ? 'block' : 'none',
+  });
+
   console.log('scrollImgWrapper0 запущен');
   if (index === 0) {
     tl.to('.first-wrapper__img', {
@@ -212,6 +217,10 @@ function scrollImgState0(index) {
 
 function scrollImgState1(index) {
   const tl = gsap.timeline();
+  gsap.set('.hero__blur', {
+    display: UI_SECTION_STATES.screen1.heroBlur.visible ? 'block' : 'none',
+  });
+
   console.log('scrollImgWrapper1 запущен');
   if (index === 1) {
     tl.set('.first-wrapper__img .img-paralax--l4-d', {
@@ -227,6 +236,9 @@ function scrollImgState1(index) {
 
 function scrollImgStateOther() {
   const tl = gsap.timeline();
+  gsap.set('.hero__blur', {
+    display: UI_SECTION_STATES.screen2.heroBlur.visible ? 'block' : 'none',
+  });
   console.log('scrollImgWrapper2 запущен');
   tl.to('.first-wrapper__img .img-paralax--l4-d', {
     opacity: 0,
@@ -361,7 +373,7 @@ function section0_leaveForward() {
   document.querySelector('.first-wrapper').classList.add('no-comets-animation');
 
   tl.to('.hero__fix-wrapper', {
-    duration: 0.3,
+    duration: 0.5,
     x: '-150%',
     opacity: 0,
     ease: 'power2.out',
@@ -393,6 +405,10 @@ function section0_leaveBackward() {
 function section1_enterForward() {
   console.log('section1_enterForward');
   const tl = gsap.timeline();
+
+  gsap.set('.hero__blur', {
+    display: UI_SECTION_STATES.screen1.heroBlur.visible ? 'block' : 'none',
+  });
 
   const sec2 = document.querySelector('.numbers__overlay');
   sec2.classList.add('section-fixed');

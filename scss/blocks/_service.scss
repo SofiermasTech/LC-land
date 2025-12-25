@@ -66,6 +66,11 @@
         font-size: 48px;
       }
     }
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__content {
@@ -247,6 +252,11 @@
 
     .base-btn {
       width: 189px;
+
+      @include mobile {
+        max-width: 208px;
+        width: 100%;
+      }
 
       span {
         display: flex;

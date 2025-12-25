@@ -38,6 +38,12 @@
     // margin: 0;
   }
 
+  &__title-wrapper {
+    @include tablet-bottom {
+      display: contents;
+    }
+  }
+
   &__title {
     grid-area: title;
     width: fit-content;
@@ -55,6 +61,7 @@
     @include tablet-bottom {
       width: 100%;
       flex-wrap: wrap;
+      flex-direction: row;
 
       span {
         width: fit-content;
@@ -88,6 +95,7 @@
 
       .base-btn {
         width: 156px;
+        padding: 7px;
       }
     }
 
@@ -220,8 +228,7 @@
 
 
     @include tablet {
-      width: 13px;
-      height: 13px;
+      height: 18px;
     }
 
     div {
@@ -239,10 +246,10 @@
       background-color: var(--blue);
       transition: 0.3s;
 
-      @include tablet {
-        width: 13px;
-        height: 2px;
-      }
+      // @include tablet {
+      //   width: 13px;
+      //   height: 2px;
+      // }
 
       &:last-child {
         left: 0.25px;

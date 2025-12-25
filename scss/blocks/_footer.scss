@@ -10,17 +10,15 @@
   grid-template-columns: 1.1fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
-  // z-index: 7;
 
-  // @media screen and (min-height: 1000px) and (max-width: 1440px) {
-  //   margin: 0 auto;
-  // }
+  @include laptop {
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  }
 
   @include tablet {
     grid-template-columns: 0.8fr 1fr 1fr 1fr;
     max-width: 100%;
     width: 100%;
-
   }
 
   @include tablet-bottom {
@@ -34,6 +32,14 @@
 
   @include mobile {
     grid-template-columns: 1fr 1.3fr;
+    gap: 24px;
+    padding-bottom: 16px;
+  }
+
+
+  @include mobile-bottom {
+    grid-template-columns: 1fr 1.45fr;
+
   }
 
   &__column {
@@ -125,8 +131,14 @@
       gap: 12px;
     }
 
-    @include mobile {
-      gap: 8px;
+    &>*:first-child {
+      span {
+        // width: 20px;
+
+        svg {
+          width: 20px;
+        }
+      }
     }
   }
 
@@ -139,6 +151,10 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    @include mobile {
+      gap: 12px;
+    }
   }
 
   &__links-item {

@@ -1,4 +1,4 @@
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollToPlugin);
 
 // состояния
 let isAnimating = false;
@@ -257,9 +257,20 @@ function goToSlide(index) {
   // Главный таймлайн
   const masterTl = gsap.timeline({
     onComplete: () => {
+      console.log(index);
+      console.log(lastSlide - 1);
+      console.log(oldIndex);
+
       currentSlide = index;
       window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
-      updateUI();
+
+      if (currentSlide === lastSlide) {
+        updateUI();
+      }
+
+      if (oldIndex === lastSlide && index === lastSlide - 1) {
+        updateUI();
+      }
 
       setActiveSlide(currentSlide);
 
@@ -275,7 +286,6 @@ function goToSlide(index) {
       x: targetX,
       duration: 0.7,
       ease: 'power2.inOut',
-      // force3D: true,
     },
     0
   );
@@ -916,27 +926,102 @@ if (!mobileMode) {
     updateClassMenu();
   });
 }
-window.addEventListener('resize', () => {
-  const realCurrentIndex = detectCurrentSection();
 
-  updateScrollLock();
+function hardResetOnResize() {
+  isAnimating = true;
 
-  if (realCurrentIndex !== currentIndex) {
-    currentIndex = realCurrentIndex;
-    // currentIndex = 0;
-    goToSection(currentIndex);
-    console.log('Resize → corrected currentIndex to', currentIndex);
+  // Останавливаем ВСЁ gsap
+  gsap.globalTimeline.clear();
+  gsap.killTweensOf('*');
+
+  // Сбрасываем внутренние состояния
+  currentIndex = 0;
+  currentSlide = 0;
+  footerVisible = false;
+
+  // Скроллим строго в самый верх
+  window.scrollTo({top: 0, left: 0, behavior: 'instant'});
+
+  // ВАЖНО: дать браузеру кадр применить scrollTop
+  // requestAnimationFrame(() => {
+  // requestAnimationFrame(() => {
+  location.reload();
+  //   });
+  // });
+}
+
+function resetAppState() {
+  // isAnimating = true;
+
+  gsap.globalTimeline.clear();
+  gsap.killTweensOf('*');
+
+  currentIndex = 0;
+  currentSlide = 0;
+  footerVisible = false;
+  isBottom = false;
+
+  window.scrollTo({top: 0, left: 0, behavior: 'instant'});
+
+  if (lastWrapper) {
+    lastWrapper.scrollTop = 0;
   }
 
-  footerVisible = checkInnerScroll();
-  updateUI();
+  goToSection(currentIndex);
   updateClassMenu();
-  if (currentIndex === sliderSectionIndex) {
-    setActiveSlide(currentSlide);
-  }
+  updateSectionsUI(currentIndex);
+
+  // requestAnimationFrame(() => {
+  //   requestAnimationFrame(() => {
+  //     updateScrollLock();
+  //     updateUI();
+  //     updateClassMenu();
+
+  //     // стартовые анимации
+  //     animationOnStart();
+  //     startLightning();
+
+  //     // параллакс
+  //     disableParallax();
+  //     enableParallax();
+
+  //     isAnimating = false;
+  //   });
+  // });
+}
+
+let lastWidth = window.innerWidth;
+
+window.addEventListener('resize', () => {
+  if (Math.abs(window.innerWidth - lastWidth) < 30) return;
+
+  lastWidth = window.innerWidth;
+  // resetAppState();
+  hardResetOnResize();
 });
 
+// window.addEventListener('resize', () => {
+//   const realCurrentIndex = detectCurrentSection();
+
+//   updateScrollLock();
+
+//   if (realCurrentIndex !== currentIndex) {
+//     currentIndex = realCurrentIndex;
+//     // currentIndex = 0;
+//     goToSection(currentIndex);
+//     console.log('Resize → corrected currentIndex to', currentIndex);
+//   }
+
+//   footerVisible = checkInnerScroll();
+//   updateUI();
+//   updateClassMenu();
+//   if (currentIndex === sliderSectionIndex) {
+//     setActiveSlide(currentSlide);
+//   }
+// });
+
 // ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ
+
 let touchStartY = 0;
 let touchEndY = 0;
 const minSwipeDistance = 60;

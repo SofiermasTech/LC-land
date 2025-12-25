@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script> -->
   <script src="js/gsapControlsStates.js" defer></script>
   <script src="js/gsapSectionsStates.js" defer></script>
   <script src="js/gsap.js" defer></script>
@@ -201,7 +201,7 @@
             <div class="numbers__items">
               <div class="numbers__item">
                 <h2 class="numbers__big-number">2,5%</h2>
-                <p class="numbers__label title-s">Комиссия за пополнение<br>с Lemonad</p>
+                <p class="numbers__label title-s">Комиссия за&nbsp;пополнение<br>с Lemonad</p>
               </div>
               <div class="numbers__item">
                 <h2 class="numbers__big-number">20</h2>
@@ -235,7 +235,7 @@
         <section class="section" id="section-3">
           <div class="service" id="features">
             <div class="service__wrapper">
-              <h2 class="service__title title-l">Фичи сервиса</h2>
+              <h2 class="service__title title-l"><span>Фичи</span> <span>сервиса</span></h2>
               <div class="service__content">
                 <div class="service-swiper">
                   <div class="service-swiper__wrapper"></div>
@@ -282,8 +282,8 @@
             </div>
             <div class="faq" id="faq">
               <div class="faq__title title-l">
-                <span>у нас</span>
-                <span>часто спрашивают,</span>
+                <span>у нас &thinsp;</span>
+                <div class="faq__title-wrapper"><span>часто &thinsp;</span><span>спрашивают,</span></div>
                 <span>а мы отвечаем</span>
               </div>
               <div class="faq__else-ask">
@@ -444,14 +444,16 @@
                           clip-rule="evenodd" />
                       </svg>
                     </span>
-                    <p>Выпустить карту</p>
+                    <p class="margin-min">Выпустить карту</p>
                   </a>
                 </div>
               </div>
               <nav class="footer__column">
                 <div class="footer__column-title text-light">Пользователю</div>
                 <ul class="footer__links">
-                  <li class="footer__links-item"><a href="/">Вход / Регистрация</a></li>
+                  <li class="footer__links-item">
+                    <a href="https://app.limonad.com/signIn" target="_blank">Вход / Регистрация</a>
+                  </li>
                   <li class="footer__links-item"><a href="/">Защита информации</a></li>
                   <li class="footer__links-item"><a href="/">Правила пользования сайтом</a></li>
                   <li class="footer__links-item"><a href="/">Отказ от обязательств</a></li>
