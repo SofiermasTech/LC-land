@@ -3,7 +3,7 @@ const UI_SECTION_STATES = {
     heroFix: {x: 0, opacity: 1},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 1},
-    firstImg: {opacity: 0},
+    // firstImg: {opacity: 0},
     numBtn: {opacity: 0},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 0, visible: false},
@@ -223,10 +223,10 @@ function scrollImgState1(index) {
 
   console.log('scrollImgWrapper1 запущен');
   if (index === 1) {
-    tl.set('.first-wrapper__img .img-paralax--l4-d', {
+    tl.to('.first-wrapper__img .img-paralax--l4-d', {
       x: 0,
       opacity: 1,
-    }).set('.first-wrapper__img', {
+    }).to('.first-wrapper__img', {
       opacity: 1,
     });
 

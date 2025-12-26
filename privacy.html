@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Lemonad Card</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <script src="js/content.js" defer></script>
+  <script src="js/index.js" defer></script>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script> -->
+  <script src="js/gsapControlsStates.js" defer></script>
+  <script src="js/gsapSectionsStates.js" defer></script>
+  <script src="js/gsap.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+
+</head>
+
+<body class="page">
+  <div class="controls controls--left">
+    <a class="controls__logo logo-main" href="/">
+      <div class="logo-main__wrapper">
+        <img class="logo-main__icon" src="/img/logo-icon.svg" alt width="26" height="16">
+        <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="35">
+      </div>
+      <span class="logo-main__split">
+        <svg width="16" height="36" viewBox="0 0 16 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
+        </svg>
+      </span>
+      <p class="logo-main__text">Сервис<br>
+        виртуальных<br>
+        карт</p>
+    </a>
+    <div class="controls__tg tg">
+      <a href="https://t.me/LMcard_support" target="_blank" class="base-btn">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none" viewBox="0 0 20 16">
+            <path fill="#1a1c28" fill-rule="evenodd"
+              d="M15.32 15.824a1.029 1.029 0 0 0 .922.116 1 1 0 0 0 .391-.263.9.9 0 0 0 .213-.41C17.57 12 19.326 3.732 19.986.76a.6.6 0 0 0-.021-.332.6.6 0 0 0-.196-.275.68.68 0 0 0-.664-.112C15.611 1.282 4.85 5.158.452 6.72a.7.7 0 0 0-.333.25.64.64 0 0 0-.119.39c.01.283.209.528.494.61 1.973.567 4.562 1.355 4.562 1.355s1.21 3.508 1.84 5.292c.08.224.263.4.503.461a.75.75 0 0 0 .676-.166l2.58-2.338s2.977 2.095 4.665 3.25M6.145 8.882l1.4 4.43.31-2.805 8.488-7.35a.216.216 0 0 0 .027-.302.245.245 0 0 0-.313-.051z"
+              clip-rule="evenodd" />
+          </svg>
+        </span>
+      </a>
+      <span class="tg__text">Мы всегда<br>
+        на связи, кстати</span>
+    </div>
+  </div>
+  <div class="controls controls--right">
+    <div class="controls__btn-reg">
+      <a href="https://app.lemonadcard.com/signUp" target="_blank" class="base-btn">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
+            <path fill="#fff"
+              d="M18.25 12.25A3.75 3.75 0 0 1 22 16h-1.5a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 16H0a3.75 3.75 0 0 1 3.75-3.75z" />
+            <path fill="#fff" fill-rule="evenodd"
+              d="M11 0a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </a>
+    </div>
+    <div class="controls__btn-scroll">
+      <span class="btn-scroll-text"></span>
+      <button class="base-btn btn-scroll" type="button">
+        <span class="icon-down">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="none" viewBox="0 0 16 22">
+            <path fill="#1a1c28"
+              d="M8 8.25a.75.75 0 0 1 .75.75v5.19l.72-.72a.75.75 0 1 1 1.06 1.06l-2 2a1 1 0 0 1-.117.096c-.024.016-.05.026-.075.039q-.024.015-.05.026a1 1 0 0 1-.125.039q-.006.001-.013.004l-.021.003A1 1 0 0 1 8 16.75l-.077-.004q-.028-.003-.056-.009h-.01l-.007-.003q-.01-.002-.02-.006a1 1 0 0 1-.12-.037q-.033-.016-.065-.035-.03-.014-.058-.03l-.06-.044-.057-.052-2-2a.75.75 0 0 1 1.06-1.06l.72.72V9A.75.75 0 0 1 8 8.25" />
+            <path fill="#1a1c28" fill-rule="evenodd"
+              d="M8 0a8 8 0 0 1 8 8v6l-.01.412a8 8 0 0 1-15.98 0L0 14V8a8 8 0 0 1 8-8m0 1.5A6.5 6.5 0 0 0 1.5 8v6a6.5 6.5 0 1 0 13 0V8A6.5 6.5 0 0 0 8 1.5"
+              clip-rule="evenodd" />
+          </svg>
+        </span>
+        <span class="icon-up" style="display: none;">
+          <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.75 5L7.82715 5.00391C7.84559 5.00579 7.86381 5.00852 7.88184 5.01172C7.88737 5.0127 7.89293 5.01354 7.89844 5.01465C7.91181 5.01733 7.92439 5.02298 7.9375 5.02637C7.97073 5.03494 8.0041 5.04344 8.03613 5.05664C8.06527 5.06868 8.09198 5.08512 8.11914 5.10059C8.17626 5.1331 8.23155 5.171 8.28027 5.21973L11.2803 8.21973C11.5732 8.51262 11.5732 8.98738 11.2803 9.28027C10.9874 9.57314 10.5126 9.57316 10.2197 9.28027L8.5 7.56055V16.75C8.5 17.1642 8.16421 17.5 7.75 17.5C7.33579 17.5 7 17.1642 7 16.75V7.56055L5.28027 9.28027C4.98738 9.57314 4.51261 9.57316 4.21973 9.28027C3.92687 8.98739 3.92687 8.51261 4.21973 8.21973L7.21973 5.21973C7.25154 5.18791 7.28565 5.15967 7.32129 5.13477C7.36392 5.10501 7.40954 5.07909 7.45801 5.05859L7.46777 5.05469C7.49822 5.04234 7.53 5.03455 7.56152 5.02637C7.57463 5.02296 7.58722 5.01735 7.60059 5.01465C7.60609 5.01353 7.61166 5.01271 7.61719 5.01172C7.66029 5.00402 7.70468 5 7.75 5Z"
+              fill="#1A1C28" />
+            <path
+              d="M14.75 0C15.1642 1.60023e-08 15.5 0.335786 15.5 0.75C15.5 1.16421 15.1642 1.5 14.75 1.5H0.75C0.335786 1.5 1.67194e-08 1.16421 0 0.75C-1.67194e-08 0.335786 0.335786 1.67194e-08 0.75 0H14.75Z"
+              fill="#1A1C28" />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="menu">
+    <div class="menu__wrapper">
+      <nav class="menu__nav">
+        <span class="menu__indicator"></span>
+
+        <a class="menu__link" data-index="0">Начало</a>
+        <a class="menu__link" data-index="1">Условия</a>
+        <a class="menu__link" data-index="2" href="#features">Фичи</a>
+        <a class="menu__link" data-index="3" href="#faq">Вопросы</a>
+      </nav>
+      <div class="service-swiper__pagination"></div>
+    </div>
+
+  </div>
+  <main class="main">
+    
+      
+      
+
+  </main>
+  
+</body>
+
+</html>

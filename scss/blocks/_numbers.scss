@@ -32,7 +32,7 @@
 
     @include mobile {
       justify-content: flex-end;
-      gap: 24px;
+      // gap: 24px;
     }
 
     @media screen and (max-width: 380px) and (max-height: 760px) {
@@ -95,7 +95,7 @@
 
     @include mobile {
       max-width: calc(100vw - (var(--container-padding) * 2));
-      gap: 28px;
+      gap: 20px;
     }
 
     @media screen and (max-width: 380px) and (max-height: 760px) {
@@ -211,6 +211,10 @@
       font-size: clamp(100px, 33vw, 150px);
     }
 
+    @media screen and (max-width: 460px) and (max-height: 800px) {
+      font-size: clamp(100px, 30vw, 130px);
+    }
+
     @media screen and (max-width: 390px) {
       font-size: clamp(96px, 26vw, 130px);
     }
@@ -247,11 +251,15 @@
 
     @include tablet-bottom {
       width: 246px;
-      padding: 8px 12px;
+      padding: 7px 12px;
     }
 
     @include mobile {
-      margin-bottom: clamp(80px, 19vh, 194px);
+      margin-bottom: clamp(80px, 19vh, 190px);
+    }
+
+    @media screen and (max-width: 460px) and (max-height: 800px) {
+      margin-bottom: clamp(80px, 17vh, 160px);
     }
 
     @media screen and (max-width: 380px) and (max-height: 760px) {

@@ -36,8 +36,8 @@ const lastIndex = config.lastIndex;
 const lastWrapper = config.lastWrapper;
 const lastSection = sections[lastIndex];
 
-let currentIndex = detectCurrentSection();
-// let currentIndex = 0;
+// let currentIndex = detectCurrentSection();
+let currentIndex = 0;
 
 console.log('lastWrapper', lastWrapper);
 console.log('lastSection', lastSection);
@@ -453,8 +453,8 @@ if (!mobileMode) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  currentIndex = detectCurrentSection();
-  // currentIndex = 0;
+  // currentIndex = detectCurrentSection();
+  currentIndex = 0;
 
   if (currentIndex === 0) {
     animationOnStart();
@@ -1024,7 +1024,7 @@ window.addEventListener('resize', () => {
 
 let touchStartY = 0;
 let touchEndY = 0;
-const minSwipeDistance = 60;
+const minSwipeDistance = 100;
 
 function handleTouchStart(evt) {
   touchStartY = evt.changedTouches[0].screenY;
