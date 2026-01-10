@@ -10,11 +10,6 @@
   grid-template-rows: 332px;
   gap: 8px;
   position: relative;
-  // z-index: 7;
-
-  // @media screen and (min-height: 1000px) and (max-width: 1440px) {
-  //   margin: 0 auto var(--section-offset);
-  // }
 
   @include tablet {
     max-width: 100%;
@@ -55,7 +50,6 @@
   }
 
   &__content {
-    // max-height: 100%;
     height: 100%;
     padding: 64px;
     display: grid;
@@ -112,7 +106,6 @@
   &__content-btn {
     grid-area: btn;
     margin-top: 24px;
-    // max-height: 100%;
     height: fit-content;
 
     @include tablet-bottom {
@@ -148,10 +141,8 @@
 
 
     img {
-      // max-width: 256px;
       width: 280px;
       height: auto;
-      // height: 100%;
       object-fit: cover;
       object-position: bottom;
       position: relative;

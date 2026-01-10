@@ -52,10 +52,6 @@
     align-items: center;
     gap: 16px;
 
-    // @include laptop {
-    //   margin-top: auto;
-    // }
-
     @include tablet {
       display: none;
 
@@ -81,10 +77,6 @@
         background-image: linear-gradient(180deg, #eaeaea 0%, #fff 100%);
         box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
       }
-
-      // @include tablet-bottom {
-      //   display: none;
-      // }
     }
 
     span {
@@ -201,11 +193,6 @@
     width: 26px;
     height: 16px;
     transition: none;
-    // border-radius: 6px;
-
-    @include hover {
-      // box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
-    }
   }
 
   &__split {

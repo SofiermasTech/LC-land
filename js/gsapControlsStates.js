@@ -293,7 +293,6 @@ function applyUIState(config) {
 }
 
 function updateUI() {
-  console.log('updateUI');
 
   if (!mobileMode) {
     if (currentIndex === 0) return applyUIState(UI_CONTROL_STATES.default);
@@ -301,8 +300,8 @@ function updateUI() {
 
     if (currentIndex === 2 && currentSlide !== lastSlide)
       return applyUIState(UI_CONTROL_STATES.afterSecond);
-    console.log(lastSlide);
-    console.log(currentSlide);
+    // console.log(lastSlide);
+    // console.log(currentSlide);
     if (currentIndex === 2 && currentSlide === lastSlide)
       return applyUIState(UI_CONTROL_STATES.lastSlide);
     if (currentIndex === lastIndex && !footerVisible)

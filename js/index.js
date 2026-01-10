@@ -1,4 +1,4 @@
-// document.addEventListener('DOMContentLoaded', () => {
+// управление свайперами на десктоп - gsap, но моб. - swiper
 let mobileSwiperMain = null;
 let mobileSwiperImg = null;
 
@@ -79,7 +79,6 @@ function initServiceSwiper() {
 
 // Мобильный слайдер
 function initMobileSwiper() {
-  // if (mobileMode) {
   if (!mobileMode) return;
   const containerMob = document.querySelector('.swiper-mob__wrapper');
 
@@ -210,9 +209,6 @@ const faqItems = document.querySelector('.faq__questions');
 const faqHead = document.querySelectorAll('.faq__item-head');
 
 faqItems.addEventListener('click', (event) => {
-  // console.log(event);
-  // console.log(event.target);
-  // console.log(event.currentTarget);
   const item = event.target.closest('.faq__item');
   if (!item) return;
 
@@ -220,7 +216,7 @@ faqItems.addEventListener('click', (event) => {
 });
 
 // console.log(window.innerWidth, window.innerHeight);
-
+// анимация с молниями и статуей
 const scene = document.querySelector('.lightning-scene');
 
 let currentLightning = 0;

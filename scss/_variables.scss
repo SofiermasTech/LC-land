@@ -20,6 +20,7 @@
 
   --container-width: 1272px;
   --container-padding: 48px;
+  --container-padding-mini: 24px;
   --section-padding: 48px;
   --section-offset: 96px;
   --controls-margin: 40px;
@@ -32,7 +33,6 @@
 
 
   @include desktop {
-    // --container-width: 1184px;
     --section-offset: 64px;
     --controls-margin: 16px;
   }

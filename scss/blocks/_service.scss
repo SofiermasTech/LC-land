@@ -1,7 +1,6 @@
 @use '../media' as *;
 
 .service {
-  // max-width: var(--container-width);
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -9,7 +8,6 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  // z-index: 10;
 
   @media screen and (min-height: 1000px) and (max-width: 1440px) {
     margin: 0 auto;
@@ -19,13 +17,7 @@
     align-items: center;
   }
 
-  @include desktop {
-    // padding-top: var(--section-offset);
-    // align-items: flex-start;
-  }
-
   @include tablet {
-    // padding-top: 0;
     height: 100%;
     max-width: 100vw;
   }
@@ -59,10 +51,8 @@
     @include tablet {
       padding-inline: 0;
       padding-top: 24px;
-      // max-width: calc(100vw - (var(--container-padding) * 2));
 
       &.title-l {
-        // max-width: 85%;
         font-size: 48px;
       }
     }
@@ -99,8 +89,6 @@
   width: 100%;
   margin: 0 auto;
   height: 100%;
-  // overflow: hidden;
-  // position: relative;
   border-radius: var(--br-l);
 
   @include tablet {
@@ -111,7 +99,6 @@
     width: 100%;
     height: 100%;
     display: flex;
-    // gap: 4px;
   }
 
   &__slide {
@@ -231,8 +218,7 @@
     }
 
     @include desktop {
-      // max-width: fit-content;
-
+  
       span:nth-child(2),
       span:nth-child(3) {
         text-align: left;
@@ -281,7 +267,3 @@
 .slider-img.swiper-horizontal {
   touch-action: pan-y;
 }
-
-// .slider-main.swiper-horizontal {
-//   touch-action: pan-x;
-// }

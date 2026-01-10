@@ -3,7 +3,6 @@
 
 .numbers {
   height: 100vh;
-  // max-width: var(--container-width);
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
@@ -32,7 +31,6 @@
 
     @include mobile {
       justify-content: flex-end;
-      // gap: 24px;
     }
 
     @media screen and (max-width: 380px) and (max-height: 760px) {
@@ -46,6 +44,10 @@
       width: 100vw;
       height: 100vh;
       z-index: 10;
+
+      @include mobile {
+         height: 100dvh;
+      }
     }
 
     &.opacity {
@@ -70,16 +72,10 @@
     margin: 0 auto;
     max-width: 1600px;
     width: 100%;
-    // min-width: 85%;
     display: grid;
     grid-template-columns: 1.15fr 0.7fr 1.15fr;
     align-items: center;
-    // gap: 100px;
     position: relative;
-
-    @include desktop {
-      // gap: 48px;
-    }
 
     @include laptop {
       max-width: calc(100vw - (var(--container-padding) * 2));
@@ -100,6 +96,10 @@
 
     @media screen and (max-width: 380px) and (max-height: 760px) {
       gap: 16px;
+    }
+
+    @media screen and (max-width: 360px) {
+      gap: 8px;
     }
   }
 
@@ -207,16 +207,24 @@
       margin-right: -4px;
     }
 
-    @media screen and (max-width: 440px) {
-      font-size: clamp(100px, 33vw, 150px);
+    @media screen and (max-width: 460px) {
+      font-size: clamp(100px, 34dvw, 150px);
     }
 
     @media screen and (max-width: 460px) and (max-height: 800px) {
-      font-size: clamp(100px, 30vw, 130px);
+      font-size: clamp(100px, 30dvw, 130px);
+    }
+
+    @media screen and (max-width: 415px) and (max-height: 860px) {
+      font-size: clamp(36px, 27dvh, 130px)
     }
 
     @media screen and (max-width: 390px) {
-      font-size: clamp(96px, 26vw, 130px);
+      font-size: clamp(96px, 26dvw, 130px);
+    }
+
+    @media screen and (max-width: 360px) {
+      font-size: clamp(80px, 20dvw, 130px);
     }
   }
 
@@ -239,6 +247,10 @@
       z-index: 2;
     }
 
+    @media screen and (max-width: 360px) {
+      font-size: 13px;
+    }
+
   }
 
   .base-btn {
@@ -255,15 +267,15 @@
     }
 
     @include mobile {
-      margin-bottom: clamp(80px, 19vh, 190px);
+      margin-bottom: clamp(96px, 20dvh, 190px);
     }
 
     @media screen and (max-width: 460px) and (max-height: 800px) {
-      margin-bottom: clamp(80px, 17vh, 160px);
+      margin-bottom: clamp(96px, 18dvh, 160px);
     }
 
-    @media screen and (max-width: 380px) and (max-height: 760px) {
-      margin-bottom: 100px;
+    @media screen and (max-width: 380px) and (max-height: 660px) {
+      margin-bottom: 96px;
     }
 
     span {

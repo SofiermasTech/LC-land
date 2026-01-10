@@ -2,7 +2,8 @@ gsap.registerPlugin(ScrollToPlugin);
 
 // состояния
 let isAnimating = false;
-let isBottom = false;
+let currentIndex = 0;
+let reachedTopLock = false;
 
 const config = {
   // секции и обертка различаются, т.к. на моб #section-3 и #section-4 объединяются в одну
@@ -36,16 +37,14 @@ const lastIndex = config.lastIndex;
 const lastWrapper = config.lastWrapper;
 const lastSection = sections[lastIndex];
 
-// let currentIndex = detectCurrentSection();
-let currentIndex = 0;
+// console.log('lastWrapper', lastWrapper);
+// console.log('lastSection', lastSection);
 
-console.log('lastWrapper', lastWrapper);
-console.log('lastSection', lastSection);
-
-// остальные кнопки + меню
+// остальные элм + меню
 const menuLinks = document.querySelectorAll('.menu__link');
 const menuIndicator = document.querySelectorAll('.menu__indicator');
-// const footerLinks = document.querySelectorAll('.footer__links-item.m a');
+const footer = document.querySelector('.footer').getBoundingClientRect();
+const footerHeight = document.querySelector('.footer').offsetHeight;
 
 // слайдер
 const sliderSectionIndex = 2;
@@ -56,7 +55,9 @@ const lastSlide = slides.length - 1;
 
 // mobile
 let mouseMoveHandler = null;
+const themeMeta = document.querySelector('meta[name="theme-color"]');
 
+// переход мкжду секциями + таймлайн анимаций
 function goToSection(index) {
   if (isAnimating) return;
   isAnimating = true;
@@ -77,37 +78,45 @@ function goToSection(index) {
   const master = gsap.timeline({
     onComplete() {
       currentIndex = nextIndex;
-      updateUI();
-      // updateSectionsUI(currentIndex);
-      updateClassMenu();
       updateScrollLock();
-
       updatePaginationWhithSlides(nextIndex);
 
+      // аним комет
       if (currentIndex === 0) {
         startLightning();
       } else {
         stopLightning();
       }
 
+      // убираем прозрачность 1го слайда
       if (currentIndex === sliderSectionIndex && !mobileMode) {
         setActiveSlide(currentSlide);
       }
 
-      if (index === lastIndex) {
-        lastWrapper.scrollTop = 0;
+      // поднимаем контент секц. со свободным скролом, чтоб не залипал
+      if (index === lastIndex && !mobileMode) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            lastWrapper.scrollTop = 0;
+          });
+        });
+      }
+
+      // попвтка покрасить ui-bar
+      if (mobileMode) {
+        updateThemeColor(currentIndex);
       }
       isAnimating = false;
     },
   });
 
-  // updateUI((currentIndex = index));
   master.add(transitionTl);
-  master.add(updateUI((currentIndex = index)));
+  master.add(() => {
+    updateClassMenu((currentIndex = index));
+    updateUI((currentIndex = index));
+  }, '<');
   master.add(scrollTween, '-=0.6');
-
   // console.log(master);
-  // console.log('Переход2 длится:', master.totalDuration(), 'сек');
 }
 
 // скролл для десктопа
@@ -170,15 +179,16 @@ function onwheel(evt) {
   }
 }
 
-function detectCurrentSection() {
-  let idx = 0;
+// определение секции
+// function detectCurrentSection() {
+//   let idx = 0;
 
-  sections.forEach((section, i) => {
-    const rect = section.getBoundingClientRect();
-    if (rect.top <= window.innerHeight * 0.5) idx = i;
-  });
-  return idx;
-}
+//   sections.forEach((section, i) => {
+//     const rect = section.getBoundingClientRect();
+//     if (rect.top <= window.innerHeight * 0.5) idx = i;
+//   });
+//   return idx;
+// }
 
 function lockScroll() {
   document.documentElement.style.overflowY = 'hidden';
@@ -191,6 +201,7 @@ function unlockScroll() {
 }
 
 // Оптимизация обновлений UI через requestAnimationFrame
+// было в приступе отчаяния. наверное потом уберу
 let rafId = null;
 let pendingUIUpdate = false;
 
@@ -208,6 +219,8 @@ function scheduleUIUpdate() {
   });
 }
 
+// убирает opacity актив.слайда (изначально оно 0, т.к.
+// обертка свайпера без overflow:hidden, чтобы слайды уезжали за экран и не было видно след.слайд)
 function setActiveSlide(index) {
   if (currentIndex !== sliderSectionIndex) return;
 
@@ -228,18 +241,7 @@ function setActiveSlide(index) {
   });
 }
 
-// function refreshSliderState() {
-//   if (mobileMode) return;
-//   if (currentIndex !== sliderSectionIndex) return;
-
-//   const slideWidth = getSlideWidth();
-//   const targetX = -slideWidth * currentSlide;
-
-//   gsap.set(sliderWrapper, {x: targetX});
-
-//   setActiveSlide(currentSlide);
-// }
-
+// ширина нужна для корректного перелистывания без сдивогов
 function getSlideWidth() {
   return slides[0]?.getBoundingClientRect().width || 0;
 }
@@ -257,13 +259,12 @@ function goToSlide(index) {
   // Главный таймлайн
   const masterTl = gsap.timeline({
     onComplete: () => {
-      console.log(index);
-      console.log(lastSlide - 1);
-      console.log(oldIndex);
-
+      // console.log(index);
       currentSlide = index;
+      // для обновления пагинации
       window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
 
+      // след. два пункта - меняем надпись у кнопки на последнем слайде
       if (currentSlide === lastSlide) {
         updateUI();
       }
@@ -274,6 +275,7 @@ function goToSlide(index) {
 
       setActiveSlide(currentSlide);
 
+      // таймаут для мышек с сильной инерцией
       setTimeout(() => {
         isAnimating = false;
       }, 200);
@@ -306,7 +308,6 @@ function animateSlide(oldIndex, newIndex) {
   }
 
   // console.log('animateSlide нач');
-
   const tl = gsap.timeline({defaults: {ease: 'power2.out'}});
   animateSlide.tl = tl;
 
@@ -336,44 +337,26 @@ function animateSlide(oldIndex, newIndex) {
 
     tl.to(newContent, {x: '0%', opacity: 1, duration: 0.3}, '-=0.05');
     tl.to(newImg, {x: '0%', opacity: 1, duration: 0.4});
-
     // console.log('animateSlide конец2');
   }
   return tl;
 }
 
-const footer = document.querySelector('.footer').getBoundingClientRect();
-const faq = document.querySelector('.faq').getBoundingClientRect();
-const footerTop = footer.top;
-const footerHeight = document.querySelector('.footer').offsetHeight;
-const lastHeight = document.querySelector('.section-last-wrapper').scrollHeight;
-const faqStart = faq.top;
-const faqEnd = faq.bottom;
+// const faq = document.querySelector('.faq').getBoundingClientRect();
+// const footerTop = footer.top;
+
+// const lastHeight = document.querySelector('.section-last-wrapper').scrollHeight;
+// const faqStart = faq.top;
+// const faqEnd = faq.bottom;
 const windowHeight = window.innerHeight;
-const targetY = lastWrapper.offsetHeight - windowHeight;
-// // console.log('footerTop', footerTop);
-// // console.log('footerBottom', footer.bottom);
-// // console.log('lastHeight', lastHeight);
-// // console.log('footerHeight', footerHeight);
-// // console.log('faqStart', faqStart);
-// // console.log('faqEnd', faqEnd);
-// // console.log('isBottom', isBottom);
-// // console.log(window.scrollY);
-// // console.log(targetY);
-// // console.log('windowHeight', windowHeight);
+// const targetY = lastWrapper.offsetHeight - windowHeight;
+// const lastChildInSection = lastSection.lastElementChild;
+// console.log(lastSection.children[0]);
+// console.log(lastWrapper.children[0]);
 
-const lastChildInSection = lastSection.lastElementChild;
-console.log(lastSection.children[0]);
-console.log(lastWrapper.children[0]);
-
+// переход по кнопке
 function nextScreen() {
   if (isAnimating) return;
-  // checkScrollPosition();
-
-  // if (mobileMode && currentIndex === sliderSectionIndex) {
-  //   window.scrollBy({top: window.innerHeight * 0.9, behavior: 'smooth'});
-  //   return;
-  // }
 
   if (currentIndex === sliderSectionIndex && !mobileMode) {
     if (currentSlide < lastSlide) return goToSlide(currentSlide + 1);
@@ -393,15 +376,18 @@ function nextScreen() {
       ease: 'power2.inOut',
       onComplete() {
         isAnimating = false;
-        // isBottom = true;
       },
     });
   } else if (currentIndex === lastIndex && footerVisible) {
-    // isBottom = false;
     goToSection(0);
   }
 }
 
+if (nextBtn) {
+  nextBtn.addEventListener('click', nextScreen);
+}
+
+// определяем позицию скролла в последней секции
 function checkInnerScroll() {
   const scrollTop = lastWrapper.scrollTop; // текущий скролл
   const visibleHeight = lastWrapper.offsetHeight; // видимая область
@@ -412,15 +398,10 @@ function checkInnerScroll() {
   const bottomMob = scrollTop + visibleHeight >= fullHeight - footerHeight;
   const isAtBottom = mobileMode ? bottomMob : bottomDesk;
 
-  // console.log('scrollTop', scrollTop);
-  // console.log('visibleHeight', visibleHeight);
-  // console.log('fullHeight', fullHeight);
-  // console.log('isAtBottom', isAtBottom);
-  // console.log('footerHeight', footerHeight);
-
   return isAtBottom;
 }
 
+// убираем меню в конце
 lastWrapper.addEventListener('scroll', () => {
   footerVisible = checkInnerScroll();
 
@@ -432,9 +413,9 @@ lastWrapper.addEventListener('scroll', () => {
   updateUI();
 });
 
+// переход из посл.секции назад
 if (!mobileMode) {
   window.addEventListener('wheel', onwheel, {passive: false});
-
   // свободный скролл в посл. секции
   lastWrapper.addEventListener('wheel', (e) => {
     const atTop = lastWrapper.scrollTop <= 0;
@@ -453,30 +434,18 @@ if (!mobileMode) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // currentIndex = detectCurrentSection();
   currentIndex = 0;
-
-  if (currentIndex === 0) {
-    animationOnStart();
-    startLightning();
-  } else {
-    updateSectionsUI(currentIndex);
-    stopLightning();
-  }
-
+  updateSectionsUI(0);
+  animationOnStart();
+  startLightning();
   updateScrollLock();
   updateUI();
   updateClassMenu();
-  if (currentIndex === sliderSectionIndex && !mobileMode) {
-    setActiveSlide(currentSlide);
-  }
 });
 
 document.addEventListener('load', () => {
   updatePaginationWhithSlides();
-
   footerVisible = checkInnerScroll();
-  // updateUI();
 });
 
 // передвигает активный пункт меню
@@ -489,12 +458,13 @@ function moveIndicatorMenu(link) {
 
   gsap.to(menuIndicator, {
     x,
-    duration: 0.45,
+    duration: 0.5,
     ease: 'power3.out',
   });
+  // console.log('меню конец');
 }
 
-// добавляет актив класс + вызов индикатора
+// добавляет актив класс для css + вызов индикатора
 function updateClassMenu() {
   // console.log('меню нач');
 
@@ -584,10 +554,8 @@ function updatePaginationWhithSlides(sectionIndex) {
 
   if (sectionIndex < sliderSectionIndex) {
     targetSlide = 0;
-    // setActiveSlide(0);
   } else {
     targetSlide = lastSlide;
-    // setActiveSlide(lastSlide);
     updateUI();
   }
 
@@ -603,7 +571,6 @@ function updatePaginationWhithSlides(sectionIndex) {
     gsap.set(sliderWrapper, {x: targetX});
   }
 
-  // if (!mobileMode) {
   gsap.set(
     '.service-swiper__slide .slide__img, .service-swiper__slide .slide__content',
     {
@@ -611,7 +578,7 @@ function updatePaginationWhithSlides(sectionIndex) {
       clearProps: 'transform,opacity',
     }
   );
-  // }
+
   setActiveSlide(currentSlide);
   window.dispatchEvent(new CustomEvent('slidechange', {detail: targetSlide}));
 }
@@ -624,19 +591,45 @@ menuLinks.forEach((link) => {
     const href = link.getAttribute('href');
 
     if (!mobileMode) {
+      if (currentIndex === index) return;
       goToSection(index);
       return;
     }
 
     if (mobileMode && index < 2) {
+      if (currentIndex === index) return;
+      gsap.to(lastWrapper, {
+        scrollTo: {y: 0},
+      });
       goToSection(index);
     }
 
     // доп. условия для объединенной секции
     if (mobileMode && index === 2) {
+      if (currentIndex === index && lastWrapper.scrollTop < 600) return;
       const target = document.querySelector(href);
       if (!target) return;
-      // console.log(target);
+
+      if (lastWrapper.scrollTop > 600) {
+        isAnimating = true;
+
+        gsap.to(lastWrapper, {
+          scrollTo: {y: 0},
+          duration: 0.9,
+          ease: 'power2.out',
+          onComplete: () => {
+            currentIndex = 2;
+            updateUI();
+            updateScrollLock();
+            setTimeout(() => {
+              isAnimating = false;
+            }, 150);
+          },
+        });
+
+        return;
+      }
+
       goToSection(2);
     }
 
@@ -652,8 +645,6 @@ menuLinks.forEach((link) => {
       const transitionTl = runSectionTransition(prevIndex, nextIndex);
 
       transitionTl.eventCallback('onComplete', () => {
-        menuLinks.forEach((l) => l.classList.remove('active'));
-        link.classList.add('active');
         // переход к секции
         gsap.to(window, {
           scrollTo: sections[2],
@@ -663,6 +654,8 @@ menuLinks.forEach((link) => {
             currentIndex = 2;
             updateUI();
             updateScrollLock();
+            menuLinks.forEach((l) => l.classList.remove('active'));
+            link.classList.add('active');
             setTimeout(() => {
               isAnimating = false;
             }, 150);
@@ -679,7 +672,7 @@ menuLinks.forEach((link) => {
   });
 });
 
-// .m a - блок ссылок из меню
+// footer.m a - блок ссылок из меню
 document.querySelectorAll('.footer__links-item.m a').forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
@@ -691,9 +684,39 @@ document.querySelectorAll('.footer__links-item.m a').forEach((link) => {
       return;
     }
 
-    if (mobileMode && index <= 2) {
+    if (mobileMode && index <= 1) {
+      gsap.to(lastWrapper, {
+        scrollTo: {y: 0},
+      });
       goToSection(index);
       return;
+    }
+
+    if (mobileMode && index === 2) {
+      const target = document.querySelector(href);
+      if (!target) return;
+
+      if (lastWrapper.scrollTop > 600) {
+        isAnimating = true;
+
+        gsap.to(lastWrapper, {
+          scrollTo: {y: 0},
+          duration: 0.9,
+          ease: 'power2.out',
+          onComplete: () => {
+            currentIndex = 2;
+            updateUI();
+            updateScrollLock();
+            setTimeout(() => {
+              isAnimating = false;
+            }, 150);
+          },
+        });
+
+        return;
+      }
+
+      goToSection(2);
     }
 
     if (mobileMode && index === 3) {
@@ -808,7 +831,6 @@ function enableParallax() {
   );
   if (!paralaxImg) return;
 
-  // const PARALLAX_LAYERS = [40, 34, 28, 22, 16, 10, 4];
   console.log(paralaxImg);
   mouseMoveHandler = (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -837,7 +859,7 @@ function disableParallax() {
   }
 }
 
-// для откл скролла на ios
+// для откл скролла на ios - фиксила баги (вроде длинный скролл)
 function preventScroll(e) {
   e.preventDefault();
 }
@@ -850,6 +872,7 @@ function disableTouchBlock() {
   document.removeEventListener('touchmove', preventScroll);
 }
 
+// управление скроллом
 function updateScrollLock() {
   const shouldUnlock = currentIndex === lastIndex;
 
@@ -862,172 +885,109 @@ function updateScrollLock() {
   if (mobileMode) {
     lockScroll();
     enableTouchBlock();
-    // lastSection.classList.remove('fixed-section');
 
     if (shouldUnlock) {
       disableTouchBlock();
-      // lastSection.classList.add('fixed-section');
+      unlockScroll();
     }
   }
 }
 
-// === МОБИЛЬНЫЙ ПЕРЕХОД 2 → 1 ПРИ СВАЙПЕ ВВЕРХ ===
+// попвтка покрасить ui-bar, т.к. просил дизайнер, хз
+function updateThemeColor(currentIndex) {
+  if (!themeMeta) return;
 
+  if (currentIndex <= 1) {
+    themeMeta.setAttribute('content', '#000015');
+  } else {
+    themeMeta.setAttribute('content', '#f2f2f2');
+  }
+}
+
+// === МОБИЛЬНЫЙ ПЕРЕХОД 2 → 1 ПРИ СВАЙПЕ ВВЕРХ ===
 if (isMobile()) {
   let lastWrapperScrollTop = 0;
 
-  // Следим только за внутренним scroll внутри последней секции
   lastWrapper.addEventListener('scroll', () => {
     lastWrapperScrollTop = lastWrapper.scrollTop;
     updateClassMenu();
-
-    if (lastWrapperScrollTop < -5) goToSection(1);
-    // if (lastWrapperScrollTop === 0) {
-    //   goToSection(1);
-    // }
-    // console.log(lastWrapperScrollTop);
+    // console.log(lastWrapper.scrollTop);
+    // принудительная остановка в нач.секции, только потом переход назад
+    if (lastWrapperScrollTop <= 0) {
+      reachedTopLock = true;
+    } else {
+      reachedTopLock = false;
+    }
   });
 
-  // Реагируем именно на свайпы, НЕ на обычный скролл!
   document.addEventListener(
     'touchend',
-    (e) => {
+    () => {
       if (isAnimating) return;
-      if (currentIndex !== 2) return; // работаем только в секции 2
-      lastWrapperScrollTop = lastWrapper.scrollTop;
+      if (currentIndex !== 2) return; // free-scroll секция
+
+      const duration = Date.now() - touchStartTime;
+      if (duration > MAX_SWIPE_DURATION) return;
 
       const swipeDistance = touchStartY - touchEndY;
       const isSwipeUp = swipeDistance < -minSwipeDistance;
 
       if (!isSwipeUp) return;
 
-      // Пользователь свайпнул вверх, но внутри секции 2
-      // Разрешаем перейти на секцию 1 ТОЛЬКО если контент прокручен в самый верх
-      const atTop = lastWrapperScrollTop <= 5;
+      // сначала должны упереться
+      if (!reachedTopLock) return;
 
-      if (!atTop) return; // ещё не вверху — не трогаем секции
-
-      // Корректный переход
-      if (atTop) {
-        goToSection(1);
-      }
+      // Осознанный второй свайп
+      reachedTopLock = false;
+      goToSection(1);
     },
     {passive: true}
   );
 }
 
-if (nextBtn) {
-  nextBtn.addEventListener('click', nextScreen);
-}
-
-if (!mobileMode) {
-  window.addEventListener('scroll', () => {
-    updateUI();
-    updateClassMenu();
-  });
-}
+// if (!mobileMode) {
+//   window.addEventListener('scroll', () => {
+//     updateUI();
+//     updateClassMenu();
+//   });
+// }
 
 function hardResetOnResize() {
   isAnimating = true;
-
-  // Останавливаем ВСЁ gsap
+  // Останавливаем gsap
   gsap.globalTimeline.clear();
   gsap.killTweensOf('*');
 
-  // Сбрасываем внутренние состояния
   currentIndex = 0;
   currentSlide = 0;
   footerVisible = false;
 
-  // Скроллим строго в самый верх
+  // Скроллим в самый верх
   window.scrollTo({top: 0, left: 0, behavior: 'instant'});
-
-  // ВАЖНО: дать браузеру кадр применить scrollTop
-  // requestAnimationFrame(() => {
-  // requestAnimationFrame(() => {
+  // принудительная перезагрузка при ресайзе
   location.reload();
-  //   });
-  // });
-}
-
-function resetAppState() {
-  // isAnimating = true;
-
-  gsap.globalTimeline.clear();
-  gsap.killTweensOf('*');
-
-  currentIndex = 0;
-  currentSlide = 0;
-  footerVisible = false;
-  isBottom = false;
-
-  window.scrollTo({top: 0, left: 0, behavior: 'instant'});
-
-  if (lastWrapper) {
-    lastWrapper.scrollTop = 0;
-  }
-
-  goToSection(currentIndex);
-  updateClassMenu();
-  updateSectionsUI(currentIndex);
-
-  // requestAnimationFrame(() => {
-  //   requestAnimationFrame(() => {
-  //     updateScrollLock();
-  //     updateUI();
-  //     updateClassMenu();
-
-  //     // стартовые анимации
-  //     animationOnStart();
-  //     startLightning();
-
-  //     // параллакс
-  //     disableParallax();
-  //     enableParallax();
-
-  //     isAnimating = false;
-  //   });
-  // });
 }
 
 let lastWidth = window.innerWidth;
 
 window.addEventListener('resize', () => {
-  if (Math.abs(window.innerWidth - lastWidth) < 30) return;
+  if (Math.abs(window.innerWidth - lastWidth) < 25) return;
 
   lastWidth = window.innerWidth;
-  // resetAppState();
   hardResetOnResize();
 });
 
-// window.addEventListener('resize', () => {
-//   const realCurrentIndex = detectCurrentSection();
-
-//   updateScrollLock();
-
-//   if (realCurrentIndex !== currentIndex) {
-//     currentIndex = realCurrentIndex;
-//     // currentIndex = 0;
-//     goToSection(currentIndex);
-//     console.log('Resize → corrected currentIndex to', currentIndex);
-//   }
-
-//   footerVisible = checkInnerScroll();
-//   updateUI();
-//   updateClassMenu();
-//   if (currentIndex === sliderSectionIndex) {
-//     setActiveSlide(currentSlide);
-//   }
-// });
-
 // ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ
-
+// привязка свайпа к дате - это последняя стадия отчаяния багов
 let touchStartY = 0;
 let touchEndY = 0;
-const minSwipeDistance = 100;
+const minSwipeDistance = 90;
+let touchStartTime = 0;
+const MAX_SWIPE_DURATION = 400;
 
 function handleTouchStart(evt) {
-  touchStartY = evt.changedTouches[0].screenY;
+  touchStartY = evt.changedTouches[0].clientY;
+  touchStartTime = Date.now();
 }
 
 function handleTouchEnd(evt) {
@@ -1037,17 +997,28 @@ function handleTouchEnd(evt) {
 
   if (!touchStartY) return;
 
-  touchEndY = evt.changedTouches[0].screenY;
+  touchEndY = evt.changedTouches[0].clientY;
   handleSwipe();
 }
 
 function handleSwipe(evt) {
+  const duration = Date.now() - touchStartTime;
+
+  // медленный жест — считаем скроллом
+  if (duration > MAX_SWIPE_DURATION) {
+    resetTouch();
+    return;
+  }
+
   const distance = touchStartY - touchEndY;
   const isDownSwipe = distance > minSwipeDistance;
   const isUpSwipe = distance < -minSwipeDistance;
 
   // Игнорируем слабые движения
-  if (!isDownSwipe && !isUpSwipe) return;
+  if (!isDownSwipe && !isUpSwipe) {
+    resetTouch();
+    return;
+  }
 
   if (!mobileMode) return;
 
@@ -1066,7 +1037,13 @@ function handleSwipe(evt) {
     goToSection(currentIndex - 1);
   }
 
+  resetTouch();
+}
+
+function resetTouch() {
   touchStartY = 0;
+  touchEndY = 0;
+  touchStartTime = 0;
 }
 
 document.addEventListener('touchstart', handleTouchStart, {passive: true});
@@ -1083,6 +1060,7 @@ function startLightning() {
   }, 6000);
 }
 
+// остановка аним для других секций
 function stopLightning() {
   if (!lightningInterval) return;
 

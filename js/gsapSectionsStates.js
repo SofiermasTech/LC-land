@@ -3,7 +3,8 @@ const UI_SECTION_STATES = {
     heroFix: {x: 0, opacity: 1},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 1},
-    // firstImg: {opacity: 0},
+    sliderTitle: {opacity: 0},
+    slider: {opacity: 0},
     numBtn: {opacity: 0},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 0, visible: false},
@@ -44,6 +45,7 @@ const UI_SECTION_STATES = {
   },
 };
 
+// приминение стейтов
 function applySectionUIState(config) {
   if (!config) return;
 
@@ -53,10 +55,6 @@ function applySectionUIState(config) {
     x: config.heroFix.x,
     opacity: config.heroFix.opacity,
   });
-
-  // gsap.set('.hero__blur', {
-  //   display: config.heroBlur.visible ? 'block' : 'none',
-  // });
 
   tl.set('.hero__blur', {
     display: config.heroBlur.visible ? 'block' : 'none',
@@ -191,6 +189,7 @@ function animationOnStart() {
   console.log('animationOnStart конец');
 }
 
+// scrollImgState0, 1, other - для аним. статуи
 function scrollImgState0(index) {
   const tl = gsap.timeline();
 
@@ -226,8 +225,10 @@ function scrollImgState1(index) {
     tl.to('.first-wrapper__img .img-paralax--l4-d', {
       x: 0,
       opacity: 1,
+      duration: 0,
     }).to('.first-wrapper__img', {
       opacity: 1,
+      duration: 0,
     });
 
     return tl;
@@ -242,14 +243,14 @@ function scrollImgStateOther() {
   console.log('scrollImgWrapper2 запущен');
   tl.to('.first-wrapper__img .img-paralax--l4-d', {
     opacity: 0,
-    duration: 0.8,
+    duration: 0.5,
     ease: 'power2.inOut',
     stagger: 0.05,
   }).to(
     '.first-wrapper__img',
     {
       opacity: 0,
-      duration: 0.8,
+      duration: 0.5,
       ease: 'power2.inOut',
       stagger: 0.05,
     },
@@ -379,10 +380,6 @@ function section0_leaveForward() {
     ease: 'power2.out',
   });
 
-  // if (currentIndex >= 2) {
-  //   tl.add(scrollImgStateOther(), '-=0.15');
-  // }
-
   return tl;
 }
 
@@ -402,6 +399,7 @@ function section0_leaveBackward() {
   return tl;
 }
 
+// секция 1 (0 → 1)
 function section1_enterForward() {
   console.log('section1_enterForward');
   const tl = gsap.timeline();
@@ -410,24 +408,26 @@ function section1_enterForward() {
     display: UI_SECTION_STATES.screen1.heroBlur.visible ? 'block' : 'none',
   });
 
-  const sec2 = document.querySelector('.numbers__overlay');
-  sec2.classList.add('section-fixed');
-  document.querySelector('.hero__blur').style.position = 'fixed';
+  tl.call(() => {
+    const sec2 = document.querySelector('.numbers__overlay');
+    sec2.classList.add('section-fixed');
+    document.querySelector('.hero__blur').style.position = 'fixed';
+  });
 
   if (currentIndex >= 2) {
     tl.add(scrollImgState1(1));
   }
   tl.to('.hero__blur', {
-    duration: 0.4,
+    duration: 0.3,
     backdropFilter: 'blur(20px)',
     opacity: 1,
     visibility: 'visible',
     ease: 'power2.out',
   })
     .to('.numbers__overlay', {
-      duration: 0.4,
+      duration: 0.3,
       opacity: 1,
-      background: 'rgba(1, 3, 16, 0.4)',
+      background: 'rgba(1, 3, 16, 0.3)',
       ease: 'power2.out',
     })
     .fromTo('.numbers__big-number', {opacity: 0}, {opacity: 1, duration: 0.3})
@@ -441,6 +441,7 @@ function section1_enterForward() {
   return tl;
 }
 
+// секц. 1 (1 → 2)
 function section1_leaveForward() {
   console.log('section1_leaveForward — плавный fade + slide');
   const tl = gsap.timeline();
@@ -453,11 +454,9 @@ function section1_leaveForward() {
       '.first-wrapper__img .img-paralax--l4-d',
     ],
     {
-      // x: -150,
       opacity: 0,
-      duration: 0.7,
+      duration: 0.5,
       ease: 'power2.inOut',
-      // stagger: 0.05,
     },
     0
   );
@@ -469,6 +468,7 @@ function section1_leaveForward() {
   return tl;
 }
 
+// секц. 1 (>=2 → 1)
 function section1_enterBackward() {
   console.log('section1_enterBackward');
   const tl = gsap.timeline();
@@ -486,6 +486,7 @@ function section1_enterBackward() {
   return tl;
 }
 
+// секц. 1 (1 → 0)
 function section1_leaveBackward() {
   console.log('section1_leaveBackward');
   const tl = gsap.timeline();
@@ -504,62 +505,95 @@ function section1_leaveBackward() {
   return tl;
 }
 
+// секц. 2 (1 → 2)
 function section2_enterForward() {
   console.log('section2_enterForward — плавный вход');
+  if (mobileMode) {
+    requestAnimationFrame(() => {
+      lastSection.classList.add('fixed-section');
+    });
+  }
+
   const tl = gsap.timeline();
 
   if (currentIndex === 0) {
     tl.add(scrollImgStateOther());
   }
-
-  // Заголовок и контент выезжают снизу
-  tl.fromTo(
-    '.service__title',
-    {
-      y: '120%',
-      opacity: 0,
-    },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 0.3,
-      ease: 'power2.out',
-    }
-  );
-
-  tl.fromTo(
-    '.service__content',
-    {
-      y: 100,
-      opacity: 0,
-    },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 0.3,
-      ease: 'power2.out',
-    }
-  );
-  // Показываем пагинацию сразу
-  tl.set('.service-swiper__pagination', {
-    opacity: 1,
-    visibility: 'visible',
-  });
-
-  setTimeout(() => {
-    document.querySelector('.hero__blur').style.position = 'static';
-    const sec2 = document.querySelector('.numbers__overlay');
-    sec2.classList.remove('section-fixed');
-
-    if (mobileMode) {
+  if (mobileMode) {
+    tl.call(() => {
       lastSection.classList.add('fixed-section');
-    }
-  }, 1500);
+      document.querySelector('.hero__blur').style.position = 'static';
+      const sec2 = document.querySelector('.numbers__overlay');
+      sec2.classList.remove('section-fixed');
+    });
+    tl.set('.service__title', {
+      y: 0,
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+    tl.set('.service__content', {
+      y: 0,
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+    tl.from(
+      '.for-mobile-wrapper .section-last-wrapper',
+      {
+        y: '100vh',
+        duration: 0.3,
+        ease: 'power2.out',
+      },
+      '+=0.3'
+    );
+  }
+  if (!mobileMode) {
+    // Показываем пагинацию сразу
+    tl.set('.service-swiper__pagination', {
+      opacity: 1,
+      visibility: 'visible',
+    });
+    // Заголовок и контент выезжают снизу
+    tl.fromTo(
+      '.service__title',
+      {
+        y: '120%',
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power2.out',
+      }
+    );
+    tl.fromTo(
+      '.service__content',
+      {
+        y: 100,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power2.out',
+      }
+    );
+
+    setTimeout(() => {
+      document.querySelector('.hero__blur').style.position = 'static';
+      const sec2 = document.querySelector('.numbers__overlay');
+      sec2.classList.remove('section-fixed');
+    }, 1500);
+  }
 
   console.log(tl);
   return tl;
 }
 
+// секц. 2 (>2 → 2)
 function section2_enterBackward() {
   console.log('section2_enterBackward');
   const tl = gsap.timeline();
@@ -587,6 +621,7 @@ function section2_enterBackward() {
   return tl;
 }
 
+// секц. 2 (2 → 3)
 function section2_leaveForward() {
   console.log('section2_leaveForward');
   const tl = gsap.timeline();
@@ -617,6 +652,7 @@ function section2_leaveForward() {
   return tl;
 }
 
+// секц. 2 (2 → 1)
 function section2_leaveBackward() {
   console.log('section2_leaveBackward');
   const tl = gsap.timeline();
@@ -660,7 +696,7 @@ function section3_enterForward() {
     tl.fromTo(
       '.t1',
       {y: '150%', opacity: 0},
-      {y: 0, opacity: 1, duration: 0.6, ease: 'power1.out'}
+      {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'}
     )
       .fromTo(
         '.t2',
@@ -676,36 +712,15 @@ function section3_enterForward() {
       .fromTo(
         '.faq__questions',
         {y: '150%', opacity: 0},
-        {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'},
+        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
         '<'
       )
-      // .fromTo(
-      //   '.a2',
-      //   {y: '240', opacity: 0},
-      //   {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'}
-      // )
-      // .fromTo(
-      //   '.a3',
-      //   {y: window.innerHeight, opacity: 0},
-      //   {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'}
-      // )
-      // .fromTo(
-      //   '.a4',
-      //   {y: window.innerHeight, opacity: 0},
-      //   {y: 0, opacity: 1, duration: 0.2, ease: 'power1.out'}
-      // )
-      // .fromTo(
-      //   '.a5',
-      //   {y: window.innerHeight, opacity: 0},
-      //   {y: 0, opacity: 1, duration: 0.1, ease: 'power1.out'}
-      // )
       .fromTo(
         '.faq__else-ask',
         {y: '150%', opacity: 0},
         {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
         '+=0.1'
       );
-    // document.querySelector('.controls--left').style.width = '85px';
   }
 
   setTimeout(() => {
@@ -720,10 +735,11 @@ function section3_enterForward() {
 function section3_leaveBackward() {
   console.log('section3_leaveBackward');
   const tl = gsap.timeline();
-  // updateUI();
-  // document.querySelector('.controls--left').style.width = 'auto';
+
   return tl;
 }
+
+// привязываем названия
 const sectionsMap = {
   0: {
     enterForward: section0_enterForward,

@@ -28,12 +28,41 @@ html {
   min-width: 320px;
   margin: 0 auto;
   position: relative;
-  // overflow: hidden;
+
+  &--second {
+    padding-top: clamp(8px, 2.5vw, 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: clamp(16px, 3vw, 48px);
+
+    .footer {
+      padding-top: 0;
+    }
+  }
 }
 
-// .main {
-//   overflow: hidden;
-// }
+.main {
+  &--second {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    @include tablet-bottom {
+      gap: 32px;
+    }
+  }
+}
+
+.page-wrapper {
+  flex-grow: 1;
+  background-color: var(--white);
+  border-radius: var(--br-l);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .container {
   max-width: calc(var(--container-width) + (var(--container-padding) * 2));
@@ -51,8 +80,13 @@ html {
   }
 }
 
+.container-mini {
+  max-width: calc(872px + (var(--container-padding-mini) * 2));
+  width: 100%;
+  padding-block: var(--section-offset);
+}
+
 .section {
-  // padding-top: var(--section-offset);
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -76,14 +110,11 @@ html {
   }
 }
 
-// #section-4 {
-//   height: auto;
-// }
-
 .for-mobile-wrapper {
   height: auto;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
+  padding-bottom: env(safe-area-inset-bottom);
 
   &::-webkit-scrollbar {
     width: 0;
@@ -104,13 +135,20 @@ html {
     left: 0;
     width: 100%;
     z-index: 11;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .section-last-wrapper {
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+    min-height: 100%;
     scrollbar-width: none;
     scrollbar-color: transparent transparent;
+    -ms-overflow-style: none;
+
+    // от бага
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 
     &::-webkit-scrollbar {
       width: 0;
@@ -132,12 +170,6 @@ html {
     overflow: hidden;
   }
 }
-
-// #section-1,
-// #section-2 {
-//   background-color: var(--dark);
-//   color: #fff;
-// }
 
 #section-3,
 #section-4 {
@@ -166,8 +198,6 @@ html {
 .section-last-wrapper {
   overflow-y: auto;
   height: 100%;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
 
@@ -246,7 +276,6 @@ html {
 
 .second-btn {
   width: fit-content;
-  // height: auto;
   padding: 0;
   border: none;
   background-color: transparent;
@@ -294,6 +323,39 @@ html {
   }
 }
 
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: 0.3s;
+
+  @include hover {
+    color: var(--blue);
+  }
+
+  &__icon {
+    width: 22px;
+    height: 16px;
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.03em;
+
+    @include mobile {
+      span {
+        display: none;
+      }
+    }
+
+  }
+}
+
 .title-l {
   font-size: 48px;
   margin: 0;
@@ -303,11 +365,6 @@ html {
   text-transform: uppercase;
   color: var(--dark);
 
-  // @media screen and (max-height: 680px) and (max-width: 1440px) {
-  //   &.slide__title {
-  //     font-size: 32px;
-  //   }
-  // }
   &.slide__title {
     @include desktop {
       font-size: 32px;
@@ -328,6 +385,10 @@ html {
   @include tablet {
     line-height: 95%;
 
+    &.slider-main__title {
+      line-height: 1;
+    }
+
     &.faq__title {
       line-height: 1;
       font-size: 32px;
@@ -336,7 +397,6 @@ html {
 }
 
 .title-s {
-  // @include fluid-text(20, 16);
   margin: 0;
   font-size: 20px;
   font-weight: 800;
@@ -344,12 +404,6 @@ html {
   letter-spacing: -0.05em;
   text-transform: uppercase;
 
-  // @media screen and (max-height: 680px) and (max-width: 1440px) {
-  //   &.hero__info-text {
-  //     font-size: 15px;
-  //     font-weight: 700;
-  //   }
-  // }
   &.hero__info-text {
     @include desktop {
       font-size: 15px;

@@ -132,8 +132,9 @@
     }
 
     &>*:first-child {
+      gap: 8px;
+
       span {
-        // width: 20px;
 
         svg {
           width: 20px;
@@ -162,12 +163,20 @@
     line-height: 20px;
     cursor: pointer;
 
+    .second-btn {
+      gap: 8px;
+
+      span {}
+    }
+
     @include tablet-bottom {
       font-size: 13px;
       line-height: 18px;
     }
 
     a {
+      --c1: #599cff;
+      --c2: #1263DA;
       color: var(--dark);
       text-decoration: none;
       letter-spacing: -0.03em;
@@ -175,6 +184,10 @@
 
       @include hover {
         color: var(--blue);
+        // --c1: #599cff;;
+        --c2: #599cff;
+        ;
+        transition: --c2 0.3s ease;
       }
     }
 
