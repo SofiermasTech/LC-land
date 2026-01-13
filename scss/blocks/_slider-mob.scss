@@ -8,10 +8,11 @@
 
   @include tablet {
     display: block;
+    padding-bottom: 20px;
   }
 
   &__wrapper {
-    max-height: clamp(550px, 82vh, 800px);
+    max-height: clamp(550px, 85vh, 800px);
     height: 100%;
     max-width: 100vw;
     display: flex;
@@ -56,6 +57,11 @@
     }
 
     @include mobile {
+      padding: 24px;
+      width: 54%;
+    }
+
+    @include mobile-bottom {
       padding: 24px;
       width: 63%;
     }
@@ -150,6 +156,7 @@
     img {
       max-width: 100%;
       width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       border-radius: var(--br-l);

@@ -17,7 +17,7 @@
 
   @include tablet {
     grid-template-columns: 0.8fr 1fr 1fr 1fr;
-    max-width: 100%;
+    padding-inline: 16px;
     width: 100%;
   }
 
@@ -31,7 +31,7 @@
   }
 
   @include mobile {
-    grid-template-columns: 1fr 1.3fr;
+    grid-template-columns: 1fr 1.1fr;
     gap: 24px;
     padding-bottom: 16px;
   }
@@ -39,7 +39,10 @@
 
   @include mobile-bottom {
     grid-template-columns: 1fr 1.45fr;
+  }
 
+  @media screen and (max-width: 360px) {
+    gap: 16px;
   }
 
   &__column {
@@ -191,5 +194,9 @@
       }
     }
 
+  }
+
+  @media screen and (max-width: 360px) {
+    font-size: 12px;
   }
 }

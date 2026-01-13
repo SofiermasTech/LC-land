@@ -122,6 +122,11 @@
       bottom: -8px;
     }
 
+    @include laptop {
+      bottom: -8px;
+
+    }
+
     @include tablet {
       display: none;
     }
@@ -218,7 +223,7 @@
     }
 
     @include desktop {
-  
+
       span:nth-child(2),
       span:nth-child(3) {
         text-align: left;

@@ -35,10 +35,43 @@ html {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: clamp(16px, 3vw, 48px);
+    gap: clamp(24px, 3vw, 48px);
+
+    .container {
+      --container-padding: 24px;
+
+      max-width: var(--container-width);
+      width: 100%;
+      padding-inline: var(--container-padding);
+      margin-inline: auto;
+      position: relative;
+      box-sizing: border-box;
+
+      @include desktop {
+        max-width: calc(100vw - (var(--container-padding) * 2));
+      }
+
+      @include tablet {
+        max-width: var(--container-width);
+      }
+    }
+
+    .logo-main__text {
+      @include tablet-bottom {
+        display: none;
+      }
+    }
 
     .footer {
-      padding-top: 0;
+      padding: 0 0 32px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+
+      @include tablet-bottom {
+        padding-inline: 32px;
+      }
     }
   }
 }
@@ -81,8 +114,8 @@ html {
 }
 
 .container-mini {
-  max-width: calc(872px + (var(--container-padding-mini) * 2));
-  width: 100%;
+  max-width: calc(872px + (var(--container-padding-mini) * 2)) !important;
+  width: 100% !important;
   padding-block: var(--section-offset);
 }
 
@@ -224,6 +257,13 @@ html {
 
 }
 
+#section-4.container {
+  @include mobile {
+    padding-inline: 0;
+    max-width: 100%;
+  }
+}
+
 #section-4 .section-last-wrapper {
 
   @include tablet {
@@ -339,6 +379,9 @@ html {
   &__icon {
     width: 22px;
     height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__text {

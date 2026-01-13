@@ -224,7 +224,6 @@ let lightningInterval = null;
 const lightnings = ['lightning-center-active', 'lightning-right-active'];
 
 function lightningStrike(typeClass) {
-  
   // основной удар
   scene.classList.add(typeClass);
 
@@ -241,4 +240,106 @@ function lightningStrike(typeClass) {
   setTimeout(() => {
     scene.classList.remove(typeClass);
   }, 450);
+}
+
+// динамическое title на первом моб экране
+const mqSmall = window.matchMedia('(max-width: 600px)');
+const mqMedium = window.matchMedia('(max-width: 1030px)');
+let roRaf = null;
+
+function getTitleCorrection() {
+  if (mqSmall.matches) return 110;
+  if (mqMedium.matches) return 96;
+  return 0;
+}
+
+function fitHeroTitle() {
+  const content = document.querySelector('.hero__content');
+  const title = document.querySelector('.hero__title');
+
+  if (!content || !title) return;
+
+  // все элементы кроме заголовка
+  const siblings = [...content.children].filter((el) => el !== title);
+
+  // сколько высоты занято НЕ заголовком
+  const occupiedHeight = siblings.reduce((sum, el) => sum + el.offsetHeight, 0);
+
+  // const contentHeight = content.getBoundingClientRect().height;
+  const isIOS =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const HERO_UI_OFFSET = 76;
+
+  let contentHeight;
+  console.log(isIOS);
+  if (isIOS && window.visualViewport) {
+    contentHeight = window.visualViewport.height - HERO_UI_OFFSET;
+  } else {
+    contentHeight = content.clientHeight;
+  }
+
+  // padding-top у заголовка
+  const titleStyles = getComputedStyle(title);
+  const paddingTop = parseFloat(titleStyles.paddingTop) || 154;
+
+  const availableHeight = contentHeight - occupiedHeight - paddingTop;
+
+  if (availableHeight <= 0) return;
+
+  // бинарный поиск размера шрифта (быстро и точно)
+  let min = 24;
+  let max = 160;
+  let best = min;
+
+  // const titleSize = title.scrollWidth
+  console.log({
+    contentHeight,
+    occupiedHeight,
+    paddingTop,
+    availableHeight,
+    // titleSize,
+  });
+
+  while (min <= max) {
+    const mid = Math.floor((min + max) / 2);
+    title.style.fontSize = `${mid}px`;
+    title.offsetHeight;
+
+    // const styles = getComputedStyle(title);
+    // const isVertical = styles.writingMode !== 'horizontal-tb';
+
+    const correction = getTitleCorrection();
+    const titleSize = title.scrollHeight - correction;
+
+    if (titleSize <= availableHeight) {
+      best = mid;
+      min = mid + 1;
+    } else {
+      max = mid - 1;
+    }
+
+    // console.log(titleSize);
+    // console.log(best);
+  }
+
+  if (isIOS && window.visualViewport) {
+    title.style.fontSize = `${best * 0.63}px`;
+  } else {
+    title.style.fontSize = `${best}px`;
+  }
+}
+
+if (mobileMode) {
+  const ro = new ResizeObserver(() => {
+    fitHeroTitle();
+  });
+
+  ro.observe(document.documentElement);
+  window.addEventListener('orientationchange', fitHeroTitle);
+  window.addEventListener('load', fitHeroTitle);
+
+  // if (window.visualViewport) {
+  //   window.visualViewport.addEventListener('resize', fitHeroTitle);
+  // }
 }

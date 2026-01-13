@@ -1,9 +1,16 @@
+@use '../media' as *;
+@use '../mixin' as *;
+
 .header {
   width: 100%;
   padding-bottom: var(--section-offset);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @include tablet-bottom {
+    align-items: flex-start;
+  }
 }
 
 .h1-second {
@@ -12,23 +19,39 @@
   line-height: 90%;
   text-transform: uppercase;
   font-weight: 800;
+
+  @include tablet-bottom {
+    font-size: 48px;
+    line-height: 95%;
+  }
 }
 
 .block {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
+
+  @include tablet-bottom {
+    gap: 12px;
+  }
 
   &__title {
-    margin: 0;
+    margin: 0 0 12px 0;
     text-transform: uppercase;
     font-size: 32px;
     line-height: 1;
     font-weight: 800;
     display: flex;
+    // letter-spacing: -0.01em;
 
     span:first-child {
       width: 56px;
+    }
+
+    @include tablet-bottom {
+      display: block;
+      font-size: 24px;
+      // margin: 0;
     }
 
   }
@@ -39,9 +62,15 @@
     margin: 0;
     font-size: 20px;
     line-height: 1;
+    font-weight: 800;
 
     span:first-child {
       width: 56px;
+    }
+
+    @include tablet-bottom {
+      font-size: 16px;
+      display: block;
     }
   }
 
@@ -51,11 +80,25 @@
     flex-direction: column;
     gap: 12px;
 
+    @include tablet-bottom {
+      padding-left: 0;
+    }
+
     p {
       margin: 0;
       font-size: 16px;
       line-height: 24px;
       font-weight: 500;
+
+      @include tablet-bottom {
+        font-size: 13px;
+        line-height: 18px;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--blue);
     }
   }
 
@@ -64,32 +107,105 @@
     flex-direction: column;
     gap: 24px;
 
+    @include tablet-bottom {
+      gap: 12px;
+    }
+
     p {
       margin: 0;
       font-size: 16px;
       line-height: 24px;
       font-weight: 500;
+
+      @include tablet-bottom {
+        font-size: 13px;
+        line-height: 18px;
+      }
     }
   }
 
   &__content-list {
-    margin-bottom: 12px;
+    // margin-bottom: 12px;
     padding-left: 56px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+
+    @include tablet-bottom {
+      padding-left: 0;
+    }
 
     h4 {
       margin: 0;
       font-size: 16px;
       line-height: 24px;
       font-weight: 700;
+
+      @include tablet-bottom {
+        font-size: 13px;
+        line-height: 18px;
+      }
+    }
+
+    p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+
+      @include tablet-bottom {
+        font-size: 13px;
+        line-height: 18px;
+      }
     }
 
     ul {
       margin: 0;
       padding: 0;
       list-style: none;
+      padding-left: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      @include tablet-bottom {
+        padding-left: 20px;
+      }
+    }
+
+    li {
+      position: relative;
+      // margin-bottom: 8px;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+
+      @include tablet-bottom {
+        // margin-bottom: 8px;
+        font-size: 13px;
+        line-height: 18px;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -24px;
+        top: 0;
+        width: 12px;
+        height: 24px;
+        background: url('../img/second-marker.svg') center/contain no-repeat;
+
+        @include tablet-bottom {
+          height: 18px;
+          left: -20px;
+          background: url('../../img/second-marker-xs.svg') center/contain no-repeat;
+        }
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--blue);
     }
   }
 }

@@ -1,5 +1,6 @@
 const UI_SECTION_STATES = {
   screen0: {
+    backgroundColor: {bg: '#000015'},
     heroFix: {x: 0, opacity: 1},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 1},
@@ -10,6 +11,7 @@ const UI_SECTION_STATES = {
     pagination: {opacity: 0, visible: false},
   },
   screen1: {
+    backgroundColor: {bg: '#000015'},
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {
       opacity: 1,
@@ -25,6 +27,7 @@ const UI_SECTION_STATES = {
     slider: {opacity: 0},
   },
   screen2: {
+    backgroundColor: {bg: '#f2f2f2'},
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 0},
@@ -35,6 +38,7 @@ const UI_SECTION_STATES = {
     slider: {y: 0, opacity: 1},
   },
   screen3: {
+    backgroundColor: {bg: '#f2f2f2'},
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 0},
@@ -50,6 +54,10 @@ function applySectionUIState(config) {
   if (!config) return;
 
   const tl = gsap.timeline();
+
+  tl.set('.page', {
+    backgroundColor: config.backgroundColor.bg,
+  });
 
   tl.set('.hero__fix-wrapper', {
     x: config.heroFix.x,
@@ -209,6 +217,9 @@ function scrollImgState0(index) {
       {x: 0, opacity: 1, duration: 0.7, ease: 'power2.out'},
       '-=0.1'
     );
+    tl.set('.page', {
+      backgroundColor: UI_SECTION_STATES.screen0.backgroundColor.bg,
+    });
 
     return tl;
   }
@@ -218,6 +229,10 @@ function scrollImgState1(index) {
   const tl = gsap.timeline();
   gsap.set('.hero__blur', {
     display: UI_SECTION_STATES.screen1.heroBlur.visible ? 'block' : 'none',
+  });
+
+  gsap.set('.page', {
+    backgroundColor: UI_SECTION_STATES.screen1.backgroundColor.bg,
   });
 
   console.log('scrollImgWrapper1 запущен');
@@ -240,6 +255,10 @@ function scrollImgStateOther() {
   gsap.set('.hero__blur', {
     display: UI_SECTION_STATES.screen2.heroBlur.visible ? 'block' : 'none',
   });
+  gsap.set('.page', {
+    backgroundColor: UI_SECTION_STATES.screen2.backgroundColor.bg,
+  });
+
   console.log('scrollImgWrapper2 запущен');
   tl.to('.first-wrapper__img .img-paralax--l4-d', {
     opacity: 0,
@@ -313,6 +332,10 @@ function section0_enterForward() {
 function section0_enterBackward() {
   console.log('section0_enterBackward');
   const tl = gsap.timeline();
+
+  // gsap.set('.page', {
+  //   backgroundColor: UI_SECTION_STATES.screen0.backgroundColor.bg,
+  // });
 
   if (!mobileMode) {
     enableParallax();
@@ -514,6 +537,10 @@ function section2_enterForward() {
     });
   }
 
+  gsap.set('.page', {
+    backgroundColor: UI_SECTION_STATES.screen2.backgroundColor.bg,
+  });
+
   const tl = gsap.timeline();
 
   if (currentIndex === 0) {
@@ -529,13 +556,13 @@ function section2_enterForward() {
     tl.set('.service__title', {
       y: 0,
       opacity: 1,
-      duration: 0.3,
+      // duration: 0.3,
       ease: 'power2.out',
     });
     tl.set('.service__content', {
       y: 0,
       opacity: 1,
-      duration: 0.3,
+      // duration: 0.3,
       ease: 'power2.out',
     });
     tl.from(
@@ -598,21 +625,31 @@ function section2_enterBackward() {
   console.log('section2_enterBackward');
   const tl = gsap.timeline();
 
-  tl.fromTo(
-    '.service__content',
-    {y: '150', opacity: 0},
-    {y: 0, opacity: 1, duration: 0.4, ease: 'power2.in'}
-  );
-  tl.fromTo(
-    '.service__title',
-    {y: '150', opacity: 0},
-    {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'}
-  );
-  tl.to('.menu', {
-    duration: 0.5,
-    y: 0,
-    ease: 'power2.out',
-  });
+  if (!mobileMode) {
+    tl.fromTo(
+      '.service__content',
+      {y: '150', opacity: 0},
+      {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'}
+    );
+    tl.fromTo(
+      '.service__title',
+      {y: '150', opacity: 0},
+      {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'}
+    );
+    tl.to('.menu', {
+      duration: 0.5,
+      y: 0,
+      ease: 'power2.out',
+    });
+  } else {
+    tl.set('.service__content', {y: 0, opacity: 1});
+    tl.set('.service__title', {y: 0, opacity: 1});
+    tl.to('.menu', {
+      duration: 0.5,
+      y: 0,
+      ease: 'power2.out',
+    });
+  }
 
   document.querySelector('.service-swiper__pagination').style.opacity = 1;
   document.querySelector('.service-swiper__pagination').style.visibility =
@@ -688,6 +725,10 @@ function section2_leaveBackward() {
 
 function section3_enterForward() {
   console.log('section3_enterForward');
+  gsap.set('.page', {
+    backgroundColor: UI_SECTION_STATES.screen2.backgroundColor.bg,
+  });
+
   const tl = gsap.timeline();
 
   tl.add(scrollImgStateOther());
@@ -721,13 +762,26 @@ function section3_enterForward() {
         {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
         '+=0.1'
       );
+    // tl.call(() => {
+    //   document.querySelector('.hero__blur').style.position = 'static';
+    //   const sec2 = document.querySelector('.numbers__overlay');
+    //   sec2.classList.remove('section-fixed');
+    // });
+  } else {
+    tl.set('.service__content', {y: 0, opacity: 1});
+    tl.set('.service__title', {y: 0, opacity: 1});
   }
-
-  setTimeout(() => {
+  tl.call(() => {
+    // lastSection.classList.add('fixed-section');
     document.querySelector('.hero__blur').style.position = 'static';
     const sec2 = document.querySelector('.numbers__overlay');
     sec2.classList.remove('section-fixed');
-  }, 150);
+  });
+  // setTimeout(() => {
+  //   document.querySelector('.hero__blur').style.position = 'static';
+  //   const sec2 = document.querySelector('.numbers__overlay');
+  //   sec2.classList.remove('section-fixed');
+  // }, 150);
 
   return tl;
 }
@@ -761,8 +815,8 @@ const sectionsMap = {
   },
   3: {
     enterForward: () => section3_enterForward,
-    enterBackward: () => gsap.timeline({duration: 0.2}),
-    leaveForward: () => gsap.timeline({duration: 0.2}),
+    enterBackward: () => gsap.timeline({duration: 0.1}),
+    leaveForward: () => gsap.timeline({duration: 0.1}),
     leaveBackward: section3_leaveBackward,
   },
 };

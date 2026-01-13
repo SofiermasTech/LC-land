@@ -13,12 +13,14 @@
 
   @include tablet {
     max-width: 100%;
+    padding-inline: 16px;
   }
 
   @include tablet-bottom {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding-top: 12px;
   }
 
   &__item {
@@ -123,6 +125,7 @@
       @include tablet {
         max-width: 208px;
         width: 100%;
+        padding: 7px 10px;
       }
     }
   }

@@ -30,10 +30,8 @@
 
 
     @include mobile {
-      justify-content: flex-end;
-    }
-
-    @media screen and (max-width: 380px) and (max-height: 760px) {
+      // justify-content: flex-end;
+      height: 100dvh;
       gap: 12px;
     }
 
@@ -46,7 +44,7 @@
       z-index: 10;
 
       @include mobile {
-         height: 100dvh;
+        height: 100dvh;
       }
     }
 
@@ -92,6 +90,7 @@
     @include mobile {
       max-width: calc(100vw - (var(--container-padding) * 2));
       gap: 20px;
+      // padding-top: 160px;
     }
 
     @media screen and (max-width: 380px) and (max-height: 760px) {
@@ -267,16 +266,17 @@
     }
 
     @include mobile {
-      margin-bottom: clamp(96px, 20dvh, 190px);
+      // margin-bottom: clamp(96px, 20dvh, 190px);
+      // margin-bottom: 80px;
     }
 
-    @media screen and (max-width: 460px) and (max-height: 800px) {
-      margin-bottom: clamp(96px, 18dvh, 160px);
-    }
+    // @media screen and (max-width: 460px) and (max-height: 800px) {
+    //   margin-bottom: clamp(96px, 18dvh, 160px);
+    // }
 
-    @media screen and (max-width: 380px) and (max-height: 660px) {
-      margin-bottom: 96px;
-    }
+    // @media screen and (max-width: 380px) and (max-height: 660px) {
+    //   margin-bottom: 96px;
+    // }
 
     span {
       width: 20px;

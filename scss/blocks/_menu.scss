@@ -12,7 +12,7 @@
 
   @include mobile {
     z-index: 110;
-    top: calc(100dvh - var(--controls-margin) - 38px);
+    top: calc(100dvh - var(--controls-margin) - 40px);
   }
 
   &__wrapper {
@@ -61,10 +61,11 @@
     box-sizing: border-box;
 
     @include mobile {
-      width: calc(100vw - 32px);
+      width: calc(100vw - 16px);
       gap: 0;
-      border-width: 3px;
-      border-image-slice: 3.5;
+      border-width: 4px;
+      border-image-slice: 5;
+      padding: 0;
     }
   }
 
@@ -95,17 +96,22 @@
     }
 
     @include mobile {
-      padding-block: 6px;
+      padding-block: 5.5px;
       font-size: 13px;
       font-weight: 500;
+    }
+
+    @media screen and (max-width: 360px) {
+      font-size: 12px;
     }
   }
 
   &__indicator {
     position: absolute;
-    top: 1px;
-    left: 1px;
-    height: calc(100% - 2px);
+    top: 0;
+    left: 0;
+    // height: calc(100% - 2px);
+    height: 100%;
     width: calc(100% / 4 - 4px);
     border-radius: var(--br-xs);
     pointer-events: none;

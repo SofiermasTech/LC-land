@@ -612,13 +612,14 @@ menuLinks.forEach((link) => {
 
       if (lastWrapper.scrollTop > 600) {
         isAnimating = true;
-
+        updateSectionsUI(2);
         gsap.to(lastWrapper, {
           scrollTo: {y: 0},
-          duration: 0.9,
+          duration: 0.6,
           ease: 'power2.out',
           onComplete: () => {
             currentIndex = 2;
+            // updateSectionsUI(currentIndex);
             updateUI();
             updateScrollLock();
             setTimeout(() => {
@@ -648,7 +649,7 @@ menuLinks.forEach((link) => {
         // переход к секции
         gsap.to(window, {
           scrollTo: sections[2],
-          duration: 0.9,
+          duration: 0.6,
           ease: 'power2.inOut',
           onComplete: () => {
             currentIndex = 2;
@@ -738,6 +739,7 @@ document.querySelectorAll('.footer__links-item.m a').forEach((link) => {
           ease: 'power2.inOut',
           onComplete: () => {
             currentIndex = 2;
+            updateSectionsUI(currentIndex);
             updateUI();
             updateScrollLock();
             setTimeout(() => {
@@ -807,6 +809,7 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
       });
     } else {
       currentIndex = 2;
+      updateSectionsUI(currentIndex);
       updateClassMenu();
 
       gsap.to(lastWrapper, {
@@ -893,7 +896,7 @@ function updateScrollLock() {
   }
 }
 
-// попвтка покрасить ui-bar, т.к. просил дизайнер, хз
+// попытка покрасить ui-bar, т.к. просил дизайнер, хз
 function updateThemeColor(currentIndex) {
   if (!themeMeta) return;
 
@@ -969,11 +972,13 @@ function hardResetOnResize() {
 }
 
 let lastWidth = window.innerWidth;
+// let lastHeight = window.innerHeight;
 
 window.addEventListener('resize', () => {
   if (Math.abs(window.innerWidth - lastWidth) < 25) return;
 
   lastWidth = window.innerWidth;
+  // lastHeight = window.innerHeight;
   hardResetOnResize();
 });
 

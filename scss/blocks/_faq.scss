@@ -19,7 +19,7 @@
   }
 
   @include tablet {
-    max-width: 100%;
+    padding-inline: 16px;
     width: 100%;
   }
 
@@ -74,6 +74,7 @@
 
     .base-btn {
       width: 180px;
+      justify-content: space-between;
     }
 
     @include tablet-bottom {
@@ -89,14 +90,39 @@
       }
 
       .base-btn {
-        width: 156px;
-        padding: 7px;
+        padding: 7px 12px;
+        position: relative;
+
       }
     }
 
     @include mobile {
       gap: 16px;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+
+      .base-btn {
+        max-width: 200px;
+        width: 100%;
+      }
+    }
+
+    @include mobile-bottom {
+      grid-template-columns: 160px 1fr;
+
+      .base-btn {
+        max-width: 160px;
+        width: 100%;
+      }
+    }
+
+
+    @media screen and (max-width: 360px) {
+      grid-template-columns: 125px 1fr;
+
+      p {
+        font-size: 14px;
+      }
     }
   }
 
@@ -259,24 +285,6 @@
       background-image: url('../img/faq-plus.svg');
       transition: transform 0.7s ease;
     }
-
-    // span {
-    //   position: absolute;
-    //   top: calc(50% - 1px);
-    //   left: 0;
-    //   width: 13.5px;
-    //   height: 1.5px;
-    //   border-radius: var(--br-l);
-    //   background-color: var(--blue);
-    //   transition: 0.3s;
-
-    //   &:last-child {
-    //     left: 0.25px;
-    //     height: 1.7px;
-    //     transition: .5s ease-in-out;
-    //     transform: rotate(-90deg);
-    //   }
-    // }
   }
 
   &__item-body {

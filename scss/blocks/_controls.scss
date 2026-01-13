@@ -141,20 +141,20 @@
     }
 
     .base-btn {
-      background-image: linear-gradient(180deg, #c3ff63 0%, #80be1c 100%);
-      box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
-      width: 64px;
-      height: 40px;
-      padding: 0;
+      // background-image: linear-gradient(180deg, #c3ff63 0%, #80be1c 100%);
+      // box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+      // width: 64px;
+      // height: 40px;
+      // padding: 0;
 
-      @include hover {
-        background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
-        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
-      }
+      // @include hover {
+      //   background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
+      //   box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+      // }
 
-      @include tablet-bottom {
-        display: none;
-      }
+      // @include tablet-bottom {
+      //   display: none;
+      // }
 
     }
 
@@ -175,6 +175,7 @@
         display: none;
       }
     }
+
   }
 }
 
@@ -211,5 +212,68 @@
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: var(--white);
+  }
+}
+
+.btn-scroll {
+  &.base-btn {
+    background-image: linear-gradient(180deg, #c3ff63 0%, #80be1c 100%);
+    box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+    width: 64px;
+    height: 40px;
+    padding: 0;
+
+    @include hover {
+      background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
+      box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    }
+
+    @include tablet-bottom {
+      display: none;
+    }
+  }
+
+  &--second {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    pointer-events: none;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    @include desktop {
+      bottom: 24px;
+      right: 24px;
+    }
+
+    @include tablet {
+      display: none;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        margin-top: 4px;
+        width: 16px;
+        height: 22px;
+      }
+    }
+
+    &.base-btn {
+      box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
+    }
   }
 }
