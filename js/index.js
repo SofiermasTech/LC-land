@@ -204,16 +204,88 @@ window.addEventListener('resize', () => {
 });
 // });
 
-//  section faq
-const faqItems = document.querySelector('.faq__questions');
-const faqHead = document.querySelectorAll('.faq__item-head');
+//  section faq переделала чере gsap, т.к. 
+// при одновремен. анимации ширины и высоты было дрожание на десктопе
+const faqItems = document.querySelectorAll('.faq__item');
 
-faqItems.addEventListener('click', (event) => {
-  const item = event.target.closest('.faq__item');
-  if (!item) return;
+faqItems.forEach((item) => {
+  const head = item.querySelector('.faq__item-head');
+  const body = item.querySelector('.faq__item-body');
+  const content = item.querySelector('.faq__wrapper-body');
 
-  item.classList.toggle('open');
+  let isOpen = false;
+
+  // стартовое состояние
+  gsap.set(body, {height: 0, opacity: 0});
+
+  head.addEventListener('click', () => {
+    const tl = gsap.timeline({
+      defaults: {
+        ease: 'power2.out',
+        duration: 0.6,
+      },
+    });
+
+    if (!isOpen) {
+      tl
+        // ширина
+        .set(item, {maxWidth: '100%'})
+
+        // измеряем ПРАВИЛЬНУЮ высоту
+        .set(body, {
+          height: () => content.scrollHeight,
+        })
+
+        // схлопываем обратно
+        .set(body, {height: 0, opacity: 0})
+
+        // анимируем высоту
+        .to(
+          body,
+          {
+            height: () => content.scrollHeight,
+            opacity: 1,
+          },
+          0
+        );
+
+      item.classList.add('open');
+      isOpen = true;
+    } else {
+      tl.to(
+        body,
+        {
+          height: 0,
+          opacity: 0,
+        },
+        0
+      ).to(
+        item,
+        {
+          maxWidth: getCollapsedWidth(item),
+        },
+        0
+      );
+
+      item.classList.remove('open');
+      isOpen = false;
+    }
+  });
 });
+
+function getCollapsedWidth(item) {
+  if (item.classList.contains('a1')) return 480 + 'px';
+  if (item.classList.contains('a2')) return 450 + 'px';
+  if (item.classList.contains('a3')) return 405 + 'px';
+  if (item.classList.contains('a4')) return 390 + 'px';
+  if (item.classList.contains('a5')) return 370 + 'px';
+  if (item.classList.contains('a6')) return 425 + 'px';
+  if (item.classList.contains('a7')) return 430 + 'px';
+  if (item.classList.contains('a8')) return 460 + 'px';
+  if (item.classList.contains('a9')) return 315 + 'px';
+
+  return '100%';
+}
 
 // console.log(window.innerWidth, window.innerHeight);
 // анимация с молниями и статуей

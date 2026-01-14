@@ -317,6 +317,7 @@ html::-webkit-scrollbar-thumb {
   height: 100%;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
+  will-change: height;
 }
 .section-last-wrapper::-webkit-scrollbar {
   width: 0;
@@ -801,6 +802,20 @@ html::-webkit-scrollbar-thumb {
           flex-direction: column;
   gap: 8px;
 }
+@media (hover: hover) {
+  .logo-main__wrapper:hover {
+    -webkit-box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+            box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    border-radius: 10px;
+  }
+}
+@media (hover: none) {
+  .logo-main__wrapper:active {
+    -webkit-box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+            box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    border-radius: 10px;
+  }
+}
 @media (max-width: 850px) {
   .logo-main__wrapper {
     gap: 7px;
@@ -944,10 +959,17 @@ html::-webkit-scrollbar-thumb {
   position: relative;
 }
 .menu__wrapper.white {
-  -webkit-box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 var(--white-trans);
-          box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 var(--white-trans);
-  background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(10%, rgba(255, 255, 255, 0.9)), color-stop(50%, rgba(255, 255, 255, 0.8)), to(rgba(255, 255, 255, 0.4)));
-  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.9) 10%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.4) 100%);
+  -webkit-box-shadow: inset 0 1px 0 0 var(--white-trans);
+          box-shadow: inset 0 1px 0 0 var(--white-trans);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.menu__wrapper.white .menu__nav {
+  border: 4px solid transparent;
+  -o-border-image: url("../img/floater.svg");
+     border-image: url("../img/floater.svg");
+  border-image-slice: 4;
+  border-image-repeat: stretch;
+  border-image-outset: 0;
 }
 .menu__wrapper.white .menu__link {
   color: var(--dark);
@@ -3100,11 +3122,7 @@ html::-webkit-scrollbar-thumb {
   border-radius: var(--br-l);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  -webkit-transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  -webkit-transform: translateX(0);
-      -ms-transform: translateX(0);
-          transform: translateX(0);
+  will-change: width;
 }
 .faq__item.a1 {
   max-width: 480px;
@@ -3132,10 +3150,6 @@ html::-webkit-scrollbar-thumb {
 }
 .faq__item.a9 {
   max-width: 315px;
-}
-.faq__item.open {
-  -webkit-transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .faq__item.open.a1, .faq__item.open.a2, .faq__item.open.a3, .faq__item.open.a4, .faq__item.open.a5, .faq__item.open.a6, .faq__item.open.a7, .faq__item.open.a8, .faq__item.open.a9 {
   max-width: 100%;
@@ -3232,22 +3246,18 @@ html::-webkit-scrollbar-thumb {
   width: 100%;
   height: 100%;
   background-image: url("../img/faq-plus.svg");
-  -webkit-transition: -webkit-transform 0.7s ease;
-  transition: -webkit-transform 0.7s ease;
-  transition: transform 0.7s ease;
-  transition: transform 0.7s ease, -webkit-transform 0.7s ease;
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
 }
 .faq__item-body {
   overflow: hidden;
-  display: grid;
-  grid-template-rows: 0fr;
   margin-left: 36px;
   margin-top: 0;
   padding-right: 28px;
   opacity: 0;
-  -webkit-transition: margin-top 0.7s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), grid-template-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: margin-top 0.7s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), grid-template-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: margin-top 0.7s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), grid-template-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1), -ms-grid-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: height, opacity;
 }
 .faq__item-body p {
   width: 100%;
@@ -3316,7 +3326,6 @@ html::-webkit-scrollbar-thumb {
   opacity: 0;
 }
 .faq__item.open .faq__item-body {
-  grid-template-rows: 1fr;
   margin-top: 32px;
   opacity: 1;
 }
@@ -3344,6 +3353,8 @@ html::-webkit-scrollbar-thumb {
   grid-template-columns: 1.1fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
+  overflow-anchor: none;
+  contain: layout;
 }
 @media (max-width: 1290px) {
   .footer {

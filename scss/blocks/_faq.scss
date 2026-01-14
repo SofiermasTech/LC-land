@@ -13,6 +13,7 @@
     'btn qa';
   gap: 48px 16px;
   position: relative;
+  // will-change: height;
 
   @media screen and (max-width: 1200px) {
     gap: 16px;
@@ -146,9 +147,12 @@
     background-color: var(--white);
     border-radius: var(--br-l);
     box-sizing: border-box;
-    transition:
-      max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateX(0);
+    will-change: width;
+
+    // &:not(:last-child) {
+    //   transition:
+    //     max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    // }
 
     &.a1 {
       max-width: 480px;
@@ -187,7 +191,7 @@
     }
 
     &.open {
-      transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      // transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 
       &.a1,
       &.a2,
@@ -283,24 +287,17 @@
       width: 100%;
       height: 100%;
       background-image: url('../img/faq-plus.svg');
-      transition: transform 0.7s ease;
+      transition: transform 0.5s ease;
     }
   }
 
   &__item-body {
     overflow: hidden;
-    display: grid;
-    grid-template-rows: 0fr;
     margin-left: 36px;
     margin-top: 0;
     padding-right: 28px;
     opacity: 0;
-
-    transition:
-      margin-top 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-      max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-      grid-template-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: height, opacity;
 
     p {
       width: 100%;
@@ -369,7 +366,7 @@
   }
 
   &__item.open .faq__item-body {
-    grid-template-rows: 1fr;
+    // grid-template-rows: 1fr;
     margin-top: 32px;
     opacity: 1;
 

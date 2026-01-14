@@ -1,5 +1,15 @@
 gsap.registerPlugin(ScrollToPlugin);
 
+// const originalTo = gsap.to;
+// gsap.to = function (targets, vars) {
+//   console.log('GSAP.to', {
+//     targets,
+//     vars,
+//     stack: new Error().stack.split('\n')[2],
+//   });
+//   return originalTo.call(this, targets, vars);
+// };
+
 // состояния
 let isAnimating = false;
 let currentIndex = 0;
@@ -45,6 +55,7 @@ const menuLinks = document.querySelectorAll('.menu__link');
 const menuIndicator = document.querySelectorAll('.menu__indicator');
 const footer = document.querySelector('.footer').getBoundingClientRect();
 const footerHeight = document.querySelector('.footer').offsetHeight;
+let footerTriggerY = null;
 
 // слайдер
 const sliderSectionIndex = 2;
@@ -61,6 +72,11 @@ const themeMeta = document.querySelector('meta[name="theme-color"]');
 function goToSection(index) {
   if (isAnimating) return;
   isAnimating = true;
+
+  // console.group('goToSection');
+  // console.log('from → to', currentIndex, '→', index);
+  // console.log('isAnimating', isAnimating);
+  // console.groupEnd();
 
   const prevIndex = currentIndex;
   const nextIndex = index;
@@ -125,6 +141,14 @@ function onwheel(evt) {
     evt.preventDefault();
     return;
   }
+
+  // console.log('WHEEL', {
+  //   deltaY: evt.deltaY,
+  //   currentIndex,
+  //   scrollTop: lastWrapper.scrollTop,
+  //   scrollHeight: lastWrapper.scrollHeight,
+  //   isAnimating,
+  // });
 
   const directionDown = evt.deltaY > 0;
   const directionUp = evt.deltaY < 0;
@@ -208,7 +232,7 @@ let pendingUIUpdate = false;
 function scheduleUIUpdate() {
   if (pendingUIUpdate) return;
   pendingUIUpdate = true;
-
+  // console.log('scheduleUIUpdate');
   if (rafId) cancelAnimationFrame(rafId);
 
   rafId = requestAnimationFrame(() => {
@@ -398,13 +422,33 @@ function checkInnerScroll() {
   const bottomMob = scrollTop + visibleHeight >= fullHeight - footerHeight;
   const isAtBottom = mobileMode ? bottomMob : bottomDesk;
 
+  // console.log('start checkInnerScroll')
+
   return isAtBottom;
 }
+
+let lastFooterState = null;
+// let scrollLogRAF = false;
 
 // убираем меню в конце
 lastWrapper.addEventListener('scroll', () => {
   footerVisible = checkInnerScroll();
 
+  // if (scrollLogRAF) return;
+  // scrollLogRAF = true;
+
+  // requestAnimationFrame(() => {
+  //   console.log('SCROLL', {
+  //     scrollTop: lastWrapper.scrollTop,
+  //     scrollHeight: lastWrapper.scrollHeight,
+  //     footerVisible,
+  //     isAnimating,
+  //   });
+  //   scrollLogRAF = false;
+  // });
+
+  if (footerVisible === lastFooterState) return;
+  console.log(footerVisible);
   if (footerVisible) {
     gsap.to(menu, {y: '200%', duration: 0.5, ease: 'power1.out'});
   } else {
@@ -412,6 +456,19 @@ lastWrapper.addEventListener('scroll', () => {
   }
   updateUI();
 });
+
+
+// Вспомогательная функция debounce (если ещё не подключена)
+function debounce(fn, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+
 
 // переход из посл.секции назад
 if (!mobileMode) {
@@ -896,7 +953,7 @@ function updateScrollLock() {
   }
 }
 
-// попытка покрасить ui-bar, т.к. просил дизайнер, хз
+// попытка покрасить ui-bar
 function updateThemeColor(currentIndex) {
   if (!themeMeta) return;
 
