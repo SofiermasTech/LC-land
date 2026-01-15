@@ -204,9 +204,16 @@ window.addEventListener('resize', () => {
 });
 // });
 
-//  section faq переделала чере gsap, т.к. 
+//  section faq переделала чере gsap, т.к.
 // при одновремен. анимации ширины и высоты было дрожание на десктопе
 const faqItems = document.querySelectorAll('.faq__item');
+let isLayoutChanging = false;
+let lastFooterState = null;
+
+function safeCheckInnerScroll() {
+  if (isLayoutChanging) return lastFooterState;
+  return checkInnerScroll();
+}
 
 faqItems.forEach((item) => {
   const head = item.querySelector('.faq__item-head');
@@ -219,10 +226,48 @@ faqItems.forEach((item) => {
   gsap.set(body, {height: 0, opacity: 0});
 
   head.addEventListener('click', () => {
+    if (isLayoutChanging) return;
+    isLayoutChanging = true;
+
+    // console.group('FAQ CLICK');
+    // console.log('before toggle', {
+    //   scrollTop: lastWrapper.scrollTop,
+    //   scrollHeight: lastWrapper.scrollHeight,
+    // });
+
     const tl = gsap.timeline({
       defaults: {
         ease: 'power2.out',
         duration: 0.6,
+      },
+      onComplete: () => {
+        requestAnimationFrame(() => {
+          footerVisible = checkInnerScroll();
+
+          if (footerVisible) {
+            hideMenu();
+            updateUI();
+          } else {
+            showMenu();
+            updateUI();
+          }
+        });
+
+        // requestAnimationFrame(() => {
+        //   console.log('after 1 rAF', {
+        //     scrollTop: lastWrapper.scrollTop,
+        //     scrollHeight: lastWrapper.scrollHeight,
+        //   });
+
+        //   requestAnimationFrame(() => {
+        //     console.log('after 2 rAF', {
+        //       scrollTop: lastWrapper.scrollTop,
+        //       scrollHeight: lastWrapper.scrollHeight,
+        //     });
+        //     console.groupEnd();
+        //   });
+        // });
+        isLayoutChanging = false;
       },
     });
 
@@ -270,19 +315,27 @@ faqItems.forEach((item) => {
       item.classList.remove('open');
       isOpen = false;
     }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        footerVisible = safeCheckInnerScroll();
+      });
+    });
   });
 });
 
 function getCollapsedWidth(item) {
-  if (item.classList.contains('a1')) return 480 + 'px';
-  if (item.classList.contains('a2')) return 450 + 'px';
-  if (item.classList.contains('a3')) return 405 + 'px';
-  if (item.classList.contains('a4')) return 390 + 'px';
-  if (item.classList.contains('a5')) return 370 + 'px';
-  if (item.classList.contains('a6')) return 425 + 'px';
-  if (item.classList.contains('a7')) return 430 + 'px';
-  if (item.classList.contains('a8')) return 460 + 'px';
-  if (item.classList.contains('a9')) return 315 + 'px';
+  if (!mobileMode) {
+    if (item.classList.contains('a1')) return 480 + 'px';
+    if (item.classList.contains('a2')) return 450 + 'px';
+    if (item.classList.contains('a3')) return 405 + 'px';
+    if (item.classList.contains('a4')) return 390 + 'px';
+    if (item.classList.contains('a5')) return 370 + 'px';
+    if (item.classList.contains('a6')) return 425 + 'px';
+    if (item.classList.contains('a7')) return 430 + 'px';
+    if (item.classList.contains('a8')) return 460 + 'px';
+    if (item.classList.contains('a9')) return 315 + 'px';
+  }
 
   return '100%';
 }

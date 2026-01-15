@@ -260,6 +260,8 @@ html {
 }
 
 #section-4.container {
+  overflow-anchor: none;
+
   @include mobile {
     padding-inline: 0;
     max-width: 100%;

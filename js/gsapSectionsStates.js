@@ -440,26 +440,32 @@ function section1_enterForward() {
   if (currentIndex >= 2) {
     tl.add(scrollImgState1(1));
   }
+
   tl.to('.hero__blur', {
     duration: 0.3,
     backdropFilter: 'blur(20px)',
     opacity: 1,
     visibility: 'visible',
     ease: 'power2.out',
-  })
-    .to('.numbers__overlay', {
-      duration: 0.3,
-      opacity: 1,
-      background: 'rgba(1, 3, 16, 0.3)',
-      ease: 'power2.out',
-    })
-    .fromTo('.numbers__big-number', {opacity: 0}, {opacity: 1, duration: 0.3})
-    .fromTo(
+  }).to('.numbers__overlay', {
+    duration: 0.3,
+    opacity: 1,
+    background: 'rgba(1, 3, 16, 0.3)',
+    ease: 'power2.out',
+  });
+
+  tl.fromTo('.numbers__big-number', {opacity: 0}, {opacity: 1, duration: 0.3});
+  if (!mobileMode) {
+    tl.fromTo(
       '.numbers__label',
       {opacity: 0, y: 20},
       {opacity: 1, y: 0, duration: 0.3}
-    )
-    .fromTo('.numbers__btn', {opacity: 0}, {opacity: 1, duration: 0.2});
+    );
+  } else {
+    tl.fromTo('.numbers__label', {opacity: 0}, {opacity: 1, duration: 0.3}, '<');
+  }
+
+  tl.fromTo('.numbers__btn', {opacity: 0}, {opacity: 1, duration: 0.2});
 
   return tl;
 }

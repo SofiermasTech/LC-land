@@ -336,6 +336,9 @@ html::-webkit-scrollbar-thumb {
   }
 }
 
+#section-4.container {
+  overflow-anchor: none;
+}
 @media (max-width: 610px) {
   #section-4.container {
     padding-inline: 0;
@@ -947,7 +950,7 @@ html::-webkit-scrollbar-thumb {
 @media (max-width: 610px) {
   .menu {
     z-index: 110;
-    top: calc(100dvh - var(--controls-margin) - 40px);
+    top: calc(100dvh - var(--controls-margin) - 34px);
   }
 }
 .menu__wrapper {
@@ -2099,6 +2102,11 @@ html::-webkit-scrollbar-thumb {
     gap: 0px;
   }
 }
+@supports (-webkit-touch-callout: none) {
+  .numbers__item {
+    isolation: isolate;
+  }
+}
 @media (max-width: 610px) {
   .numbers__item:nth-child(1) .numbers__big-number, .numbers__item:nth-child(3) .numbers__big-number {
     margin-right: -32px;
@@ -2107,6 +2115,17 @@ html::-webkit-scrollbar-thumb {
 @media screen and (max-width: 390px) {
   .numbers__item:nth-child(1) .numbers__big-number, .numbers__item:nth-child(3) .numbers__big-number {
     margin-right: 0;
+  }
+}
+.numbers .numbers__bg-layer {
+  display: none;
+}
+@supports (-webkit-touch-callout: none) {
+  .numbers .numbers__bg-layer {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: url("../img/hero.png") center/cover no-repeat;
   }
 }
 .numbers__big-number {
@@ -2135,12 +2154,8 @@ html::-webkit-scrollbar-thumb {
 }
 @supports (-webkit-touch-callout: none) {
   .numbers__big-number {
-    background: none;
-    background-clip: unset;
-    -webkit-background-clip: unset;
-    background-attachment: unset;
-    mix-blend-mode: luminosity;
-    color: rgba(255, 255, 255, 0.2);
+    mix-blend-mode: screen;
+    color: rgba(255, 255, 255, 0.25);
   }
 }
 @media (max-width: 1600px) {
@@ -3043,6 +3058,7 @@ html::-webkit-scrollbar-thumb {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  padding: 12px 16px;
 }
 @media (max-width: 850px) {
   .faq__else-ask {
@@ -3331,7 +3347,7 @@ html::-webkit-scrollbar-thumb {
 }
 @media (max-width: 850px) {
   .faq__item.open .faq__item-body {
-    max-width: 94%;
+    max-width: 100%;
     width: auto;
     margin-top: 16px;
   }
@@ -3353,8 +3369,6 @@ html::-webkit-scrollbar-thumb {
   grid-template-columns: 1.1fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
-  overflow-anchor: none;
-  contain: layout;
 }
 @media (max-width: 1290px) {
   .footer {

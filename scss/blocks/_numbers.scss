@@ -90,7 +90,6 @@
     @include mobile {
       max-width: calc(100vw - (var(--container-padding) * 2));
       gap: 20px;
-      // padding-top: 160px;
     }
 
     @media screen and (max-width: 380px) and (max-height: 760px) {
@@ -134,6 +133,10 @@
       gap: 0px;
     }
 
+    @supports (-webkit-touch-callout: none) {
+      isolation: isolate;
+    }
+
     @include mobile {
 
       &:nth-child(1) .numbers__big-number,
@@ -149,6 +152,19 @@
       &:nth-child(3) .numbers__big-number {
         margin-right: 0;
       }
+    }
+  }
+
+  .numbers__bg-layer {
+    display: none;
+
+    @supports (-webkit-touch-callout: none) {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: url('../img/hero.png') center / cover no-repeat;
+      // background-attachment: scroll; // на iOS fixed всё равно не нужен
+
     }
   }
 
@@ -172,12 +188,14 @@
     user-select: none;
 
     @supports (-webkit-touch-callout: none) {
-      background: none;
-      background-clip: unset;
-      -webkit-background-clip: unset;
-      background-attachment: unset;
-      mix-blend-mode: luminosity;
-      color: rgba(255, 255, 255, 0.2);
+      // background: none;
+      // background-clip: unset;
+      // -webkit-background-clip: unset;
+      // background-attachment: unset;
+      // mix-blend-mode: luminosity;
+      mix-blend-mode: screen; // или luminosity / lighten — подбирай под дизайн
+      color: rgba(255, 255, 255, 0.25);
+
     }
 
     @include desktop-l {

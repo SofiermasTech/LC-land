@@ -12,7 +12,7 @@
 
   @include mobile {
     z-index: 110;
-    top: calc(100dvh - var(--controls-margin) - 40px);
+    top: calc(100dvh - var(--controls-margin) - 34px);
   }
 
   &__wrapper {

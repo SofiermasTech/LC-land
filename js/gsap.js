@@ -46,6 +46,7 @@ const sections = config.sections;
 const lastIndex = config.lastIndex;
 const lastWrapper = config.lastWrapper;
 const lastSection = sections[lastIndex];
+const windowHeight = window.innerHeight;
 
 // console.log('lastWrapper', lastWrapper);
 // console.log('lastSection', lastSection);
@@ -366,18 +367,6 @@ function animateSlide(oldIndex, newIndex) {
   return tl;
 }
 
-// const faq = document.querySelector('.faq').getBoundingClientRect();
-// const footerTop = footer.top;
-
-// const lastHeight = document.querySelector('.section-last-wrapper').scrollHeight;
-// const faqStart = faq.top;
-// const faqEnd = faq.bottom;
-const windowHeight = window.innerHeight;
-// const targetY = lastWrapper.offsetHeight - windowHeight;
-// const lastChildInSection = lastSection.lastElementChild;
-// console.log(lastSection.children[0]);
-// console.log(lastWrapper.children[0]);
-
 // переход по кнопке
 function nextScreen() {
   if (isAnimating) return;
@@ -427,48 +416,43 @@ function checkInnerScroll() {
   return isAtBottom;
 }
 
-let lastFooterState = null;
-// let scrollLogRAF = false;
+function showMenu() {
+  gsap.to(menu, {
+    y: 0,
+    duration: 0.5,
+    ease: 'power1.out',
+    // overwrite: 'auto',
+  });
+}
+
+function hideMenu() {
+  gsap.to(menu, {
+    y: '200%',
+    duration: 0.5,
+    ease: 'power1.out',
+    // overwrite: 'auto',
+  });
+}
 
 // убираем меню в конце
 lastWrapper.addEventListener('scroll', () => {
-  footerVisible = checkInnerScroll();
+  if (isLayoutChanging) return;
 
-  // if (scrollLogRAF) return;
-  // scrollLogRAF = true;
-
-  // requestAnimationFrame(() => {
-  //   console.log('SCROLL', {
-  //     scrollTop: lastWrapper.scrollTop,
-  //     scrollHeight: lastWrapper.scrollHeight,
-  //     footerVisible,
-  //     isAnimating,
-  //   });
-  //   scrollLogRAF = false;
-  // });
+  footerVisible = safeCheckInnerScroll();
 
   if (footerVisible === lastFooterState) return;
+
+  lastFooterState = footerVisible;
   console.log(footerVisible);
+
   if (footerVisible) {
-    gsap.to(menu, {y: '200%', duration: 0.5, ease: 'power1.out'});
+    hideMenu();
+    updateUI();
   } else {
-    gsap.to(menu, {y: 0, duration: 0.5, ease: 'power1.out'});
+    showMenu();
+    updateUI();
   }
-  updateUI();
 });
-
-
-// Вспомогательная функция debounce (если ещё не подключена)
-function debounce(fn, delay) {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn.apply(this, args);
-    }, delay);
-  };
-}
-
 
 // переход из посл.секции назад
 if (!mobileMode) {
