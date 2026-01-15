@@ -95,6 +95,12 @@ function goToSection(index) {
   const master = gsap.timeline({
     onComplete() {
       currentIndex = nextIndex;
+
+      // убираем прозрачность 1го слайда
+      if (currentIndex === sliderSectionIndex && !mobileMode) {
+        setActiveSlide(currentSlide);
+      }
+      
       updateScrollLock();
       updatePaginationWhithSlides(nextIndex);
 
@@ -103,11 +109,6 @@ function goToSection(index) {
         startLightning();
       } else {
         stopLightning();
-      }
-
-      // убираем прозрачность 1го слайда
-      if (currentIndex === sliderSectionIndex && !mobileMode) {
-        setActiveSlide(currentSlide);
       }
 
       // поднимаем контент секц. со свободным скролом, чтоб не залипал
@@ -257,6 +258,7 @@ function setActiveSlide(index) {
     if (i === index) {
       gsap.to([img, content], {
         opacity: 1,
+        duration: 0.3,
       });
     } else {
       gsap.set([img, content], {
@@ -349,19 +351,19 @@ function animateSlide(oldIndex, newIndex) {
   gsap.set([newImg, newContent], {x: newEnterX, opacity: 1});
   // вперед
   if (forward) {
-    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.4});
-    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.4});
+    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.3});
+    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.3}, '-=0.15');
 
-    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.4}, '-=0.15');
-    tl.to(newContent, {x: '0%', opacity: 1, duration: 0.4});
+    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.35}, '-=0.15');
+    tl.to(newContent, {x: '0%', opacity: 1, duration: 0.3}, '-=0.25');
     // console.log('animateSlide конец1');
   } else {
     // назад
-    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.4});
-    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.3});
+    tl.to(oldContent, {x: oldExitX, opacity: 0, duration: 0.3});
+    tl.to(oldImg, {x: oldExitX, opacity: 0, duration: 0.3}, '-=0.25');
 
     tl.to(newContent, {x: '0%', opacity: 1, duration: 0.3}, '-=0.05');
-    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.4});
+    tl.to(newImg, {x: '0%', opacity: 1, duration: 0.3}, '-=0.25');
     // console.log('animateSlide конец2');
   }
   return tl;
