@@ -1,4 +1,4 @@
-// scroll-up
+// scroll-up for secons page
 const btnUp = document.querySelector('.btn-scroll--second');
 
 if (btnUp) {

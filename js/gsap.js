@@ -1,15 +1,5 @@
 gsap.registerPlugin(ScrollToPlugin);
 
-// const originalTo = gsap.to;
-// gsap.to = function (targets, vars) {
-//   console.log('GSAP.to', {
-//     targets,
-//     vars,
-//     stack: new Error().stack.split('\n')[2],
-//   });
-//   return originalTo.call(this, targets, vars);
-// };
-
 // состояния
 let isAnimating = false;
 let currentIndex = 0;
@@ -28,10 +18,10 @@ const config = {
   },
 
   lastWrapperDesktop: document.querySelector(
-    '.section#section-4 .section-last-wrapper'
+    '.section#section-4 .section-last-wrapper',
   ),
   lastWrapperMobile: document.querySelector(
-    '.for-mobile-wrapper .section-last-wrapper'
+    '.for-mobile-wrapper .section-last-wrapper',
   ),
 
   desktop: Array.from(document.querySelectorAll('.section')),
@@ -74,11 +64,6 @@ function goToSection(index) {
   if (isAnimating) return;
   isAnimating = true;
 
-  // console.group('goToSection');
-  // console.log('from → to', currentIndex, '→', index);
-  // console.log('isAnimating', isAnimating);
-  // console.groupEnd();
-
   const prevIndex = currentIndex;
   const nextIndex = index;
 
@@ -100,7 +85,7 @@ function goToSection(index) {
       if (currentIndex === sliderSectionIndex && !mobileMode) {
         setActiveSlide(currentSlide);
       }
-      
+
       updateScrollLock();
       updatePaginationWhithSlides(nextIndex);
 
@@ -143,14 +128,6 @@ function onwheel(evt) {
     evt.preventDefault();
     return;
   }
-
-  // console.log('WHEEL', {
-  //   deltaY: evt.deltaY,
-  //   currentIndex,
-  //   scrollTop: lastWrapper.scrollTop,
-  //   scrollHeight: lastWrapper.scrollHeight,
-  //   isAnimating,
-  // });
 
   const directionDown = evt.deltaY > 0;
   const directionUp = evt.deltaY < 0;
@@ -205,17 +182,6 @@ function onwheel(evt) {
   }
 }
 
-// определение секции
-// function detectCurrentSection() {
-//   let idx = 0;
-
-//   sections.forEach((section, i) => {
-//     const rect = section.getBoundingClientRect();
-//     if (rect.top <= window.innerHeight * 0.5) idx = i;
-//   });
-//   return idx;
-// }
-
 function lockScroll() {
   document.documentElement.style.overflowY = 'hidden';
   document.body.style.overflowY = 'hidden';
@@ -250,7 +216,7 @@ function scheduleUIUpdate() {
 function setActiveSlide(index) {
   if (currentIndex !== sliderSectionIndex) return;
 
-  console.log('active slie', index);
+  // console.log('active slide', index);
   slides.forEach((slide, i) => {
     const img = slide.querySelector('.slide__img');
     const content = slide.querySelector('.slide__content');
@@ -291,13 +257,9 @@ function goToSlide(index) {
       // для обновления пагинации
       window.dispatchEvent(new CustomEvent('slidechange', {detail: index}));
 
-      // след. два пункта - меняем надпись у кнопки на последнем слайде
-      if (currentSlide === lastSlide) {
-        updateUI();
-      }
-
-      if (oldIndex === lastSlide && index === lastSlide - 1) {
-        updateUI();
+      // меняем поворот у кнопки на последнем слайде
+      if (currentSlide === lastSlide || currentSlide === lastSlide - 1) {
+        updateNextButtonRotate();
       }
 
       setActiveSlide(currentSlide);
@@ -316,7 +278,7 @@ function goToSlide(index) {
       duration: 0.7,
       ease: 'power2.inOut',
     },
-    0
+    0,
   );
 
   const contentTl = animateSlide(oldIndex, index);
@@ -423,7 +385,6 @@ function showMenu() {
     y: 0,
     duration: 0.5,
     ease: 'power1.out',
-    // overwrite: 'auto',
   });
 }
 
@@ -432,7 +393,6 @@ function hideMenu() {
     y: '200%',
     duration: 0.5,
     ease: 'power1.out',
-    // overwrite: 'auto',
   });
 }
 
@@ -445,7 +405,7 @@ lastWrapper.addEventListener('scroll', () => {
   if (footerVisible === lastFooterState) return;
 
   lastFooterState = footerVisible;
-  console.log(footerVisible);
+  // console.log(footerVisible);
 
   if (footerVisible) {
     hideMenu();
@@ -478,7 +438,17 @@ if (!mobileMode) {
 
 document.addEventListener('DOMContentLoaded', () => {
   currentIndex = 0;
-  updateSectionsUI(0);
+
+  // для айфона, т.к. у него особые условия 2го слайда
+  const isIOS =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  if (isIOS) {
+    updateSectionsUI(0);
+  }
+
+  // это для всех
   animationOnStart();
   startLightning();
   updateScrollLock();
@@ -619,7 +589,7 @@ function updatePaginationWhithSlides(sectionIndex) {
     {
       x: 0,
       clearProps: 'transform,opacity',
-    }
+    },
   );
 
   setActiveSlide(currentSlide);
@@ -662,7 +632,6 @@ menuLinks.forEach((link) => {
           ease: 'power2.out',
           onComplete: () => {
             currentIndex = 2;
-            // updateSectionsUI(currentIndex);
             updateUI();
             updateScrollLock();
             setTimeout(() => {
@@ -680,7 +649,7 @@ menuLinks.forEach((link) => {
     if (mobileMode && index === 3) {
       const target = document.querySelector(href);
       if (!target) return;
-      // console.log(target);
+
       isAnimating = true;
 
       const prevIndex = currentIndex;
@@ -766,7 +735,7 @@ document.querySelectorAll('.footer__links-item.m a').forEach((link) => {
     if (mobileMode && index === 3) {
       const target = document.querySelector(href);
       if (!target) return;
-      // console.log(target);
+
       isAnimating = true;
 
       const prevIndex = currentIndex;
@@ -800,8 +769,6 @@ document.querySelectorAll('.footer__links-item.m a').forEach((link) => {
     }
   });
 });
-
-// console.log(mobileSwiperMain);
 
 // footer.s a - блок ссылок для слайдера
 document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
@@ -837,11 +804,11 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
               {
                 x: 0,
                 clearProps: 'transform,opacity',
-              }
+              },
             );
             setActiveSlide(currentSlide);
             window.dispatchEvent(
-              new CustomEvent('slidechange', {detail: index})
+              new CustomEvent('slidechange', {detail: index}),
             );
 
             footerVisible = checkInnerScroll();
@@ -873,18 +840,17 @@ document.querySelectorAll('.footer__links-item.s a').forEach((link) => {
 function enableParallax() {
   if (mobileMode) return;
   const paralaxImg = document.querySelectorAll(
-    '.first-wrapper__img .img-paralax'
+    '.first-wrapper__img .img-paralax',
   );
   if (!paralaxImg) return;
 
-  console.log(paralaxImg);
   mouseMoveHandler = (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 2;
     const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
     paralaxImg.forEach((img) => {
       const layerShift = Number(img.dataset.parallax);
-      // console.log(img, index);
+
       gsap.to(img, {
         x: x * layerShift,
         y: y * layerShift,
@@ -939,7 +905,7 @@ function updateScrollLock() {
   }
 }
 
-// попытка покрасить ui-bar
+// красим ui-bar android
 function updateThemeColor(currentIndex) {
   if (!themeMeta) return;
 
@@ -987,16 +953,9 @@ if (isMobile()) {
       reachedTopLock = false;
       goToSection(1);
     },
-    {passive: true}
+    {passive: true},
   );
 }
-
-// if (!mobileMode) {
-//   window.addEventListener('scroll', () => {
-//     updateUI();
-//     updateClassMenu();
-//   });
-// }
 
 function hardResetOnResize() {
   isAnimating = true;
@@ -1015,13 +974,12 @@ function hardResetOnResize() {
 }
 
 let lastWidth = window.innerWidth;
-// let lastHeight = window.innerHeight;
 
 window.addEventListener('resize', () => {
   if (Math.abs(window.innerWidth - lastWidth) < 25) return;
 
   lastWidth = window.innerWidth;
-  // lastHeight = window.innerHeight;
+
   hardResetOnResize();
 });
 
@@ -1072,7 +1030,7 @@ function handleSwipe(evt) {
 
   if (mobileMode && currentIndex === lastIndex) {
     if (lastWrapper.scrollTop > 20) {
-      console.log(lastWrapper.scrollTop);
+      // console.log(lastWrapper.scrollTop);
       return;
     }
   }
@@ -1101,11 +1059,15 @@ document.addEventListener('touchend', handleTouchEnd, {passive: true});
 function startLightning() {
   if (lightningInterval) return;
 
-  lightningInterval = setInterval(() => {
-    const type = lightnings[currentLightning];
-    lightningStrike(type);
+  setTimeout(() => {
+    lightningStrike(lightnings[currentLightning]);
     currentLightning = (currentLightning + 1) % lightnings.length;
-  }, 6000);
+
+    lightningInterval = setInterval(() => {
+      lightningStrike(lightnings[currentLightning]);
+      currentLightning = (currentLightning + 1) % lightnings.length;
+    }, 5000);
+  }, 2500);
 }
 
 // остановка аним для других секций

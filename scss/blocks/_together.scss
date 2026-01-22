@@ -80,8 +80,6 @@
     }
   }
 
-  &__content-text {}
-
   &__content-title {
     grid-area: title;
     margin: 0;
@@ -141,7 +139,6 @@
     @include tablet {
       display: none;
     }
-
 
     img {
       width: 280px;

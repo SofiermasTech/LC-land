@@ -10,8 +10,6 @@
   grid-template-columns: 1.1fr 1fr 1fr 1fr;
   gap: 8px;
   position: relative;
-  // overflow-anchor: none;
-  // contain: layout;
 
   @include laptop {
     grid-template-columns: 1.2fr 1fr 1fr 1fr;
@@ -38,7 +36,6 @@
     padding-bottom: 16px;
   }
 
-
   @include mobile-bottom {
     grid-template-columns: 1fr 1.45fr;
   }
@@ -59,8 +56,6 @@
         justify-self: start;
         gap: 16px;
       }
-
-
     }
 
     &:nth-child(1) {
@@ -148,8 +143,6 @@
     }
   }
 
-  &__column-title {}
-
   &__links {
     margin: 0;
     padding: 0;
@@ -170,8 +163,6 @@
 
     .second-btn {
       gap: 8px;
-
-      span {}
     }
 
     @include tablet-bottom {
@@ -189,13 +180,10 @@
 
       @include hover {
         color: var(--blue);
-        // --c1: #599cff;;
         --c2: #599cff;
-        ;
         transition: --c2 0.3s ease;
       }
     }
-
   }
 
   @media screen and (max-width: 360px) {

@@ -13,7 +13,6 @@
     'btn qa';
   gap: 48px 16px;
   position: relative;
-  // will-change: height;
 
   @media screen and (max-width: 1200px) {
     gap: 16px;
@@ -118,7 +117,6 @@
       }
     }
 
-
     @media screen and (max-width: 360px) {
       grid-template-columns: 125px 1fr;
 
@@ -149,11 +147,6 @@
     border-radius: var(--br-l);
     box-sizing: border-box;
     will-change: width;
-
-    // &:not(:last-child) {
-    //   transition:
-    //     max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    // }
 
     &.a1 {
       max-width: 480px;
@@ -192,20 +185,7 @@
     }
 
     &.open {
-      // transition: max-width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-
-      &.a1,
-      &.a2,
-      &.a3,
-      &.a4,
-      &.a5,
-      &.a6,
-      &.a7,
-      &.a8,
-      &.a9 {
-        max-width: 100%;
-      }
-
+  
       .faq__item-icon div {
         transform: rotate(180deg);
         background-image: url('../img/faq-minus.svg');
@@ -277,8 +257,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-
 
     @include tablet {
       height: 18px;
@@ -367,7 +345,6 @@
   }
 
   &__item.open .faq__item-body {
-    // grid-template-rows: 1fr;
     margin-top: 32px;
     opacity: 1;
 

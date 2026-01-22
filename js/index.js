@@ -8,7 +8,7 @@ function isMobile() {
 }
 
 let mobileMode = isMobile();
-console.log(mobileMode);
+// console.log(mobileMode);
 
 mobileMode = isMobile();
 updateSliders();
@@ -19,7 +19,7 @@ function initServiceSwiper() {
     const template = document.getElementById('slide-template');
     const containerSlides = document.querySelector('.service-swiper__wrapper');
     const containerPagination = document.querySelector(
-      '.service-swiper__pagination'
+      '.service-swiper__pagination',
     );
 
     if (!template || !containerSlides) return;
@@ -60,7 +60,7 @@ function initServiceSwiper() {
     containerPagination.appendChild(dotsFragment);
 
     const dots = containerPagination.querySelectorAll(
-      '.service-swiper__pagination-dot'
+      '.service-swiper__pagination-dot',
     );
 
     function updatePagination(activeIndex) {
@@ -98,13 +98,13 @@ function initMobileSwiper() {
   containerMob.appendChild(sliderSection);
 
   const sliderMain = containerMob.querySelector(
-    '.slider-main .slider-main__wrapper'
+    '.slider-main .slider-main__wrapper',
   );
   const sliderThumbs = containerMob.querySelector(
-    '.slider-img .slider-img__wrapper'
+    '.slider-img .slider-img__wrapper',
   );
   const slideTemplateMain = templateMob.content.querySelector(
-    '.slider-main__slide'
+    '.slider-main__slide',
   );
   const slideTemplateImg =
     templateMob.content.querySelector('.slider-img__img');
@@ -229,12 +229,6 @@ faqItems.forEach((item) => {
     if (isLayoutChanging) return;
     isLayoutChanging = true;
 
-    // console.group('FAQ CLICK');
-    // console.log('before toggle', {
-    //   scrollTop: lastWrapper.scrollTop,
-    //   scrollHeight: lastWrapper.scrollHeight,
-    // });
-
     const tl = gsap.timeline({
       defaults: {
         ease: 'power2.out',
@@ -253,20 +247,6 @@ faqItems.forEach((item) => {
           }
         });
 
-        // requestAnimationFrame(() => {
-        //   console.log('after 1 rAF', {
-        //     scrollTop: lastWrapper.scrollTop,
-        //     scrollHeight: lastWrapper.scrollHeight,
-        //   });
-
-        //   requestAnimationFrame(() => {
-        //     console.log('after 2 rAF', {
-        //       scrollTop: lastWrapper.scrollTop,
-        //       scrollHeight: lastWrapper.scrollHeight,
-        //     });
-        //     console.groupEnd();
-        //   });
-        // });
         isLayoutChanging = false;
       },
     });
@@ -282,34 +262,31 @@ faqItems.forEach((item) => {
         })
 
         // схлопываем обратно
-        .set(body, {height: 0, opacity: 0})
+        // .set(body, {height: 0, opacity: 0})
 
         // анимируем высоту
         .to(
           body,
-          {
-            height: () => content.scrollHeight,
-            opacity: 1,
-          },
-          0
+          {height: () => content.scrollHeight, opacity: 1, duration: 0.3},
+          '+=0.1',
         );
 
       item.classList.add('open');
       isOpen = true;
     } else {
-      tl.to(
+      tl.set(
         body,
         {
           height: 0,
           opacity: 0,
         },
-        0
+        0,
       ).to(
         item,
         {
           maxWidth: getCollapsedWidth(item),
         },
-        0
+        0,
       );
 
       item.classList.remove('open');
@@ -340,7 +317,6 @@ function getCollapsedWidth(item) {
   return '100%';
 }
 
-// console.log(window.innerWidth, window.innerHeight);
 // анимация с молниями и статуей
 const scene = document.querySelector('.lightning-scene');
 
@@ -364,7 +340,7 @@ function lightningStrike(typeClass) {
   // затухание
   setTimeout(() => {
     scene.classList.remove(typeClass);
-  }, 450);
+  }, 500);
 }
 
 // динамическое title на первом моб экране
@@ -390,14 +366,14 @@ function fitHeroTitle() {
   // сколько высоты занято НЕ заголовком
   const occupiedHeight = siblings.reduce((sum, el) => sum + el.offsetHeight, 0);
 
-  // const contentHeight = content.getBoundingClientRect().height;
+// на айфоне не правильно вычисляет свободное пространство, костыль для него
   const isIOS =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const HERO_UI_OFFSET = 76;
 
   let contentHeight;
-  console.log(isIOS);
+  // console.log(isIOS);
   if (isIOS && window.visualViewport) {
     contentHeight = window.visualViewport.height - HERO_UI_OFFSET;
   } else {
@@ -412,27 +388,15 @@ function fitHeroTitle() {
 
   if (availableHeight <= 0) return;
 
-  // бинарный поиск размера шрифта (быстро и точно)
+  // бинарный поиск размера шрифта 
   let min = 24;
   let max = 160;
   let best = min;
-
-  // const titleSize = title.scrollWidth
-  console.log({
-    contentHeight,
-    occupiedHeight,
-    paddingTop,
-    availableHeight,
-    // titleSize,
-  });
 
   while (min <= max) {
     const mid = Math.floor((min + max) / 2);
     title.style.fontSize = `${mid}px`;
     title.offsetHeight;
-
-    // const styles = getComputedStyle(title);
-    // const isVertical = styles.writingMode !== 'horizontal-tb';
 
     const correction = getTitleCorrection();
     const titleSize = title.scrollHeight - correction;
@@ -463,8 +427,23 @@ if (mobileMode) {
   ro.observe(document.documentElement);
   window.addEventListener('orientationchange', fitHeroTitle);
   window.addEventListener('load', fitHeroTitle);
-
-  // if (window.visualViewport) {
-  //   window.visualViewport.addEventListener('resize', fitHeroTitle);
-  // }
 }
+
+// изменение viewBox у svg в секции 2 (с цифрами) на айфоне
+const svgViewbox = document.querySelectorAll('.svg-text');
+
+const mobileMQ = window.matchMedia('(max-width: 415px)');
+function updateViewBox() {
+  if (mobileMQ.matches) {
+    svgViewbox.forEach((svg) => {
+      svg.setAttribute('viewBox', '0 0 1000 380');
+    });
+  } else {
+    svgViewbox.forEach((svg) => {
+      svg.setAttribute('viewBox', '0 0 1000 440');
+    });
+  }
+}
+
+updateViewBox();
+mobileMQ.addEventListener('change', updateViewBox);

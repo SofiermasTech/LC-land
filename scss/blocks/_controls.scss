@@ -12,7 +12,6 @@
     height: auto;
   }
 
-
   &--right {
     right: 0;
   }
@@ -85,8 +84,6 @@
       letter-spacing: -0.03em;
       color: var(--white);
     }
-
-
   }
 
   &__btn-reg {
@@ -140,8 +137,6 @@
       color: var(--white);
     }
 
-    .base-btn {}
-
     .icon-down {
       svg {
         transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -154,8 +149,11 @@
       }
     }
 
-    @include tablet {
-      .btn-scroll-text {
+    .btn-scroll-text {
+      will-change: color, opacity, transform;
+      transform: translateZ(0);
+
+      @include tablet {
         display: none;
       }
     }
@@ -168,13 +166,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-
-
-    @include hover {
-      box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
-      border-radius: 10px;
-    }
-
+    transition: 0.3s;
 
     @include tablet-bottom {
       gap: 7px;
@@ -184,7 +176,11 @@
   &__icon {
     width: 26px;
     height: 16px;
-    transition: none;
+    transition: 0.3s;
+
+    @include hover {
+      box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    }
   }
 
   &__split {

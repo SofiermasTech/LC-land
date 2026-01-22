@@ -1,6 +1,9 @@
 // остальные кнопки + меню
 const menu = document.querySelector('.menu');
 const menuWrapper = document.querySelector('.menu__wrapper');
+const logoNameImg = document.querySelector('.logo-main__name');
+const logoText = document.querySelector('.logo-main__text');
+const logoSplit = document.querySelector('.logo-main__split');
 const tgBtn = document.querySelectorAll('.controls__tg');
 const tgBtnText = document.querySelectorAll('.tg__text');
 const nextBtn = document.querySelector('.btn-scroll');
@@ -11,10 +14,12 @@ const nextBtnText = document.querySelector('.btn-scroll-text');
 const nextBtnTexts = [
   'У нас условия<br> с ума сойдешь',
   'А что там за фичи<br> у вас такие?',
-  'Хочешь, покажем<br> еще одну фичу?',
+  'Хочу еще<br>подробностей',
 ];
 
 let footerVisible = false;
+let isStaticLogoApplied = false;
+const isBigScreen = window.matchMedia('(min-width: 1680px)').matches;
 
 const UI_CONTROL_STATES = {
   default: {
@@ -25,7 +30,7 @@ const UI_CONTROL_STATES = {
     nextBtn: {visible: true, rotate: false, textIndex: 0},
     logoVisible: true,
     mobileLogoVisible: true,
-    logoMode: 'full',
+    logoMode: {desktop: 'full', laptop: 'full'},
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'dark',
@@ -40,7 +45,7 @@ const UI_CONTROL_STATES = {
     nextBtn: {visible: true, rotate: false, textIndex: 1},
     logoVisible: true,
     mobileLogoVisible: true,
-    logoMode: 'full',
+    logoMode: {desktop: 'full', laptop: 'full'},
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'dark',
@@ -55,26 +60,27 @@ const UI_CONTROL_STATES = {
     nextBtn: {visible: true, rotate: true, textIndex: 2},
     logoVisible: true,
     mobileLogoVisible: false,
-    logoMode: 'compact',
+    logoMode: {desktop: 'middle', laptop: 'compact'},
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'light',
     controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
   },
-  lastSlide: {
-    menuColor: 'white',
-    menuOffset: 0,
-    showTg: true,
-    showTgText: false,
-    nextBtn: {visible: false, rotate: false, textIndex: null},
-    iconDownVisible: true,
-    logoVisible: true,
-    mobileLogoVisible: false,
-    logoMode: 'compact',
-    iconUpVisible: false,
-    buttonShadow: 'light',
-    controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
-  },
+  // оставила т.к. вдруг захотят вернуть особые состояния послед слайда
+  // lastSlide: {
+  //   menuColor: 'white',
+  //   menuOffset: 0,
+  //   showTg: true,
+  //   showTgText: false,
+  //   nextBtn: {visible: true, rotate: false, textIndex: 2},
+  //   iconDownVisible: true,
+  //   logoVisible: true,
+  //   mobileLogoVisible: false,
+  //   logoMode: {desktop: 'middle', laptop: 'compact'},
+  //   iconUpVisible: false,
+  //   buttonShadow: 'light',
+  //   controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
+  // },
   lastSection: {
     menuColor: 'white',
     menuOffset: 0,
@@ -83,7 +89,7 @@ const UI_CONTROL_STATES = {
     nextBtn: {visible: false, rotate: false, textIndex: null},
     logoVisible: true,
     mobileLogoVisible: false,
-    logoMode: 'compact',
+    logoMode: {desktop: 'middle', laptop: 'compact'},
     iconDownVisible: true,
     iconUpVisible: false,
     buttonShadow: 'light',
@@ -98,7 +104,7 @@ const UI_CONTROL_STATES = {
     nextBtn: {visible: false, rotate: false, textIndex: null},
     logoVisible: true,
     mobileLogoVisible: false,
-    logoMode: 'compact',
+    logoMode: {desktop: 'compact', laptop: 'compact'},
     iconDownVisible: false,
     iconUpVisible: true,
     buttonShadow: 'light',
@@ -131,7 +137,7 @@ function animateLogo(mode) {
           duration: 0.4,
           ease: 'power2.in',
         },
-        0
+        0,
       )
       .to(
         '.logo-main__name',
@@ -142,7 +148,7 @@ function animateLogo(mode) {
           duration: 0.5,
           ease: 'power2.in',
         },
-        0
+        0,
       )
       .to(
         '.logo-main__split',
@@ -153,42 +159,113 @@ function animateLogo(mode) {
           duration: 0.4,
           ease: 'power2.in',
         },
-        0
+        0,
       )
       .to(
         '.logo-main__icon',
         {width: 64, height: 40, duration: 0.6, ease: 'back.out(1.4)'},
-        '-=0.3'
+        '-=0.3',
       );
+
+    document.querySelector('.logo-main__icon').style.borderRadius = '10px';
+  }
+
+  if (mode === 'middle') {
+    logoAnimation
+      .to(
+        '.logo-main__text',
+        {
+          width: 0,
+          opacity: 0,
+          display: 'none',
+          duration: 0.4,
+          ease: 'power2.in',
+        },
+        0,
+      )
+      .to(
+        '.logo-main__name',
+        {
+          display: 'inline-flex',
+          width: 110,
+          opacity: 0,
+          duration: 0.4,
+          ease: 'power2.in',
+        },
+        0,
+      )
+      .to('.logo-main__name', {
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power2.out',
+
+        onComplete: () => {
+          logoNameImg.src = '/img/logo-name-black.svg';
+
+          gsap.to(logoNameImg, {duration: 0.5});
+        },
+      })
+      .to(
+        '.logo-main__split',
+        {
+          width: 0,
+          opacity: 0,
+          display: 'none',
+          duration: 0.4,
+          ease: 'power2.in',
+        },
+        0,
+      )
+      .to(
+        '.logo-main__icon',
+        {width: 26, height: 16, duration: 0.5, ease: 'power2.out'},
+        0,
+      );
+
+    document.querySelector('.logo-main__icon').style.borderRadius = '0';
   }
 
   if (mode === 'full') {
-    gsap.set(['.logo-main__text', '.logo-main__name', '.logo-main__split'], {
-      display: 'inline-flex',
-    });
-
     logoAnimation
-      .fromTo(
+      .set(
+        ['.logo-main__text', '.logo-main__name', '.logo-main__split'],
+        {display: 'inline-flex'},
+        0,
+      )
+      .call(
+        () => {
+          logoNameImg.src = '/img/logo-name.svg';
+        },
+        null,
+        0,
+      )
+      .to(
         '.logo-main__icon',
-        {width: 64, height: 40},
         {width: 26, height: 16, duration: 0.5, ease: 'power2.out'},
-        0
+        0,
       )
       .to(
         '.logo-main__text',
         {width: 'auto', opacity: 1, duration: 0.6, ease: 'power2.out'},
-        0.3
+        0.3,
       )
       .to(
         '.logo-main__name',
-        {width: 110, opacity: 1, duration: 0.6, ease: 'power2.out'},
-        0.3
+        {
+          width: 110,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        0.3,
       )
       .to(
         '.logo-main__split',
         {width: 'auto', opacity: 1, duration: 0.6, ease: 'power2.out'},
-        0.3
+        0.3,
       );
+
+    document.querySelector('.logo-main__icon').style.borderRadius = '0';
   }
 }
 
@@ -225,26 +302,24 @@ function applyUIState(config) {
     if (mobileMode) {
       nextBtn.style.display = 'none';
     }
+  }
 
-    let textIndex = config.nextBtn.textIndex;
-
-    if (textIndex !== null) {
-      nextBtnText.innerHTML = nextBtnTexts[textIndex];
-    }
-
+  if (config.nextBtn.textIndex !== null) {
     const targetColor = currentIndex === 2 ? 'var(--light)' : 'var(--white)';
+    let textIndex = config.nextBtn.textIndex;
+    const newText = nextBtnTexts[textIndex];
+
+    if (nextBtnText.innerHTML !== newText) {
+      nextBtnText.innerHTML = newText;
+    }
 
     gsap.to(nextBtnText, {
       color: targetColor,
-      duration: 0.6,
-      ease: 'power2.out',
-    });
-
-    gsap.to(nextBtnText, {
       opacity: 1,
       y: 0,
       duration: 0.6,
       ease: 'power2.out',
+      overwrite: 'auto',
     });
   } else {
     gsap.to(nextBtnText, {
@@ -272,12 +347,16 @@ function applyUIState(config) {
     ? config.mobileLogoVisible
     : config.logoVisible;
 
+  const isScreen = isBigScreen
+    ? config.logoMode.desktop
+    : config.logoMode.laptop;
+
   gsap.set('.logo-main', {
     opacity: finalLogoVisible ? 1 : 0,
     visibility: finalLogoVisible ? 'visible' : 'hidden',
   });
 
-  animateLogo(config.logoMode);
+  animateLogo(isScreen);
 
   const controlsVisible = mobileMode
     ? config.controlsLeft.visibility.mobile
@@ -292,18 +371,21 @@ function applyUIState(config) {
   });
 }
 
-function updateUI() {
+function updateNextButtonRotate() {
+  if (currentSlide !== lastSlide) {
+    iconDownSvg.classList.add('rotate');
+  } else {
+    iconDownSvg.classList.remove('rotate');
+  }
+}
 
+function updateUI() {
   if (!mobileMode) {
+    // console.log('start ui');
     if (currentIndex === 0) return applyUIState(UI_CONTROL_STATES.default);
     if (currentIndex === 1) return applyUIState(UI_CONTROL_STATES.firstIndex);
+    if (currentIndex === 2) return applyUIState(UI_CONTROL_STATES.afterSecond);
 
-    if (currentIndex === 2 && currentSlide !== lastSlide)
-      return applyUIState(UI_CONTROL_STATES.afterSecond);
-    // console.log(lastSlide);
-    // console.log(currentSlide);
-    if (currentIndex === 2 && currentSlide === lastSlide)
-      return applyUIState(UI_CONTROL_STATES.lastSlide);
     if (currentIndex === lastIndex && !footerVisible)
       return applyUIState(UI_CONTROL_STATES.lastSection);
     if (currentIndex === lastIndex && footerVisible)

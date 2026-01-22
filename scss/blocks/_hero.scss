@@ -128,8 +128,6 @@
         display: none;
       }
 
-
-
       span {
         display: none;
       }
@@ -480,8 +478,6 @@
   backface-visibility: hidden;
 }
 
-.img-gradient {}
-
 .img-paralax {
   will-change: transform;
   transform: translateZ(0);
@@ -538,7 +534,6 @@
   position: absolute;
   top: -32%;
   right: 30%;
-  // border: 3px solid #599cff;
   width: 25vw;
   height: 100vw;
   transform: rotate(45deg);
@@ -700,4 +695,10 @@
   .img-comet {
     animation: none;
   }
+}
+
+.hero__fix-wrapper,
+.img-lightening,
+.img-paralax.img-paralax--l4-d {
+  opacity: 0;
 }

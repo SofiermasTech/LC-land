@@ -111,7 +111,7 @@ function applySectionUIState(config) {
 }
 
 function updateSectionsUI(currentIndex) {
-  console.log('updateSectionsUI');
+  // console.log('updateSectionsUI');
 
   if (currentIndex === 0) {
     return applySectionUIState(UI_SECTION_STATES.screen0);
@@ -139,18 +139,26 @@ function animationOnStart() {
   document
     .querySelector('.first-wrapper')
     .classList.remove('no-comets-animation');
-  console.log('animationOnStart нач');
+  // console.log('animationOnStart нач');
   document.querySelector('.service-swiper__pagination').style.opacity = 0;
   document.querySelector('.service-swiper__pagination').style.visibility =
     'hidden';
 
   if (currentIndex === 0) {
     timelineFirst
-      .from('.hero__fix-wrapper', {
-        duration: 0.7,
-        x: '-150%',
-        ease: 'power2.out',
-      })
+      .fromTo(
+        '.hero__fix-wrapper',
+        {
+          opacity: 0,
+          x: '-150%',
+        },
+        {
+          duration: 0.7,
+          x: 0,
+          opacity: 1,
+          ease: 'power2.out',
+        },
+      )
       .from(
         '.controls--left',
         {
@@ -158,7 +166,7 @@ function animationOnStart() {
           x: '-100%',
           ease: 'power2.out',
         },
-        '-=0.3'
+        '-=0.3',
       )
       .from(
         '.controls--right',
@@ -167,9 +175,15 @@ function animationOnStart() {
           x: '100%',
           ease: 'power2.out',
         },
-        '<'
+        '<',
       )
-      .add(scrollImgState0(0), '-=0.6')
+      .fromTo(
+        '.first-wrapper__img .img-paralax--l4-d',
+        {x: '150px', opacity: 0},
+        {x: 0, opacity: 1, duration: 0.7, ease: 'power2.out'},
+        '-=0.4',
+      )
+
       .fromTo(
         '.menu',
         {
@@ -180,7 +194,7 @@ function animationOnStart() {
           y: 0,
           ease: 'power2.out',
         },
-        '<'
+        '<',
       )
       .to(
         '.hero__blur',
@@ -190,11 +204,14 @@ function animationOnStart() {
           visibility: 'hidden',
           duration: 0.3,
         },
-        '<'
-      );
+        '<',
+      )
+      .set('.page', {
+        backgroundColor: UI_SECTION_STATES.screen0.backgroundColor.bg,
+      });
   }
 
-  console.log('animationOnStart конец');
+  // console.log('animationOnStart конец');
 }
 
 // scrollImgState0, 1, other - для аним. статуи
@@ -205,7 +222,7 @@ function scrollImgState0(index) {
     display: UI_SECTION_STATES.screen0.heroBlur.visible ? 'block' : 'none',
   });
 
-  console.log('scrollImgWrapper0 запущен');
+  // console.log('scrollImgWrapper0 запущен');
   if (index === 0) {
     tl.to('.first-wrapper__img', {
       opacity: 1,
@@ -215,7 +232,7 @@ function scrollImgState0(index) {
       '.first-wrapper__img .img-paralax--l4-d',
       {x: '150px', opacity: 0},
       {x: 0, opacity: 1, duration: 0.7, ease: 'power2.out'},
-      '-=0.1'
+      '-=0.1',
     );
     tl.set('.page', {
       backgroundColor: UI_SECTION_STATES.screen0.backgroundColor.bg,
@@ -235,7 +252,7 @@ function scrollImgState1(index) {
     backgroundColor: UI_SECTION_STATES.screen1.backgroundColor.bg,
   });
 
-  console.log('scrollImgWrapper1 запущен');
+  // console.log('scrollImgWrapper1 запущен');
   if (index === 1) {
     tl.to('.first-wrapper__img .img-paralax--l4-d', {
       x: 0,
@@ -259,7 +276,7 @@ function scrollImgStateOther() {
     backgroundColor: UI_SECTION_STATES.screen2.backgroundColor.bg,
   });
 
-  console.log('scrollImgWrapper2 запущен');
+  // console.log('scrollImgWrapper2 запущен');
   tl.to('.first-wrapper__img .img-paralax--l4-d', {
     opacity: 0,
     duration: 0.5,
@@ -273,7 +290,7 @@ function scrollImgStateOther() {
       ease: 'power2.inOut',
       stagger: 0.05,
     },
-    '<'
+    '<',
   );
 
   return tl;
@@ -282,16 +299,24 @@ function scrollImgStateOther() {
 // вход в секцию 0 сверху
 function section0_enterForward() {
   const tl = gsap.timeline();
-  console.log('section0_enterForward');
+  // console.log('section0_enterForward');
   if (!mobileMode) {
     enableParallax();
   }
 
-  tl.from('.hero__fix-wrapper', {
-    duration: 0.7,
-    x: '-150%',
-    ease: 'power2.out',
-  });
+  tl.fromTo(
+    '.hero__fix-wrapper',
+    {
+      opacity: 0,
+      x: '-150%',
+    },
+    {
+      duration: 0.7,
+      x: 0,
+      opacity: 1,
+      ease: 'power2.out',
+    },
+  );
 
   tl.from(
     '.controls--left',
@@ -300,7 +325,7 @@ function section0_enterForward() {
       x: '-100%',
       ease: 'power2.out',
     },
-    '-=0.3'
+    '-=0.3',
   );
 
   tl.from(
@@ -310,7 +335,7 @@ function section0_enterForward() {
       x: '100%',
       ease: 'power2.out',
     },
-    '<'
+    '<',
   );
 
   tl.add(scrollImgState0(0), '-=0.6');
@@ -322,7 +347,7 @@ function section0_enterForward() {
       y: 0,
       ease: 'power2.out',
     },
-    '<'
+    '<',
   );
 
   return tl;
@@ -330,12 +355,8 @@ function section0_enterForward() {
 
 // вход в секцию 0 снизу
 function section0_enterBackward() {
-  console.log('section0_enterBackward');
+  // console.log('section0_enterBackward');
   const tl = gsap.timeline();
-
-  // gsap.set('.page', {
-  //   backgroundColor: UI_SECTION_STATES.screen0.backgroundColor.bg,
-  // });
 
   if (!mobileMode) {
     enableParallax();
@@ -361,7 +382,7 @@ function section0_enterBackward() {
       opacity: 1,
       ease: 'power2.out',
     },
-    '-=0.3'
+    '-=0.3',
   );
 
   tl.to('.menu', {
@@ -376,7 +397,7 @@ function section0_enterBackward() {
       visibility: 'hidden',
       duration: 0.3,
     },
-    '<'
+    '<',
   );
 
   setTimeout(() => {
@@ -388,7 +409,7 @@ function section0_enterBackward() {
 }
 
 function section0_leaveForward() {
-  console.log('section0_leaveForward');
+  // console.log('section0_leaveForward');
   const tl = gsap.timeline();
   if (!mobileMode) {
     disableParallax();
@@ -408,7 +429,7 @@ function section0_leaveForward() {
 
 // выход вверх (1 → 0)
 function section0_leaveBackward() {
-  console.log('section0_leaveBackward');
+  // console.log('section0_leaveBackward');
   const tl = gsap.timeline();
 
   tl.to('.numbers__overlay', {
@@ -424,7 +445,7 @@ function section0_leaveBackward() {
 
 // секция 1 (0 → 1)
 function section1_enterForward() {
-  console.log('section1_enterForward');
+  // console.log('section1_enterForward');
   const tl = gsap.timeline();
 
   gsap.set('.hero__blur', {
@@ -459,10 +480,15 @@ function section1_enterForward() {
     tl.fromTo(
       '.numbers__label',
       {opacity: 0, y: 20},
-      {opacity: 1, y: 0, duration: 0.3}
+      {opacity: 1, y: 0, duration: 0.3},
     );
   } else {
-    tl.fromTo('.numbers__label', {opacity: 0}, {opacity: 1, duration: 0.3}, '<');
+    tl.fromTo(
+      '.numbers__label',
+      {opacity: 0},
+      {opacity: 1, duration: 0.3},
+      '<',
+    );
   }
 
   tl.fromTo('.numbers__btn', {opacity: 0}, {opacity: 1, duration: 0.2});
@@ -472,7 +498,7 @@ function section1_enterForward() {
 
 // секц. 1 (1 → 2)
 function section1_leaveForward() {
-  console.log('section1_leaveForward — плавный fade + slide');
+  // console.log('section1_leaveForward — плавный fade + slide');
   const tl = gsap.timeline();
 
   tl.to(
@@ -487,19 +513,15 @@ function section1_leaveForward() {
       duration: 0.5,
       ease: 'power2.inOut',
     },
-    0
+    0,
   );
-
-  // Убираем фиксацию
-  // tl.set('.numbers__overlay', {className: '-=section-fixed'}, 0);
-  // tl.set('.hero__blur', {position: 'static'}, 0.2);
 
   return tl;
 }
 
 // секц. 1 (>=2 → 1)
 function section1_enterBackward() {
-  console.log('section1_enterBackward');
+  // console.log('section1_enterBackward');
   const tl = gsap.timeline();
   const sec2 = document.querySelector('.numbers__overlay');
   sec2.classList.add('section-fixed');
@@ -517,7 +539,7 @@ function section1_enterBackward() {
 
 // секц. 1 (1 → 0)
 function section1_leaveBackward() {
-  console.log('section1_leaveBackward');
+  // console.log('section1_leaveBackward');
   const tl = gsap.timeline();
 
   tl.to('.numbers__overlay', {opacity: 0, duration: 0.3}).to(
@@ -528,7 +550,7 @@ function section1_leaveBackward() {
       visibility: 'hidden',
       duration: 0.3,
     },
-    '<'
+    '<',
   );
 
   return tl;
@@ -536,7 +558,7 @@ function section1_leaveBackward() {
 
 // секц. 2 (1 → 2)
 function section2_enterForward() {
-  console.log('section2_enterForward — плавный вход');
+  // console.log('section2_enterForward — плавный вход');
   if (mobileMode) {
     requestAnimationFrame(() => {
       lastSection.classList.add('fixed-section');
@@ -562,13 +584,11 @@ function section2_enterForward() {
     tl.set('.service__title', {
       y: 0,
       opacity: 1,
-      // duration: 0.3,
       ease: 'power2.out',
     });
     tl.set('.service__content', {
       y: 0,
       opacity: 1,
-      // duration: 0.3,
       ease: 'power2.out',
     });
     tl.from(
@@ -578,7 +598,7 @@ function section2_enterForward() {
         duration: 0.3,
         ease: 'power2.out',
       },
-      '+=0.3'
+      '+=0.3',
     );
   }
   if (!mobileMode) {
@@ -599,7 +619,7 @@ function section2_enterForward() {
         opacity: 1,
         duration: 0.3,
         ease: 'power2.out',
-      }
+      },
     );
     tl.fromTo(
       '.service__content',
@@ -612,7 +632,7 @@ function section2_enterForward() {
         opacity: 1,
         duration: 0.3,
         ease: 'power2.out',
-      }
+      },
     );
 
     setTimeout(() => {
@@ -622,25 +642,25 @@ function section2_enterForward() {
     }, 1500);
   }
 
-  console.log(tl);
+  // console.log(tl);
   return tl;
 }
 
 // секц. 2 (>2 → 2)
 function section2_enterBackward() {
-  console.log('section2_enterBackward');
+  // console.log('section2_enterBackward');
   const tl = gsap.timeline();
 
   if (!mobileMode) {
     tl.fromTo(
       '.service__content',
       {y: '150', opacity: 0},
-      {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'}
+      {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'},
     );
     tl.fromTo(
       '.service__title',
       {y: '150', opacity: 0},
-      {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'}
+      {y: 0, opacity: 1, duration: 0.3, ease: 'power2.in'},
     );
     tl.to('.menu', {
       duration: 0.5,
@@ -666,7 +686,7 @@ function section2_enterBackward() {
 
 // секц. 2 (2 → 3)
 function section2_leaveForward() {
-  console.log('section2_leaveForward');
+  // console.log('section2_leaveForward');
   const tl = gsap.timeline();
   document.querySelector('.service-swiper__pagination').style.opacity = 0;
   document.querySelector('.service-swiper__pagination').style.visibility =
@@ -688,7 +708,7 @@ function section2_leaveForward() {
         duration: 0.3,
         ease: 'power2.out',
       },
-      '-=0.2'
+      '-=0.2',
     );
   }
 
@@ -697,7 +717,7 @@ function section2_leaveForward() {
 
 // секц. 2 (2 → 1)
 function section2_leaveBackward() {
-  console.log('section2_leaveBackward');
+  // console.log('section2_leaveBackward');
   const tl = gsap.timeline();
   document.querySelector('.service-swiper__pagination').style.opacity = 0;
   document.querySelector('.service-swiper__pagination').style.visibility =
@@ -722,7 +742,7 @@ function section2_leaveBackward() {
         duration: 0.3,
         ease: 'power2.out',
       },
-      '-=0.2'
+      '-=0.2',
     );
   }
 
@@ -730,7 +750,7 @@ function section2_leaveBackward() {
 }
 
 function section3_enterForward() {
-  console.log('section3_enterForward');
+  // console.log('section3_enterForward');
   gsap.set('.page', {
     backgroundColor: UI_SECTION_STATES.screen2.backgroundColor.bg,
   });
@@ -743,57 +763,46 @@ function section3_enterForward() {
     tl.fromTo(
       '.t1',
       {y: '150%', opacity: 0},
-      {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'}
+      {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'},
     )
       .fromTo(
         '.t2',
         {y: '150%', opacity: 0},
         {y: 0, opacity: 1, duration: 0.4, ease: 'power1.out'},
-        '-=0.2'
+        '-=0.2',
       )
       .fromTo(
         '.faq__title',
         {y: '250%', opacity: 0},
-        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'}
+        {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
       )
       .fromTo(
         '.faq__questions',
         {y: '150%', opacity: 0},
         {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
-        '<'
+        '<',
       )
       .fromTo(
         '.faq__else-ask',
         {y: '150%', opacity: 0},
         {y: 0, opacity: 1, duration: 0.3, ease: 'power1.out'},
-        '+=0.1'
+        '+=0.1',
       );
-    // tl.call(() => {
-    //   document.querySelector('.hero__blur').style.position = 'static';
-    //   const sec2 = document.querySelector('.numbers__overlay');
-    //   sec2.classList.remove('section-fixed');
-    // });
   } else {
     tl.set('.service__content', {y: 0, opacity: 1});
     tl.set('.service__title', {y: 0, opacity: 1});
   }
   tl.call(() => {
-    // lastSection.classList.add('fixed-section');
     document.querySelector('.hero__blur').style.position = 'static';
     const sec2 = document.querySelector('.numbers__overlay');
     sec2.classList.remove('section-fixed');
   });
-  // setTimeout(() => {
-  //   document.querySelector('.hero__blur').style.position = 'static';
-  //   const sec2 = document.querySelector('.numbers__overlay');
-  //   sec2.classList.remove('section-fixed');
-  // }, 150);
-
+  
   return tl;
 }
 
 function section3_leaveBackward() {
-  console.log('section3_leaveBackward');
+  // console.log('section3_leaveBackward');
   const tl = gsap.timeline();
 
   return tl;
@@ -851,9 +860,9 @@ function runSectionTransition(prevIndex, nextIndex) {
     // nextIndex < prevIndex
     tl.add(prevSection.leaveBackward(prevIndex, nextIndex)).add(
       nextSection.enterBackward(prevIndex, nextIndex),
-      '+=0.1'
+      '+=0.1',
     );
   }
-  console.log('Переход1 длится:', tl.totalDuration(), 'сек');
+  // console.log('Переход1 длится:', tl.totalDuration(), 'сек');
   return tl;
 }
