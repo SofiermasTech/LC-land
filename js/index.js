@@ -1,4 +1,32 @@
-// управление свайперами на десктоп - gsap, но моб. - swiper
+// загрузка swiper lib только на моб
+let swiperLoadingPromise = null;
+
+function loadSwiper() {
+  if (window.Swiper) {
+    return Promise.resolve();
+  }
+
+  if (swiperLoadingPromise) {
+    return swiperLoadingPromise;
+  }
+
+  swiperLoadingPromise = new Promise((resolve) => {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'lib/swiper-bundle.min.css';
+
+    const js = document.createElement('script');
+    js.src = 'lib/swiper-bundle.min.js';
+    js.onload = resolve;
+
+    document.head.appendChild(css);
+    document.body.appendChild(js);
+  });
+
+  return swiperLoadingPromise;
+}
+
+// управление свайперами на десктоп - gsap, на моб. - swiper
 let mobileSwiperMain = null;
 let mobileSwiperImg = null;
 
@@ -80,114 +108,117 @@ function initServiceSwiper() {
 // Мобильный слайдер
 function initMobileSwiper() {
   if (!mobileMode) return;
-  const containerMob = document.querySelector('.swiper-mob__wrapper');
 
-  if (mobileSwiperMain) {
-    mobileSwiperMain.destroy(true, true);
-    mobileSwiperMain = null;
-  }
-  if (mobileSwiperImg) {
-    mobileSwiperImg.destroy(true, true);
-    mobileSwiperImg = null;
-  }
+  loadSwiper().then(() => {
+    const containerMob = document.querySelector('.swiper-mob__wrapper');
 
-  containerMob.innerHTML = '';
+    if (mobileSwiperMain) {
+      mobileSwiperMain.destroy(true, true);
+      mobileSwiperMain = null;
+    }
+    if (mobileSwiperImg) {
+      mobileSwiperImg.destroy(true, true);
+      mobileSwiperImg = null;
+    }
 
-  const templateMob = document.getElementById('slide-template-mob');
-  const sliderSection = templateMob.content.cloneNode(true);
-  containerMob.appendChild(sliderSection);
+    containerMob.innerHTML = '';
 
-  const sliderMain = containerMob.querySelector(
-    '.slider-main .slider-main__wrapper',
-  );
-  const sliderThumbs = containerMob.querySelector(
-    '.slider-img .slider-img__wrapper',
-  );
-  const slideTemplateMain = templateMob.content.querySelector(
-    '.slider-main__slide',
-  );
-  const slideTemplateImg =
-    templateMob.content.querySelector('.slider-img__img');
+    const templateMob = document.getElementById('slide-template-mob');
+    const sliderSection = templateMob.content.cloneNode(true);
+    containerMob.appendChild(sliderSection);
 
-  sliderMain.innerHTML = '';
-  sliderThumbs.innerHTML = '';
+    const sliderMain = containerMob.querySelector(
+      '.slider-main .slider-main__wrapper',
+    );
+    const sliderThumbs = containerMob.querySelector(
+      '.slider-img .slider-img__wrapper',
+    );
+    const slideTemplateMain = templateMob.content.querySelector(
+      '.slider-main__slide',
+    );
+    const slideTemplateImg =
+      templateMob.content.querySelector('.slider-img__img');
 
-  slidesData.forEach((data, index) => {
-    // Основной слайд с контентом
-    const mainSlide = slideTemplateMain.cloneNode(true);
+    sliderMain.innerHTML = '';
+    sliderThumbs.innerHTML = '';
 
-    const titleNode = mainSlide.querySelector('.slider-main__title');
-    titleNode.innerHTML = '';
-    data.title.forEach((elm) => {
-      const span = document.createElement('span');
-      span.textContent = elm;
-      titleNode.appendChild(span);
+    slidesData.forEach((data, index) => {
+      // Основной слайд с контентом
+      const mainSlide = slideTemplateMain.cloneNode(true);
+
+      const titleNode = mainSlide.querySelector('.slider-main__title');
+      titleNode.innerHTML = '';
+      data.title.forEach((elm) => {
+        const span = document.createElement('span');
+        span.textContent = elm;
+        titleNode.appendChild(span);
+      });
+      mainSlide.querySelector('.slider-main__text').textContent = data.text;
+      mainSlide.classList.add(`slider-main__slide--${index + 1}`);
+      mainSlide.id = `slide-${index + 1}`;
+
+      sliderMain.appendChild(mainSlide);
+
+      // Картинка
+      const thumb = slideTemplateImg.cloneNode(true);
+      const thumbImg = thumb.querySelector('img');
+      // console.log(thumbImg)
+      thumbImg.src = data.img;
+      thumb.querySelector('.number-slide').textContent = data.number;
+      sliderThumbs.appendChild(thumb);
     });
-    mainSlide.querySelector('.slider-main__text').textContent = data.text;
-    mainSlide.classList.add(`slider-main__slide--${index + 1}`);
-    mainSlide.id = `slide-${index + 1}`;
 
-    sliderMain.appendChild(mainSlide);
+    // Инициализация свайпера миниатюр
+    mobileSwiperImg = new Swiper('.slider-img', {
+      slideClass: 'slider-img__img',
+      wrapperClass: 'slider-img__wrapper',
+      slidesPerView: 1,
+      spaceBetween: 16,
+      freeMode: true,
+      allowTouchMove: false,
+      watchSlidesProgress: true,
+    });
 
-    // Картинка
-    const thumb = slideTemplateImg.cloneNode(true);
-    const thumbImg = thumb.querySelector('img');
-    // console.log(thumbImg)
-    thumbImg.src = data.img;
-    thumb.querySelector('.number-slide').textContent = data.number;
-    sliderThumbs.appendChild(thumb);
-  });
-
-  // Инициализация свайпера миниатюр
-  mobileSwiperImg = new Swiper('.slider-img', {
-    slideClass: 'slider-img__img',
-    wrapperClass: 'slider-img__wrapper',
-    slidesPerView: 1,
-    spaceBetween: 16,
-    freeMode: true,
-    allowTouchMove: false,
-    watchSlidesProgress: true,
-  });
-
-  // Инициализация основного слайдера
-  mobileSwiperMain = new Swiper('.slider-main', {
-    slideClass: 'slider-main__slide',
-    wrapperClass: 'slider-main__wrapper',
-    spaceBetween: 4,
-    slidesPerView: 'auto',
-    loop: false,
-    thumbs: {
-      swiper: mobileSwiperImg,
-    },
-    breakpoints: {
-      990: {
-        spaceBetween: 16,
+    // Инициализация основного слайдера
+    mobileSwiperMain = new Swiper('.slider-main', {
+      slideClass: 'slider-main__slide',
+      wrapperClass: 'slider-main__wrapper',
+      spaceBetween: 4,
+      slidesPerView: 'auto',
+      loop: false,
+      thumbs: {
+        swiper: mobileSwiperImg,
       },
-    },
-  });
-
-  mobileSwiperMain.on('slideChangeTransitionEnd', function () {
-    const slides = sliderMain.querySelectorAll('.slider-main__slide');
-
-    slides.forEach((slide) => {
-      const button = slide.querySelector('.slide__btn');
-      if (slide.classList.contains('swiper-slide-active')) {
-        button.style.opacity = '1';
-      } else {
-        button.style.opacity = '0';
-      }
+      breakpoints: {
+        990: {
+          spaceBetween: 16,
+        },
+      },
     });
-  });
 
-  if (mobileSwiperMain) {
-    const activeSlide = sliderMain.querySelector('.swiper-slide-active');
-    if (activeSlide) {
-      const activeBtn = activeSlide.querySelector('.slide__btn');
-      if (activeBtn) {
-        activeBtn.style.opacity = '1';
+    mobileSwiperMain.on('slideChangeTransitionEnd', function () {
+      const slides = sliderMain.querySelectorAll('.slider-main__slide');
+
+      slides.forEach((slide) => {
+        const button = slide.querySelector('.slide__btn');
+        if (slide.classList.contains('swiper-slide-active')) {
+          button.style.opacity = '1';
+        } else {
+          button.style.opacity = '0';
+        }
+      });
+    });
+
+    if (mobileSwiperMain) {
+      const activeSlide = sliderMain.querySelector('.swiper-slide-active');
+      if (activeSlide) {
+        const activeBtn = activeSlide.querySelector('.slide__btn');
+        if (activeBtn) {
+          activeBtn.style.opacity = '1';
+        }
       }
     }
-  }
+  });
 }
 
 function updateSliders() {
@@ -366,7 +397,7 @@ function fitHeroTitle() {
   // сколько высоты занято НЕ заголовком
   const occupiedHeight = siblings.reduce((sum, el) => sum + el.offsetHeight, 0);
 
-// на айфоне не правильно вычисляет свободное пространство, костыль для него
+  // на айфоне не правильно вычисляет свободное пространство, костыль для него
   const isIOS =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -388,7 +419,7 @@ function fitHeroTitle() {
 
   if (availableHeight <= 0) return;
 
-  // бинарный поиск размера шрифта 
+  // бинарный поиск размера шрифта
   let min = 24;
   let max = 160;
   let best = min;

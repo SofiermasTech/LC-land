@@ -7,33 +7,75 @@
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="theme-color" content="#000015">
+
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/favicon-apple.png">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <title>Lemonad Card</title>
+
+  <title>Lemonad Card — сервис виртуальных карт</title>
+  <meta name="description"
+    content="Lemonad Card — сервис виртуальных карт с трастовыми бинами для медиабаинга: Facebook, Google и другие источники трафика с высоким процентом успешных списаний">
+
+  <meta property="og:title" content="Lemonad Card — сервис виртуальных карт">
+  <meta property="og:description"
+    content="Lemonad Card — сервис виртуальных карт с трастовыми бинами для медиабаинга: Facebook, Google и другие источники трафика с высоким процентом успешных списаний">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lemonadcard.com/">
+  <meta property="og:locale" content="ru_RU">
+
+  <meta property="twitter:url" content="https://lemonadcard.com/">
+  <meta name="twitter:title" content="Lemonad Card — сервис виртуальных карт">
+  <meta name="twitter:description"
+    content="Lemonad Card — сервис виртуальных карт с трастовыми бинами для медиабаинга: Facebook, Google и другие источники трафика с высоким процентом успешных списаний">
+
   <link rel="stylesheet" href="css/normalize.css">
+  <script src="js/preloader.js" defer></script>
   <script src="js/content.js" defer></script>
   <script src="js/index.js" defer></script>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js" defer></script>
   <script src="js/gsapControlsStates.js" defer></script>
   <script src="js/gsapSectionsStates.js" defer></script>
   <script src="js/gsap.js" defer></script>
-  <link rel="preload" as="image" href="/img/l4-default.webp" fetchpriority="high">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+  <!-- <link rel="preload" as="image" href="/img/l4-default.webp" media="(min-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/img/l4-mob-default.webp" media="(max-width: 767px)" fetchpriority="high"> -->
+  <!-- <link rel="stylesheet" href="lib/swiper-bundle.min.css" />
+  <script src="lib/swiper-bundle.min.js"></script> -->
 
 </head>
 
 <body class="page">
+  <div class="loader">
+    <div class="loader__wrapper">
+      <div class="logo-main__wrapper">
+        <div class="logo-main" href="/">
+          <img class="logo-main__icon" src="/img/logo-icon.svg" alt width="26" height="16" loading="eager"
+            fetchpriority="high">
+          <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="36" loading="eager"
+            fetchpriority="high">
+        </div>
+      </div>
+      <div class="loader__progress-bar progress-bar">
+        <div class="progress-bar__line">
+        </div>
+      </div>
+      <div class="loader__progress-percentage percentage">
+        <span class="percentage__number">0</span>
+        <span class="percentage__percent">%</span>
+      </div>
+    </div>
+  </div>
+
   <div class="controls controls--left">
     <a class="controls__logo logo-main" href="/">
       <div class="logo-main__wrapper">
-        <img class="logo-main__icon" src="/img/logo-icon.svg" alt width="26" height="16">
-        <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="36">
+        <img class="logo-main__icon" src="/img/logo-icon.svg" alt width="26" height="16" loading="eager"
+          fetchpriority="high">
+        <img class="logo-main__name" src="/img/logo-name.svg" alt="LMND Card" width="110" height="36" loading="eager"
+          fetchpriority="high">
       </div>
       <span class="logo-main__split">
         <svg width="16" height="36" viewBox="0 0 16 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -129,8 +171,11 @@
         <div class="lightning-scene">
           <img class="img-lightening lightening-center" src="/img/lightning-center.png" alt>
           <img class="img-lightening lightening-right" src="/img/lightning-right.png" alt>
-          <img class="img-paralax img-paralax--l4-d" data-parallax="22" src="/img/l4-default.webp" alt loading="eager"
-            fetchpriority="high">
+          <picture class="img-paralax img-paralax--l4-d" data-parallax="22">
+            <source srcset="/img/l4-default.webp" media="(min-width: 767px)">
+            <source srcset="/img/l4-mob-default.webp" media="(max-width: 768px)">
+            <img src="/img/l4-default.webp" alt loading="eager" fetchpriority="high">
+          </picture>
           <img class="img-paralax img-paralax--l4-light-center" data-parallax="22" src="/img/l4-light-center.webp" alt>
           <img class="img-paralax img-paralax--l4-light-right" data-parallax="22" src="/img/l4-light-right.webp" alt>
         </div>
@@ -307,7 +352,7 @@
           <div class="section-last-wrapper">
             <div class="together">
               <div class="together__item t1">
-                <img class="together__img" src="/img/together.png" alt width="1264" height="704">
+                <img class="together__img" src="/img/together.webp" alt width="1264" height="704">
               </div>
               <div class="together__item t2">
                 <div class="together__content">

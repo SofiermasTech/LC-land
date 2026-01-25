@@ -1,3 +1,4 @@
+@charset "UTF-8";
 :root {
   --white: #fff;
   --white-trans: rgba(255, 255, 255, 0.5);
@@ -595,6 +596,117 @@ html::-webkit-scrollbar-thumb {
   line-height: 138%;
   letter-spacing: -0.03em;
   color: var(--light);
+}
+
+.loader {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000015;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  z-index: 999;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.loader__wrapper {
+  width: 320px;
+  padding-bottom: 48px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  grid-template-rows: 58px auto;
+  grid-template-areas: "logo perc" "bar bar";
+}
+@media (max-width: 610px) {
+  .loader__wrapper {
+    width: 320px;
+  }
+}
+.loader__progress-bar {
+  grid-area: bar;
+  width: 100%;
+  height: 12px;
+}
+.loader__progress-percentage {
+  grid-area: perc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+.loader .logo-main {
+  grid-area: logo;
+  width: 110px;
+  height: 58px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 6px;
+}
+.percentage span {
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.percentage span:last-child {
+  color: var(--light);
+}
+
+.progress-bar {
+  border-radius: 12px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), color-stop(20.67%, rgba(255, 255, 255, 0.15)), color-stop(58.17%, rgba(255, 255, 255, 0.02)), to(rgba(255, 255, 255, 0.01)));
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 20.67%, rgba(255, 255, 255, 0.02) 58.17%, rgba(255, 255, 255, 0.01) 100%);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  -webkit-box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 var(--white-trans);
+          box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 var(--white-trans);
+  overflow: hidden;
+}
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.8)), color-stop(11.1%, rgba(255, 255, 255, 0.6)), color-stop(32.7%, rgba(43, 43, 43, 0.6)), color-stop(60.6%, rgba(255, 255, 255, 0.4)), color-stop(76%, rgba(43, 43, 43, 0.6)), to(rgba(255, 255, 255, 0.2))) border-box;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 11.1%, rgba(43, 43, 43, 0.6) 32.7%, rgba(255, 255, 255, 0.4) 60.6%, rgba(43, 43, 43, 0.6) 76%, rgba(255, 255, 255, 0.2) 100%) border-box;
+  /* ← ключевой трюк */
+  -webkit-mask: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff)) padding-box, -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff));
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.progress-bar__line {
+  margin: 4px;
+  max-width: calc(100% - 8px);
+  height: 4px;
+  background-color: var(--blue);
+  border-radius: 8px;
 }
 
 .controls {
