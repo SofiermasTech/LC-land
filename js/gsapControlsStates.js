@@ -171,54 +171,40 @@ function animateLogo(mode) {
   }
 
   if (mode === 'middle') {
+    console.log('mmmmm');
+
     logoAnimation
+      .set('.logo-main__name', {
+        display: 'inline-flex',
+        width: 110,
+        filter: 'brightness(0.1)',
+      })
       .to(
         '.logo-main__text',
         {
           width: 0,
           opacity: 0,
           display: 'none',
-          duration: 0.4,
+          duration: 0.3,
           ease: 'power2.in',
         },
         0,
       )
-      .to(
+      .fromTo(
         '.logo-main__name',
-        {
-          display: 'inline-flex',
-          width: 110,
-          opacity: 0,
-          duration: 0.4,
-          ease: 'power2.in',
-        },
+        {opacity: 0},
+        {opacity: 1, duration: 0.3, ease: 'power2.out'},
         0,
       )
-      .to('.logo-main__name', {
-        opacity: 1,
-        duration: 0.3,
-        ease: 'power2.out',
-
-        onComplete: () => {
-          logoNameImg.src = '/img/logo-name-black.svg';
-
-          gsap.to(logoNameImg, {duration: 0.5});
-        },
-      })
       .to(
         '.logo-main__split',
         {
           width: 0,
           opacity: 0,
           display: 'none',
-          duration: 0.4,
+          duration: 0.3,
           ease: 'power2.in',
         },
-        0,
-      )
-      .to(
-        '.logo-main__icon',
-        {width: 26, height: 16, duration: 0.5, ease: 'power2.out'},
         0,
       );
 
@@ -232,13 +218,9 @@ function animateLogo(mode) {
         {display: 'inline-flex'},
         0,
       )
-      .call(
-        () => {
-          logoNameImg.src = '/img/logo-name.svg';
-        },
-        null,
-        0,
-      )
+      .set('.logo-main__name', {
+        filter: 'brightness(1)',
+      })
       .to(
         '.logo-main__icon',
         {width: 26, height: 16, duration: 0.5, ease: 'power2.out'},

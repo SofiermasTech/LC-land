@@ -13,10 +13,10 @@ function loadSwiper() {
   swiperLoadingPromise = new Promise((resolve) => {
     const css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = 'lib/swiper-bundle.min.css';
+    css.href = 'library/swiper-bundle.min.css';
 
     const js = document.createElement('script');
-    js.src = 'lib/swiper-bundle.min.js';
+    js.src = 'library/swiper-bundle.min.js';
     js.onload = resolve;
 
     document.head.appendChild(css);

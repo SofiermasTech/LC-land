@@ -8,15 +8,16 @@ function loadbar() {
 
   if (totalImageLength == 0) return doneLoading();
 
-  const MIN_SHOW_TIME = 1200;
+  const MIN_SHOW_TIME = 1600;
   const startTime = Date.now();
-  console.log(documentElements);
+  console.log('start load');
 
   function imgLoaded() {
     percentage += 1;
-    var perc = (((100 / totalImageLength) * percentage) << 0);
-    documentLoaderLine.style.maxWidth = perc;
+    var perc = ((100 / totalImageLength) * percentage) << 0;
+    documentLoaderLine.style.width = perc + '%';
     progressPercentage.innerHTML = perc;
+
     if (percentage === totalImageLength) return doneLoading();
   }
 
@@ -26,8 +27,10 @@ function loadbar() {
 
     setTimeout(
       () => {
-        loader.style.opacity = 0;
-
+        console.log('finish load');
+        loader.classList.add('hidden');
+        animationOnStart();
+        startLightning();
         setTimeout(function () {
           loader.style.display = 'none';
         }, 1200);
@@ -43,4 +46,23 @@ function loadbar() {
     tImg.src = documentElements[i].src;
   });
 }
-document.addEventListener('DOMContentLoaded', loadbar, false);
+document.addEventListener('DOMContentLoaded', () => {
+  currentIndex = 0;
+  loadbar();
+
+  // для айфона, т.к. у него особые условия 2го слайда
+  // const isIOS =
+  //   /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  //   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  // if (isIOS) {
+  updateSectionsUI(0);
+  // }
+
+  // это для всех
+  // animationOnStart();
+  // startLightning();
+  updateScrollLock();
+  updateUI();
+  updateClassMenu();
+});

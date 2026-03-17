@@ -436,25 +436,25 @@ if (!mobileMode) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  currentIndex = 0;
+// document.addEventListener('DOMContentLoaded', () => {
+//   currentIndex = 0;
 
-  // для айфона, т.к. у него особые условия 2го слайда
-  const isIOS =
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+//   // для айфона, т.к. у него особые условия 2го слайда
+//   const isIOS =
+//     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+//     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  if (isIOS) {
-    updateSectionsUI(0);
-  }
+//   if (isIOS) {
+//     updateSectionsUI(0);
+//   }
 
-  // это для всех
-  animationOnStart();
-  startLightning();
-  updateScrollLock();
-  updateUI();
-  updateClassMenu();
-});
+//   // это для всех
+//   // animationOnStart();
+//   // startLightning();
+//   updateScrollLock();
+//   updateUI();
+//   updateClassMenu();
+// });
 
 document.addEventListener('load', () => {
   updatePaginationWhithSlides();
@@ -1067,7 +1067,7 @@ function startLightning() {
       lightningStrike(lightnings[currentLightning]);
       currentLightning = (currentLightning + 1) % lightnings.length;
     }, 5000);
-  }, 2500);
+  }, 3500);
 }
 
 // остановка аним для других секций

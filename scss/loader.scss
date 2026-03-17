@@ -1,20 +1,35 @@
-@use '../media' as *;
-@use '../mixin' as *;
+@font-face {
+  font-family: 'Wix Madefor Display';
+  src:
+    local('Wix Madefor Display'),
+    url('../fonts/WixMadeforDisplay-ExtraBold.woff') format('woff'),
+    url('../fonts/WixMadeforDisplay-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 .loader {
   width: 100vw;
   height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: fixed;
+  inset: 0;
+  // bottom: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+  // right: 0;
+  // bottom: 0;
   background-color: #000015;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 9999;
   transition: opacity 0.3s ease;
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 
   &__wrapper {
     width: 320px;
@@ -27,8 +42,8 @@
       'logo perc'
       'bar bar';
 
-    @include mobile {
-      width: 320px;
+    @media screen and (max-width: 610px) {
+      width: 240px;
     }
   }
 
@@ -64,10 +79,9 @@
 
 .percentage {
   span {
-    // font-family: var(--font-family);
     font-weight: 800;
     font-size: 48px;
-    line-height: 1;
+    line-height: 80%;
     letter-spacing: -0.06em;
     text-transform: uppercase;
     color: var(--white);
@@ -113,8 +127,10 @@
   &__line {
     margin: 4px;
     max-width: calc(100% - 8px);
+    width: 0;
     height: 4px;
     background-color: var(--blue);
     border-radius: 8px;
+    transition: width 0.4s ease-out;
   }
 }

@@ -177,11 +177,12 @@ function animationOnStart() {
         },
         '<',
       )
+      // .add(scrollImgState0(0), '-=0.5')
       .fromTo(
         '.first-wrapper__img .img-paralax--l4-d',
         {x: '150px', opacity: 0},
         {x: 0, opacity: 1, duration: 0.7, ease: 'power2.out'},
-        '-=0.4',
+        '-=0.5',
       )
 
       .fromTo(
@@ -797,7 +798,7 @@ function section3_enterForward() {
     const sec2 = document.querySelector('.numbers__overlay');
     sec2.classList.remove('section-fixed');
   });
-  
+
   return tl;
 }
 
