@@ -30,19 +30,21 @@ function loadSwiper() {
 let mobileSwiperMain = null;
 let mobileSwiperImg = null;
 
-const mobileSize = '(max-width: 1050px)';
-function isMobile() {
-  return window.matchMedia(mobileSize).matches;
-}
-
-let mobileMode = isMobile();
-// console.log(mobileMode);
-
-mobileMode = isMobile();
 updateSliders();
 
 // render slide
 function initServiceSwiper() {
+  // if (window.slidesToUse || translations[currentLang]) {
+  //   // updateSliders();
+  //   console.warn('ok');
+  // } else {
+  //   console.warn('Ожидание данных слайдов или переводов...');
+  //   setTimeout(() => {
+  //     initServiceSwiper();
+  //   }, 500);
+  //   return
+  // }
+
   if (!mobileMode) {
     const template = document.getElementById('slide-template');
     const containerSlides = document.querySelector('.service-swiper__wrapper');
@@ -55,7 +57,10 @@ function initServiceSwiper() {
     const fragment = document.createDocumentFragment();
     const dotsFragment = document.createDocumentFragment();
 
-    slidesData.forEach((data, index) => {
+    const slidesToUse = getAllSlidesForCurrentLang();
+    console.log(slidesToUse);
+
+    slidesToUse.forEach((data, index) => {
       const slide = template.content.cloneNode(true);
       const slideItem = slide.querySelector('.service-swiper__slide');
       const slideTitle = slide.querySelector('.slide__title');
@@ -71,6 +76,8 @@ function initServiceSwiper() {
         slideTitle.appendChild(span);
       });
       slide.querySelector('.slide__text').textContent = data.text;
+      const button = slide.querySelector('.slide__btn p');
+      button.textContent = data.btn;
 
       fragment.appendChild(slide);
 
@@ -109,6 +116,12 @@ function initServiceSwiper() {
 function initMobileSwiper() {
   if (!mobileMode) return;
 
+  if (!window.slidesData || !translations[currentLang]) {
+    console.warn('Ожидание данных слайдов или переводов...');
+    setTimeout(initMobileSwiper, 300);
+    return;
+  }
+
   loadSwiper().then(() => {
     const containerMob = document.querySelector('.swiper-mob__wrapper');
 
@@ -142,7 +155,7 @@ function initMobileSwiper() {
     sliderMain.innerHTML = '';
     sliderThumbs.innerHTML = '';
 
-    slidesData.forEach((data, index) => {
+    slidesToUse.forEach((data, index) => {
       // Основной слайд с контентом
       const mainSlide = slideTemplateMain.cloneNode(true);
 
@@ -201,6 +214,7 @@ function initMobileSwiper() {
 
       slides.forEach((slide) => {
         const button = slide.querySelector('.slide__btn');
+        button.setAttribute('data-translate', 'hero-list-5');
         if (slide.classList.contains('swiper-slide-active')) {
           button.style.opacity = '1';
         } else {
@@ -222,6 +236,17 @@ function initMobileSwiper() {
 }
 
 function updateSliders() {
+  if (window.slidesToUse || translations[currentLang]) {
+    // updateSliders();
+    console.warn('ok');
+  } else {
+    console.warn('Ожидание данных слайдов или переводов...');
+    setTimeout(() => {
+      updateSliders();
+      return;
+    }, 500);
+  }
+
   if (mobileMode) {
     initMobileSwiper();
   } else {

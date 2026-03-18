@@ -941,6 +941,99 @@ html::-webkit-scrollbar-thumb {
           box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
 }
 
+.header__lang-wrapper {
+  position: relative;
+  margin-right: auto;
+  margin-left: 24px;
+  font-family: var(--second-family);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.header__lang-changer {
+  width: 76px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.header__lang-changer-img {
+  width: 28px;
+  height: 28px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header__lang-changer-img img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+.lang.active {
+  color: #007aff;
+}
+
+.header__lang-list {
+  position: absolute;
+  top: 100%;
+  margin-top: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 12px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 4px 15px #DFE9F4;
+          box-shadow: 0 4px 15px #DFE9F4;
+  padding: 16px 24px;
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.header__lang-list.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.header__lang-list-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
 .menu {
   position: fixed;
   z-index: 100;
@@ -3288,11 +3381,11 @@ html::-webkit-scrollbar-thumb {
   }
 }
 @media (max-width: 850px) {
-  .faq__item {
-    padding: 16px;
-  }
   .faq__item.a1, .faq__item.a2, .faq__item.a3, .faq__item.a4, .faq__item.a5, .faq__item.a6, .faq__item.a7, .faq__item.a8, .faq__item.a9 {
     max-width: 100%;
+  }
+  .faq__item {
+    padding: 16px;
   }
 }
 @media (max-width: 610px) {

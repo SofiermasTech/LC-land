@@ -1,32 +1,37 @@
-const slidesData = [
+window.slidesData = [
   {
     number: '01 — 05',
-    title: ['Гибкая', 'система', 'ролей и прав'],
-    text: 'От владельца с полными правами до байера, который видит только свои карты.',
+    title: 'fichi-slide1-title',
+    text: 'fichi-slide1-text',
     img: '/img/slide-1.webp',
+    btn: 'fichi-btn'
   },
   {
     number: '02 — 05',
-    title: ['удобная', 'аналитика', 'и отчетность'],
-    text: 'Финансовая картина без лишних усилий. Получайте наглядную статистику по всем транзакциям в один клик, выгружайте детальные отчеты.',
+    title: 'fichi-slide2-title',
+    text: 'fichi-slide2-text',
     img: '/img/slide-2.webp',
+    btn: 'fichi-btn'
   },
   {
     number: '03 — 05',
-    title: ['модели', 'управления', 'балансом'],
-    text: 'Единый баланс команды. Персональный баланс участника. Классические препэйд-карты. Гибкая настройка лимитов: на байера, карту или транзакцию.',
+    title: 'fichi-slide3-title',
+    text: 'fichi-slide3-text',
     img: '/img/slide-3.webp',
+    btn: 'fichi-btn'
   },
   {
     number: '04 — 05',
-    title: ['API', 'интеграция'],
-    text: 'Автоматизируйте рутину и экономьте время. Наш мощный и стабильный API позволяет легко интегрировать сервис с вашими внутренними CRM, трекерами и системами аналитики.',
+    title: 'fichi-slide4-title',
+    text: 'fichi-slide4-text',
     img: '/img/slide-4.webp',
+    btn: 'fichi-btn'
   },
   {
     number: '05 — 05',
-    title: ['лояльная', 'политика', 'по decline rate'],
-    text: 'Если вчера Decline Rate был выше 15%, каждый деклайн сегодня стоит $0.5',
+    title: 'fichi-slide5-title',
+    text: 'fichi-slide5-text',
     img: '/img/slide-5.webp',
+    btn: 'fichi-btn'
   },
 ];

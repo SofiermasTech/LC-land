@@ -52,8 +52,8 @@ let footerTriggerY = null;
 const sliderSectionIndex = 2;
 const sliderWrapper = document.querySelector('.service-swiper__wrapper');
 const slides = document.querySelectorAll('.service-swiper__slide');
-let currentSlide = 0;
 const lastSlide = slides.length - 1;
+let currentSlide = 0;
 
 // mobile
 let mouseMoveHandler = null;
@@ -131,6 +131,9 @@ function onwheel(evt) {
 
   const directionDown = evt.deltaY > 0;
   const directionUp = evt.deltaY < 0;
+
+  const slides = document.querySelectorAll('.service-swiper__slide');
+  const lastSlide = slides.length - 1;
 
   if (mobileMode && currentIndex === sliderSectionIndex) {
     return;
@@ -215,8 +218,8 @@ function scheduleUIUpdate() {
 // обертка свайпера без overflow:hidden, чтобы слайды уезжали за экран и не было видно след.слайд)
 function setActiveSlide(index) {
   if (currentIndex !== sliderSectionIndex) return;
-
-  // console.log('active slide', index);
+  const slides = document.querySelectorAll('.service-swiper__slide');
+  // console.log(slides);
   slides.forEach((slide, i) => {
     const img = slide.querySelector('.slide__img');
     const content = slide.querySelector('.slide__content');
@@ -236,6 +239,7 @@ function setActiveSlide(index) {
 
 // ширина нужна для корректного перелистывания без сдивогов
 function getSlideWidth() {
+  const slides = document.querySelectorAll('.service-swiper__slide');
   return slides[0]?.getBoundingClientRect().width || 0;
 }
 
@@ -248,6 +252,9 @@ function goToSlide(index) {
   const oldIndex = currentSlide;
   const slideWidth = getSlideWidth();
   const targetX = -slideWidth * index;
+
+  // const slides = document.querySelectorAll('.service-swiper__slide');
+  // const lastSlide = slides.length - 1;
 
   // Главный таймлайн
   const masterTl = gsap.timeline({
@@ -288,6 +295,8 @@ function goToSlide(index) {
 }
 
 function animateSlide(oldIndex, newIndex) {
+  const slides = document.querySelectorAll('.service-swiper__slide');
+
   const oldSlide = slides[oldIndex];
   const newSlide = slides[newIndex];
   if (!oldSlide || !newSlide) return;
@@ -334,6 +343,9 @@ function animateSlide(oldIndex, newIndex) {
 // переход по кнопке
 function nextScreen() {
   if (isAnimating) return;
+
+  // const slides = document.querySelectorAll('.service-swiper__slide');
+  // const lastSlide = slides.length - 1;
 
   if (currentIndex === sliderSectionIndex && !mobileMode) {
     if (currentSlide < lastSlide) return goToSlide(currentSlide + 1);
@@ -564,6 +576,8 @@ function updatePaginationWhithSlides(sectionIndex) {
   if (sectionIndex === sliderSectionIndex) return;
 
   let targetSlide;
+  // const slides = document.querySelectorAll('.service-swiper__slide');
+  // const lastSlide = slides.length - 1;
 
   if (sectionIndex < sliderSectionIndex) {
     targetSlide = 0;
@@ -1080,3 +1094,28 @@ function stopLightning() {
   // очищаем состояние
   scene.classList.remove(...lightnings);
 }
+
+document.querySelectorAll('.lang').forEach((langBtn) => {
+  langBtn.addEventListener('click', (e) => {
+    const lang = e.target.getAttribute('data-lang');
+
+    document.querySelectorAll('.lang').forEach((elem) => {
+      elem.classList.remove('active');
+      langList.classList.remove('show');
+    });
+
+    e.target.classList.add('active');
+    setLanguage(lang);
+    updateUI()
+    setActiveSlide(currentSlide);
+  });
+});
+
+const langList = document.querySelector('.header__lang-list');
+const changerLang = document.querySelector('.header__lang-changer');
+
+changerLang.addEventListener('click', () => {
+  langList.classList.toggle('show');
+});
+
+document.addEventListener('DOMContentLoaded', init);

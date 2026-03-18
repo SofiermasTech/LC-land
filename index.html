@@ -15,11 +15,11 @@
 
   <title>Lemonad Card — сервис виртуальных карт</title>
   <meta name="description"
-    content="Lemonad Card — сервис виртуальных карт с трастовыми бинами для медиабаинга: Facebook, Google и другие источники трафика с высоким процентом успешных списаний">
+    content="Lemonad Card — виртуальные карты для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.">
 
   <meta property="og:title" content="Lemonad Card — сервис виртуальных карт">
   <meta property="og:description"
-    content="Lemonad Card — сервис виртуальных карт с трастовыми бинами для медиабаинга: Facebook, Google и другие источники трафика с высоким процентом успешных списаний">
+    content="Lemonad Card — виртуальные карты для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lemonadcard.com/">
   <meta property="og:locale" content="ru_RU">
@@ -27,12 +27,13 @@
   <meta property="twitter:url" content="https://lemonadcard.com/">
   <meta name="twitter:title" content="Lemonad Card — сервис виртуальных карт">
   <meta name="twitter:description"
-    content="Lemonad Card — сервис виртуальных карт с трастовыми бинами для медиабаинга: Facebook, Google и другие источники трафика с высоким процентом успешных списаний">
+    content="Lemonad Card — виртуальные карты для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.">
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/loader.css">
   <script src="js/preloader.js" defer></script>
   <script src="js/content.js" defer></script>
+  <script src="js/translate.js" defer></script>
   <script src="js/index.js" defer></script>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
@@ -42,8 +43,9 @@
   <script src="js/gsapSectionsStates.js" defer></script>
   <script src="js/gsap.js" defer></script>
 
+
   <!-- Yandex.Metrika counter -->
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
     (function (m, e, t, r, i, k, a) {
       m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
       m[i].l = 1 * new Date();
@@ -55,7 +57,7 @@
   </script>
   <noscript>
     <div><img src="https://mc.yandex.ru/watch/106405646" style="position:absolute; left:-9999px;" alt="" /></div>
-  </noscript>
+  </noscript> -->
   <!-- /Yandex.Metrika counter -->
 
 </head>
@@ -95,9 +97,10 @@
           <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
         </svg>
       </span>
-      <p class="logo-main__text">Сервис<br>
-        виртуальных<br>
-        карт</p>
+      <p class="logo-main__text" data-translate="header-logo"><span data-translate="header-logo-1">Сервис</span><br />
+        <span data-translate="header-logo-2">виртуальных</span><br />
+        <span data-translate="header-logo-3">карт</span>
+      </p>
     </a>
     <div class="controls__tg tg">
       <a href="https://t.me/LMcard_support" target="_blank" class="base-btn"
@@ -110,8 +113,10 @@
           </svg>
         </span>
       </a>
-      <span class="tg__text">Мы всегда<br>
-        на связи, кстати</span>
+      <div class="tg__text">
+        <span data-translate="tg-text-1">Мы всегда</span><br>
+        <span data-translate="tg-text-2">на связи, кстати</span>
+      </div>
     </div>
   </div>
   <div class="controls controls--right">
@@ -127,6 +132,22 @@
           </svg>
         </span>
       </a>
+    </div>
+    <div class="header__lang-wrapper">
+      <div class="header__lang-changer current-lang">
+        <div class="header__lang-changer-img">
+          <img class="lang-changer-img" data-translate-img="header-img" src="/img/eng.svg" alt="flag of England"
+            width="26" height="20">
+        </div>
+        <span></span>
+      </div>
+
+      <div class="header__lang-list">
+        <div class="header__lang-list-item lang" data-lang="ru">Russian</div>
+        <div class="header__lang-list-item lang" data-lang="en">English</div>
+        <div class="header__lang-list-item lang" data-lang="es">Español</div>
+        <div class="header__lang-list-item lang" data-lang="hi">Hindi</div>
+      </div>
     </div>
     <div class="controls__btn-scroll">
       <span class="btn-scroll-text"></span>
@@ -159,10 +180,10 @@
       <nav class="menu__nav">
         <span class="menu__indicator"></span>
 
-        <a class="menu__link" data-index="0">Начало</a>
-        <a class="menu__link" data-index="1">Условия</a>
-        <a class="menu__link" data-index="2" href="#features">Фичи</a>
-        <a class="menu__link" data-index="3" href="#faq">Вопросы</a>
+        <a class="menu__link" data-index="0" data-translate="menu-link1">Начало</a>
+        <a class="menu__link" data-index="1" data-translate="menu-link2">Условия</a>
+        <a class="menu__link" data-index="2" data-translate="menu-link3" href="#features">Фичи</a>
+        <a class="menu__link" data-index="3" data-translate="menu-link4" href="#faq">Вопросы</a>
       </nav>
       <div class="service-swiper__pagination"></div>
     </div>
@@ -201,7 +222,8 @@
         <div class="hero" id="section-1">
           <div class="hero__fix-wrapper">
             <div class="hero__content">
-              <h1 class="hero__title"><span>управляй</span><br><span style="letter-spacing: -0.065em;">потоком</span>
+              <h1 class="hero__title"><span data-translate="hero-text-1">управляй</span><br><span
+                  style="letter-spacing: -0.065em;" data-translate="hero-text-2">потоком</span>
               </h1>
               <div class="hero__info">
                 <p class="hero__info-text title-s">LMND CARD</p>
@@ -212,14 +234,14 @@
                 </span>
                 <div class="hero__info-text-wrapper">
                   <img src="/img/hero-card-s.webp" alt loading="eager">
-                  <p class="hero__info-text title-s">виртуальные карты</p>
+                  <p class="hero__info-text title-s" data-translate="hero-subtext-2">виртуальные карты</p>
                 </div>
                 <span class="hero__info-icon">
                   <svg width="16" height="36" viewBox="0 0 16 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
                   </svg>
                 </span>
-                <p class="hero__info-text title-s">от лидера рынка нутры CPA Lemonad</p>
+                <p class="hero__info-text title-s" data-translate="hero-subtext-3">от лидера рынка нутры CPA Lemonad</p>
               </div>
               <div class="hero__benf">
                 <div class="hero__benf-card">
@@ -227,26 +249,26 @@
                 </div>
                 <div class="hero__benf-list">
                   <div class="hero__benf-item order-4">
-                    <p>Гибкость управления</p>
+                    <p data-translate="hero-list-1">Гибкость управления</p>
                   </div>
                   <div class="hero__benf-item empty order-3"></div>
                   <div class="hero__benf-item with-block order-5">
                     <span>0%</span>
-                    <p>Cкрытых комиссий</p>
+                    <p data-translate="hero-list-2">Cкрытых комиссий</p>
                   </div>
                   <div class="hero__benf-item empty min order-6"></div>
                   <div class="hero__benf-item with-block">
                     <span>2,5%</span>
-                    <p>Пополнение c LemonAD</p>
+                    <p data-translate="hero-list-3">Пополнение c LemonAD</p>
                   </div>
                   <div class="hero__benf-item empty order-1"></div>
                   <div class="hero__benf-item order-2">
-                    <p>Стабильные бины</p>
+                    <p data-translate="hero-list-4">Стабильные бины</p>
                   </div>
                   <div class="hero__benf-item empty order-0"></div>
                   <a class="hero__benf-item with-block link" href="https://app.lemonadcard.com/signUp" target="_blank"
                     style="padding-left: 12px;">
-                    <p>Хочу ваши карты</p>
+                    <p data-translate="hero-list-5">Хочу ваши карты</p>
                     <span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
                         <path fill="#fff" d="M11 2a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6" />
@@ -284,7 +306,9 @@
                   </svg>
                 </h2>
                 <!-- <div class="numbers__bg-layer"></div> -->
-                <p class="numbers__label title-s">Комиссия за&nbsp;пополнение<br>с Lemonad</p>
+                <p class="numbers__label title-s"><span data-translate="number-text-1.1">Комиссия
+                    за&nbsp;пополнение</span><br /><span data-translate="number-text-1.2">с Lemonad</span>
+                </p>
               </div>
               <div class="numbers__item">
                 <h2 class="numbers__big-number">
@@ -304,7 +328,8 @@
                   </svg>
                 </h2>
                 <!-- <div class="numbers__bg-layer"></div> -->
-                <p class="numbers__label title-s">Бесплатных<br>карт</p>
+                <p class="numbers__label title-s"><span data-translate="number-text-2.1">Бесплатных</span><br><span
+                    data-translate="number-text-2.2">карт</span></p>
               </div>
               <div class="numbers__item">
 
@@ -324,7 +349,8 @@
                   </svg>
                 </h2>
                 <!-- <div class="numbers__bg-layer"></div> -->
-                <p class="numbers__label title-s">Комиссия за пополнение<br>с крипты</p>
+                <p class="numbers__label title-s"><span data-translate="number-text-3.1">Комиссия за
+                    пополнение</span><br><span data-translate="number-text-3.2">с крипты</span></p>
               </div>
             </div>
             <a class="numbers__btn base-btn" href="https://t.me/m/GWkXrDsWMzQ5" target="_blank">
@@ -335,7 +361,7 @@
                     fill="white" />
                 </svg>
               </span>
-              <p>Хочу индивидуальные условия</p>
+              <p data-translate="number-btn">Хочу индивидуальные условия</p>
             </a>
           </div>
         </div>
@@ -348,7 +374,8 @@
         <section class="section" id="section-3">
           <div class="service" id="features">
             <div class="service__wrapper">
-              <h2 class="service__title title-l"><span>Фичи</span> <span>сервиса</span></h2>
+              <h2 class="service__title title-l"><span data-translate="fichi-title-1.1">Фичи</span> <span
+                  data-translate="fichi-title-1.2">сервиса</span></h2>
               <div class="service__content">
                 <div class="service-swiper">
                   <div class="service-swiper__wrapper"></div>
@@ -369,11 +396,14 @@
               </div>
               <div class="together__item t2">
                 <div class="together__content">
-                  <p class="together__content-title title-s">Расскажите,<br>
-                    чего вам не хватает,<br>
-                    чтобы лить трафик<br>
-                    еще эффективнее</p>
-                  <p class="together__content-subtitle">Мы готовы быстро внедрить фичи, которые напрямую влияют на ваш
+                  <p class="together__content-title title-s"><span
+                      data-translate="together-title-1.1">Расскажите,</span><br>
+                    <span data-translate="together-title-1.2">чего вам не хватает,</span><br>
+                    <span data-translate="together-title-1.3">чтобы лить трафик</span><br>
+                    <span data-translate="together-title-1.4">еще эффективнее</span>
+                  </p>
+                  <p class="together__content-subtitle" data-translate="together-text-1">Мы готовы быстро внедрить фичи,
+                    которые напрямую влияют на ваш
                     результат.</p>
                   <div class="together__content-btn">
                     <a class="base-btn" href="https://t.me/LMcard_support" target="_blank">
@@ -384,7 +414,7 @@
                             clip-rule="evenodd" />
                         </svg>
                       </span>
-                      <span>Напишите скорее</span>
+                      <span data-translate="together-link">Напишите скорее</span>
                     </a>
                   </div>
                   <div class="together__card">
@@ -395,15 +425,17 @@
             </div>
             <div class="faq" id="faq">
               <div class="faq__title title-l">
-                <span>у нас &thinsp;</span>
-                <div class="faq__title-wrapper"><span>часто &thinsp;</span><span>спрашивают,</span></div>
-                <span>а мы отвечаем</span>
+                <span data-translate="faq-title-1.1">у нас &thinsp;</span>
+                <div class="faq__title-wrapper"><span data-translate="faq-title-1.2">часто &thinsp;</span><span
+                    data-translate="faq-title-1.3">спрашивают,</span></div>
+                <span data-translate="faq-title-1.4">а мы отвечаем</span>
               </div>
               <div class="faq__else-ask">
-                <p class="title-s">а здесь нет<br>
-                  моего вопроса</p>
+                <p class="title-s"><span data-translate="faq-link-1.1">а здесь нет</span><br>
+                  <span data-translate="faq-link-1.2">моего вопроса</span>
+                </p>
                 <a class="base-btn" href="https://t.me/LMcard_support" target="_blank">
-                  <span>Задать вопрос</span>
+                  <span data-translate="faq-link-1.3">Задать вопрос</span>
                   <span>
                     <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -420,12 +452,13 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Что такое LemonadCard и кому подходит сервис?</p>
+                    <p data-translate="faq-q-1">Что такое LemonadCard и кому подходит сервис?</p>
                   </div>
                   <!-- <div class="faq__item-wrapper"> -->
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
-                      <p>LemonadCard — сервис выпуска и управления виртуальными картами для арбитражных команд и
+                      <p data-translate="faq-a-1">LemonadCard — сервис выпуска и управления виртуальными картами для
+                        арбитражных команд и
                         рекламодателей, которые льют трафик в Facebook (Meta), Google, TikTok и другие рекламные сети.
                       </p>
                     </div>
@@ -437,15 +470,18 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Какие сервисы можно оплачивать картами?</p>
+                    <p data-translate="faq-q-2">Какие сервисы можно оплачивать картами?</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>Рекламные кабинеты: Facebook (Meta), Google, TikTok и другие источники трафика​</li>
-                        <li>Сервисы, связанные с арбитражом: трекеры, прокси, антидетект-браузеры, домены, хостинги,
+                        <li data-translate="faq-a-2.1">Рекламные кабинеты: Facebook (Meta), Google, TikTok и другие
+                          источники трафика​</li>
+                        <li data-translate="faq-a-2.2">Сервисы, связанные с арбитражом: трекеры, прокси,
+                          антидетект-браузеры, домены, хостинги,
                           серверы и т.п.</li>
-                        <li>Если оплата по конкретному сервису не проходит, можно написать в поддержку для расширения
+                        <li data-translate="faq-a-2.3">Если оплата по конкретному сервису не проходит, можно написать в
+                          поддержку для расширения
                           списка мерчантов.</li>
                       </ul>
                     </div>
@@ -456,14 +492,14 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>В каких регионах доступны BIN-коды?</p>
+                    <p data-translate="faq-q-3">В каких регионах доступны BIN-коды?</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>Эстония (USD)​</li>
-                        <li>Сингапур (USD)</li>
-                        <li>Готовятся к запуску BIN-коды США и Австралии.</li>
+                        <li data-translate="faq-a-3.1">Эстония (USD)​</li>
+                        <li data-translate="faq-a-3.2">Сингапур (USD)</li>
+                        <li data-translate="faq-a-3.3">Готовятся к запуску BIN-коды США и Австралии.</li>
                       </ul>
                     </div>
                   </div>
@@ -473,14 +509,15 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Комиссии и стоимость выпуска карт</p>
+                    <p data-translate="faq-q-4">Комиссии и стоимость выпуска карт</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>Пополнение через партнёрскую программу Lemonad.com — 2,5%​</li>
-                        <li>Пополнение с криптокошельков — 3,5%</li>
-                        <li>Всем новым пользователям даём 20 бесплатных карт, далее выпуск одной карты — 2 $</li>
+                        <li data-translate="faq-a-4.1">Пополнение через партнёрскую программу Lemonad.com — 2,5%​</li>
+                        <li data-translate="faq-a-4.2">Пополнение с криптокошельков — 3,5%</li>
+                        <li data-translate="faq-a-4.3">Всем новым пользователям даём 20 бесплатных карт, далее выпуск
+                          одной карты — 2 $</li>
                       </ul>
                     </div>
                   </div>
@@ -490,13 +527,15 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Есть ли индивидуальные условия для команд?</p>
+                    <p data-translate="faq-q-8">Есть ли индивидуальные условия для команд?</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>Да, для команд с объёмом спенда доступны индивидуальные условия.</li>
-                        <li>Напишите нам — обсудим снижение комиссий и возможный пересмотр других условий под ваш объём
+                        <li data-translate="faq-a-8.1">Да, для команд с объёмом спенда доступны индивидуальные условия.
+                        </li>
+                        <li data-translate="faq-a-8.2">Напишите нам — обсудим снижение комиссий и возможный пересмотр
+                          других условий под ваш объём
                           и рисковый профиль.</li>
                     </div>
                   </div>
@@ -506,13 +545,13 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Минимальная сумма пополнения</p>
+                    <p data-translate="faq-q-5">Минимальная сумма пополнения</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>От 300 $ при пополнении с криптокошельков​</li>
-                        <li>От 100 $ при пополнении через Lemonad.com</li>
+                        <li data-translate="faq-a-5.1">От 300 $ при пополнении с криптокошельков​</li>
+                        <li data-translate="faq-a-5.2">От 100 $ при пополнении через Lemonad.com</li>
                     </div>
                   </div>
                 </div>
@@ -521,14 +560,16 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Общий или личный баланс у участников?</p>
+                    <p data-translate="faq-q-6">Общий или личный баланс у участников?</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>Овнер команды сам настраивает модель: участник может тратить либо с общего баланса команды,
+                        <li data-translate="faq-a-6.1">Овнер команды сам настраивает модель: участник может тратить либо
+                          с общего баланса команды,
                           либо только со своего индивидуального баланса​</li>
-                        <li>Аналогично с картами: карты можно привязывать к общему балансу, личному балансу участника
+                        <li data-translate="faq-a-6.2">Аналогично с картами: карты можно привязывать к общему балансу,
+                          личному балансу участника
                           или балансу конкретной карты</li>
                     </div>
                   </div>
@@ -538,14 +579,16 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Как начисляются штрафы за Decline Rate?</p>
+                    <p data-translate="faq-q-7">Как начисляются штрафы за Decline Rate?</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>Если у участника за сутки (по UTC) более 15% отклонённых транзакций от общего числа
+                        <li data-translate="faq-a-7.1">Если у участника за сутки (по UTC) более 15% отклонённых
+                          транзакций от общего числа
                           операций, на следующие сутки включается штраф.​​</li>
-                        <li>Каждая новая отклонённая транзакция в этот период штрафуется на 0,5 $</li>
+                        <li data-translate="faq-a-7.2">Каждая новая отклонённая транзакция в этот период штрафуется на
+                          0,5 $</li>
                     </div>
                   </div>
                 </div>
@@ -554,14 +597,15 @@
                     <div class="faq__item-icon">
                       <div></div>
                     </div>
-                    <p>Как работает поддержка?</p>
+                    <p data-translate="faq-q-9">Как работает поддержка?</p>
                   </div>
                   <div class="faq__item-body">
                     <div class="faq__wrapper-body">
                       <ul>
-                        <li>За каждым клиентом закрепляется аккаунт-менеджер, который помогает с онбордингом и
+                        <li data-translate="faq-a-9.1">За каждым клиентом закрепляется аккаунт-менеджер, который
+                          помогает с онбордингом и
                           операционными вопросами.</li>
-                        <li>Поддержка и оперативная коммуникация — через Telegram.</li>
+                        <li data-translate="faq-a-9.2">Поддержка и оперативная коммуникация — через Telegram.</li>
                     </div>
                   </div>
                 </div>
@@ -584,13 +628,13 @@
                           clip-rule="evenodd" />
                       </svg>
                     </span>
-                    <p>Написать нам</p>
+                    <p data-translate="footer-tg">Написать нам</p>
                   </a>
 
                 </div>
               </div>
               <nav class="footer__column">
-                <div class="footer__column-title text-light">Пользователю</div>
+                <div class="footer__column-title text-light" data-translate="footer-title-1">Пользователю</div>
                 <ul class="footer__links">
                   <li class="footer__links-item">
                     <a class="second-btn" href="https://app.lemonadcard.com/signUp" target="_blank">
@@ -612,36 +656,47 @@
                           </defs>
                         </svg>
                       </span>
-                      <p class="margin-min">Выпустить карту</p>
+                      <p class="margin-min" data-translate="footer-col1-link1">Выпустить карту</p>
                     </a>
                   </li>
                   <li class="footer__links-item">
-                    <a href="https://app.lemonadcard.com/signUp" target="_blank">Вход / Регистрация</a>
+                    <a href="https://app.lemonadcard.com/signUp" target="_blank" data-translate="footer-col1-link2">Вход
+                      / Регистрация</a>
                   </li>
-                  <li class="footer__links-item"><a href="/privacy.html" target="_blank">Защита информации</a></li>
-                  <li class="footer__links-item"><a href="/terms.html" target="_blank">Правила пользования сайтом</a>
+                  <li class="footer__links-item"><a href="/privacy.html" target="_blank"
+                      data-translate="footer-col1-link3">Защита информации</a></li>
+                  <li class="footer__links-item"><a href="/terms.html" target="_blank"
+                      data-translate="footer-col1-link4">Правила пользования сайтом</a>
                   </li>
-                  <li class="footer__links-item"><a href="/cookie-policy.html" target="_blank">Политика Cookies</a></li>
+                  <li class="footer__links-item"><a href="/cookie-policy.html" target="_blank"
+                      data-translate="footer-col1-link5">Политика Cookies</a></li>
                 </ul>
               </nav>
               <nav class="footer__column">
-                <div class="footer__column-title text-light">Фичи сервиса</div>
+                <div class="footer__column-title text-light" data-translate="footer-title-2">Фичи сервиса</div>
                 <ul class="footer__links">
-                  <li class="footer__links-item s"><a href="#slide-1" data-slide="1">Гибкая система ролей и прав</a>
+                  <li class="footer__links-item s"><a href="#slide-1" data-slide="1"
+                      data-translate="footer-col2-slide1">Гибкая система ролей и прав</a>
                   </li>
-                  <li class="footer__links-item s"><a href="#slide-2" data-slide="2">Аналитика и отчетность</a></li>
-                  <li class="footer__links-item s"><a href="#slide-3" data-slide="3">Управление балансом</a></li>
-                  <li class="footer__links-item s"><a href="#slide-4" data-slide="4">API-интеграция</a></li>
-                  <li class="footer__links-item s"><a href="#slide-5" data-slide="5">Лояльная политика DR</a></li>
+                  <li class="footer__links-item s"><a href="#slide-2" data-slide="2"
+                      data-translate="footer-col2-slide2">Аналитика и отчетность</a></li>
+                  <li class="footer__links-item s"><a href="#slide-3" data-slide="3"
+                      data-translate="footer-col2-slide3">Управление балансом</a></li>
+                  <li class="footer__links-item s"><a href="#slide-4" data-slide="4"
+                      data-translate="footer-col2-slide4">API-интеграция</a></li>
+                  <li class="footer__links-item s"><a href="#slide-5" data-slide="5"
+                      data-translate="footer-col2-slide5">Лояльная политика DR</a></li>
                 </ul>
               </nav>
               <nav class="footer__column">
-                <div class="footer__column-title text-light">Навигация</div>
+                <div class="footer__column-title text-light" data-translate="footer-title-3">Навигация</div>
                 <ul class="footer__links">
-                  <li class="footer__links-item m"><a data-index="0">Начало</a></li>
-                  <li class="footer__links-item m"><a data-index="1">Условия</a></li>
-                  <li class="footer__links-item m"><a data-index="2" href="#features">Фичи</a></li>
-                  <li class="footer__links-item m"><a data-index="3" href="#faq">Вопросы</a></li>
+                  <li class="footer__links-item m"><a data-index="0" data-translate="footer-col3-link1">Начало</a></li>
+                  <li class="footer__links-item m"><a data-index="1" data-translate="footer-col3-link2">Условия</a></li>
+                  <li class="footer__links-item m"><a data-index="2" href="#features"
+                      data-translate="footer-col3-link3">Фичи</a></li>
+                  <li class="footer__links-item m"><a data-index="3" href="#faq"
+                      data-translate="footer-col3-link4">Вопросы</a></li>
                 </ul>
               </nav>
             </footer>

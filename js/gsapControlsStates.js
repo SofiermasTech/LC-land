@@ -11,11 +11,11 @@ const iconDown = document.querySelector('.icon-down');
 const iconDownSvg = iconDown.querySelector('svg');
 const iconUp = document.querySelector('.icon-up');
 const nextBtnText = document.querySelector('.btn-scroll-text');
-const nextBtnTexts = [
-  'У нас условия<br> с ума сойдешь',
-  'А что там за фичи<br> у вас такие?',
-  'Хочу еще<br>подробностей',
-];
+// const nextBtnTexts = [
+//   'У нас условия<br> с ума сойдешь',
+//   'А что там за фичи<br> у вас такие?',
+//   'Хочу еще<br>подробностей',
+// ];
 
 let footerVisible = false;
 let isStaticLogoApplied = false;
@@ -175,7 +175,7 @@ function animateLogo(mode) {
 
     logoAnimation
       .set('.logo-main__name', {
-        display: 'inline-flex',
+        display: 'inline-block',
         width: 110,
         filter: 'brightness(0.1)',
       })
@@ -215,7 +215,7 @@ function animateLogo(mode) {
     logoAnimation
       .set(
         ['.logo-main__text', '.logo-main__name', '.logo-main__split'],
-        {display: 'inline-flex'},
+        {display: 'inline-block'},
         0,
       )
       .set('.logo-main__name', {
@@ -271,7 +271,7 @@ function applyUIState(config) {
   gsap.to(tgBtnText, {
     opacity: config.showTgText ? 1 : 0,
     y: config.showTgText ? 0 : -15,
-    display: config.showTgText ? 'inline-flex' : 'none',
+    display: config.showTgText ? 'inline-block' : 'none',
     duration: 0.6,
     ease: 'power2.out',
   });
@@ -289,7 +289,8 @@ function applyUIState(config) {
   if (config.nextBtn.textIndex !== null) {
     const targetColor = currentIndex === 2 ? 'var(--light)' : 'var(--white)';
     let textIndex = config.nextBtn.textIndex;
-    const newText = nextBtnTexts[textIndex];
+
+    const newText = getNextButtonText(textIndex);
 
     if (nextBtnText.innerHTML !== newText) {
       nextBtnText.innerHTML = newText;
