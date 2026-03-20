@@ -8,10 +8,10 @@ let mobileMode = isMobile();
 
 mobileMode = isMobile();
 
-let currentLang = 'ru';
+let currentLang = initialLang;
 let translations = {};
 let slidesToUse = [];
-// const pp = document.querySelector('.footer__pp');
+const pp = document.querySelectorAll('.footer-pp a');
 
 async function loadTranslations() {
   try {
@@ -70,9 +70,35 @@ function translatePage(lang) {
     }
   });
 
-  // updateSliders();
+  translateMeta(lang);
   translateImg(lang);
-  // translateHref(lang);
+  translateHref(lang);
+}
+
+function translateMeta(lang) {
+  const t = translations[lang] || translations.ru;
+
+  document.title = t['meta.title'] || document.title;
+
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc && t['meta.description']) {
+    metaDesc.setAttribute('content', t['meta.description']);
+  }
+
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle && t['meta.og_title']) {
+    ogTitle.setAttribute('content', t['meta.og_title']);
+  }
+
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc && t['meta.og_description']) {
+    ogDesc.setAttribute('content', t['meta.og_description']);
+  }
+
+  const ogLocale = document.querySelector('meta[property="og:locale"]');
+  if (ogLocale) {
+    ogLocale.setAttribute('content', t['html.locale']);
+  }
 }
 
 function translateImg(lang) {
@@ -84,12 +110,17 @@ function translateImg(lang) {
   });
 }
 
-// function translateHref(lang) {
-//   const key = pp.getAttribute('data-translate-href');
-//   if (translations[lang] && translations[lang][key]) {
-//     pp.setAttribute('href', translations[lang][key]);
-//   }
-// }
+function translateHref(lang) {
+  console.log(pp);
+  pp.forEach((item) => {
+    const key = item.getAttribute('data-translate-href');
+    console.log(item);
+    console.log(key);
+    if (translations[lang] && translations[lang][key]) {
+      item.setAttribute('href', translations[lang][key]);
+    }
+  });
+}
 
 function getBrowserLanguage() {
   const lang = navigator.language || navigator.userLanguage;
@@ -98,6 +129,7 @@ function getBrowserLanguage() {
 
 function setLanguage(lang) {
   currentLang = lang;
+  document.documentElement.lang = lang;
   localStorage.setItem('language', lang);
   translatePage(lang);
   updateSliders();

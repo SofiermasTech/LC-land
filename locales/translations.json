@@ -1,5 +1,13 @@
 {
   "ru": {
+    "meta.title": "Lemonad Card — сервис виртуальных карт",
+    "meta.description": "Lemonad Card — виртуальные карты для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "meta.og_title": "Lemonad Card — сервис виртуальных карт",
+    "meta.og_description": "Lemonad Card — виртуальные карты для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "meta.tw_title": "Lemonad Card — сервис виртуальных карт",
+    "meta.tw_description": "Lemonad Card — виртуальные карты для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "html.locale": "ru_RU",
+
     "header-logo-1": "Сервис",
     "header-logo-2": "виртуальных",
     "header-logo-3": "карт",
@@ -114,9 +122,21 @@
     "footer-col3-link1": "Начало",
     "footer-col3-link2": "Условия",
     "footer-col3-link3": "Фичи",
-    "footer-col3-link4": "Вопросы"
+    "footer-col3-link4": "Вопросы",
+
+    "data-translate-privacy": "privacy.html",
+    "data-translate-terms": "terms.html",
+    "data-translate-cookie": "cookie-policy.html"
   },
   "en": {
+    "meta.title": "Lemonad Card — Virtual card service",
+    "meta.description": "Lemonad Card — virtual cards для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "meta.og_title": "Lemonad Card — Virtual card service",
+    "meta.og_description": "Lemonad Card — virtual cards для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "meta.tw_title": "Lemonad Card — Virtual card service",
+    "meta.tw_description": "Lemonad Card — virtual cards для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "html.locale": "en-EN",
+
     "header-logo-1": "Virtual",
     "header-logo-2": "Service",
     "header-logo-3": "Card",
@@ -231,9 +251,21 @@
     "footer-col3-link1": "Start",
     "footer-col3-link2": "Terms",
     "footer-col3-link3": "Features",
-    "footer-col3-link4": "Question"
+    "footer-col3-link4": "Question",
+
+    "data-translate-privacy": "privacy.html",
+    "data-translate-terms": "terms.html",
+    "data-translate-cookie": "cookie-policy.html"
   },
   "es": {
+    "meta.title": "Lemonad Card — Servicio de tarjetas virtuales",
+    "meta.description": "Lemonad Card — tarjetas virtuales для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "meta.og_title": "Lemonad Card — Servicio de tarjetas virtuales",
+    "meta.og_description": "Lemonad Card — tarjetas virtuales для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "meta.tw_title": "Lemonad Card — Servicio de tarjetas virtuales",
+    "meta.tw_description": "Lemonad Card — tarjetas virtuales для медиабаинга с понятными комиссиями без сюрпризов, гибким и легким управлением картами и мгновенной поддержкой. 2,5% пополнение с Lemonad, 3.5% пополнение с крипты.",
+    "html.locale": "es-ES",
+
     "header-logo-1": "Servicio",
     "header-logo-2": "de tarjetas",
     "header-logo-3": "virtuales",
@@ -348,6 +380,10 @@
     "footer-col3-link1": "Inicio",
     "footer-col3-link2": "Condiciones",
     "footer-col3-link3": "Funciones",
-    "footer-col3-link4": "Preguntas"
+    "footer-col3-link4": "Preguntas",
+
+    "data-translate-privacy": "privacy-es.html",
+    "data-translate-terms": "terms-es.html",
+    "data-translate-cookie": "cookie-policy-es.html"
   }
 }
