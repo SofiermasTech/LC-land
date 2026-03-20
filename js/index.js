@@ -358,19 +358,25 @@ faqItems.forEach((item) => {
 });
 
 function getCollapsedWidth(item) {
-  if (!mobileMode) {
-    if (item.classList.contains('a1')) return 480 + 'px';
-    if (item.classList.contains('a2')) return 450 + 'px';
-    if (item.classList.contains('a3')) return 405 + 'px';
-    if (item.classList.contains('a4')) return 390 + 'px';
-    if (item.classList.contains('a5')) return 370 + 'px';
-    if (item.classList.contains('a6')) return 425 + 'px';
-    if (item.classList.contains('a7')) return 430 + 'px';
-    if (item.classList.contains('a8')) return 460 + 'px';
-    if (item.classList.contains('a9')) return 315 + 'px';
-  }
+  if (mobileMode) return '100%';
 
-  return '100%';
+  const baseWidths = {
+    a1: currentLang === 'en' ? 390 : currentLang === 'es' ? 510 : 480,
+    a2: 450,
+    a3: currentLang === 'es' ? 460 : 405,
+    a4: currentLang === 'en' ? 320 : 390,
+    a5: currentLang === 'en' ? 310 : 370,
+    a6: currentLang === 'en' ? 330 : currentLang === 'es' ? 455 : 425,
+    a7: currentLang === 'es' ? 445 : 430,
+    a8: currentLang === 'en' ? 380 : 460,
+    a9: 315,
+  };
+
+  for (const cls of item.classList) {
+    if (cls in baseWidths) {
+      return baseWidths[cls] + 'px';
+    }
+  }
 }
 
 // анимация с молниями и статуей

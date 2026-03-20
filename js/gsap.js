@@ -1106,8 +1106,9 @@ document.querySelectorAll('.lang').forEach((langBtn) => {
 
     e.target.classList.add('active');
     setLanguage(lang);
-    updateUI()
+    updateUI();
     setActiveSlide(currentSlide);
+    safeCheckInnerScroll();
   });
 });
 

@@ -64,6 +64,20 @@
     column-gap: 40px;
     overflow: hidden;
 
+    &.es {
+      padding-right: 36px;
+      column-gap: 24px;
+
+      .together__content-subtitle {
+        max-width: 252px;
+
+
+        @include mobile {
+           max-width: 100%;
+        }
+      }
+    }
+
     @include laptop {
       column-gap: 20px;
     }

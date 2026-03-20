@@ -331,6 +331,14 @@
     position: relative;
     bottom: -30px;
 
+    &.es {
+      width: 315px;
+    }
+
+    &.en {
+      width: 244px;
+    }
+
     @include tablet-bottom {
       width: 246px;
       padding: 7px 12px;

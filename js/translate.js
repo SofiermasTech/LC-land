@@ -136,6 +136,44 @@ function setLanguage(lang) {
 
   document.querySelector('.current-lang span').textContent =
     lang.charAt(0).toUpperCase() + lang.slice(1);
+
+  if (currentLang === 'ru') {
+    document.querySelector('.hero__content').classList.add('ru');
+  } else {
+    document.querySelector('.hero__content').classList.remove('ru');
+  }
+
+  if (currentLang === 'es') {
+    document.querySelector('.numbers .base-btn').classList.add('es');
+    document.querySelector('.faq__else-ask .base-btn').classList.add('es');
+    document.querySelector('.together__content').classList.add('es');
+    document.querySelectorAll('.faq__item').forEach((item) => {
+      item.style.maxWidth = '';
+      item.classList.add('es');
+    });
+  } else {
+    document.querySelector('.numbers .base-btn').classList.remove('es');
+    document.querySelector('.faq__else-ask .base-btn').classList.remove('es');
+    document.querySelector('.together__content').classList.remove('es');
+    document.querySelectorAll('.faq__item').forEach((item) => {
+      item.style.maxWidth = '';
+      item.classList.remove('es');
+    });
+  }
+
+  if (currentLang === 'en') {
+    document.querySelector('.numbers .base-btn').classList.add('en');
+    document.querySelectorAll('.faq__item').forEach((item) => {
+      item.style.maxWidth = '';
+      item.classList.add('en');
+    });
+  } else {
+    document.querySelector('.numbers .base-btn').classList.remove('en');
+    document.querySelectorAll('.faq__item').forEach((item) => {
+      item.style.maxWidth = '';
+      item.classList.remove('en');
+    });
+  }
 }
 
 async function init() {

@@ -42,7 +42,11 @@
     @include tablet {
       height: calc(100% - 130px);
       margin-bottom: 0;
-      max-width: 330px;
+      max-width: 300px;
+
+      &.ru {
+        max-width: 330px;
+      }
     }
 
     @media screen and (max-height: 610px) and (max-width: 1030px) {
@@ -161,6 +165,17 @@
     @include tablet {
       font-size: 16px;
       text-align: left !important;
+    }
+  }
+
+  &__info-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: 0.5s;
+
+    @include hover {
+      color: var(--blue);
     }
   }
 
