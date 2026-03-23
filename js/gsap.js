@@ -1095,28 +1095,35 @@ function stopLightning() {
   scene.classList.remove(...lightnings);
 }
 
+const langList = document.querySelector('.controls__lang-list');
+const changerLang = document.querySelector('.controls__languages');
+const langChanger = document.querySelector('.controls__lang-changer');
+
+langChanger.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  changerLang.classList.toggle('show');
+  langList.classList.toggle('show');
+});
+
 document.querySelectorAll('.lang').forEach((langBtn) => {
   langBtn.addEventListener('click', (e) => {
-    const lang = e.target.getAttribute('data-lang');
-
+    const langItem = e.currentTarget;
+    const lang = langItem.dataset.lang;
+    console.log(lang);
     document.querySelectorAll('.lang').forEach((elem) => {
       elem.classList.remove('active');
-      langList.classList.remove('show');
     });
 
-    e.target.classList.add('active');
+    langItem.classList.add('active');
+    langList.classList.remove('show');
+    changerLang.classList.remove('show');
+
     setLanguage(lang);
     updateUI();
     setActiveSlide(currentSlide);
     safeCheckInnerScroll();
   });
-});
-
-const langList = document.querySelector('.header__lang-list');
-const changerLang = document.querySelector('.header__lang-changer');
-
-changerLang.addEventListener('click', () => {
-  langList.classList.toggle('show');
 });
 
 document.addEventListener('DOMContentLoaded', init);

@@ -13,6 +13,14 @@ let translations = {};
 let slidesToUse = [];
 const pp = document.querySelectorAll('.footer-pp a');
 
+const textLang = document.querySelector('.current-lang span');
+const langDisplayNames = {
+  ru: 'Ру',
+  en: 'En',
+  hi: 'हिंदी',
+  es: 'Es',
+};
+
 async function loadTranslations() {
   try {
     const response = await fetch('../locales/translations.json');
@@ -27,11 +35,11 @@ async function loadTranslations() {
 
 function getTranslatedSlide(slide) {
   const t = translations[currentLang] || translations['ru'] || {};
-  console.log(t);
+  // console.log(t);
   let titleArray = t[slide.title];
-  console.log(slidesData);
+  // console.log(slidesData);
 
-  console.log(titleArray);
+  // console.log(titleArray);
   if (!Array.isArray(titleArray)) {
     titleArray = String(titleArray || '')
       .split(' ')
@@ -52,7 +60,7 @@ function getAllSlidesForCurrentLang() {
     console.warn('slidesData ещё не загружены');
     return [];
   }
-  console.log(window.slidesData);
+  // console.log(window.slidesData);
   return window.slidesData.map(getTranslatedSlide);
 }
 
@@ -111,11 +119,11 @@ function translateImg(lang) {
 }
 
 function translateHref(lang) {
-  console.log(pp);
+  // console.log(pp);
   pp.forEach((item) => {
     const key = item.getAttribute('data-translate-href');
-    console.log(item);
-    console.log(key);
+    // console.log(item);
+    // console.log(key);
     if (translations[lang] && translations[lang][key]) {
       item.setAttribute('href', translations[lang][key]);
     }
@@ -134,8 +142,13 @@ function setLanguage(lang) {
   translatePage(lang);
   updateSliders();
 
-  document.querySelector('.current-lang span').textContent =
-    lang.charAt(0).toUpperCase() + lang.slice(1);
+  console.log(lang);
+
+  const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
+  console.log(valueLang);
+
+  textLang.textContent =
+    langDisplayNames[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
 
   if (currentLang === 'ru') {
     document.querySelector('.hero__content').classList.add('ru');
@@ -179,10 +192,11 @@ function setLanguage(lang) {
 async function init() {
   await loadTranslations();
 
-  const savedLang = localStorage.getItem('language');
   const browserLang = getBrowserLanguage();
+  const savedLang = localStorage.getItem('language');
 
   const lang = savedLang || (translations[browserLang] ? browserLang : 'ru');
+  console.log(lang);
   setLanguage(lang);
   updateUI();
 

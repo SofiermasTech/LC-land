@@ -121,34 +121,63 @@
     </div>
   </div>
   <div class="controls controls--right">
-    <div class="controls__btn-reg">
-      <a href="https://app.lemonadcard.com/signUp" target="_blank" class="base-btn"
-        aria-label="Перейти на сайт компании lemonadcard для регистрации или входа">
-        <span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
-            <path fill="#fff"
-              d="M18.25 12.25A3.75 3.75 0 0 1 22 16h-1.5a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 16H0a3.75 3.75 0 0 1 3.75-3.75z" />
-            <path fill="#fff" fill-rule="evenodd"
-              d="M11 0a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7" clip-rule="evenodd" />
-          </svg>
-        </span>
-      </a>
-    </div>
-    <div class="header__lang-wrapper">
-      <div class="header__lang-changer current-lang">
-        <div class="header__lang-changer-img">
-          <img class="lang-changer-img" data-translate-img="header-img" src="/img/eng.svg" alt="flag of England"
-            width="26" height="20">
+    <div class="controls__wrapper">
+      <div class="controls__languages">
+        <div class="controls__lang-changer current-lang">
+          <div class="controls__lang-changer-img">
+            <img class="lang-changer-img" data-translate-img="header-img" src="/img/flags/en.svg" alt="flag of England"
+              width="21" height="14">
+          </div>
+          <span></span>
+          <div class="current-lang__dots">
+            <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect class="current-lang__dot-1" x="2" width="2" height="2" rx="1" fill="#1A1C28" />
+              <rect class="current-lang__dot-2" x="2" y="5" width="2" height="2" rx="1" fill="#1A1C28" />
+              <rect class="current-lang__dot-3" x="2" y="10" width="2" height="2" rx="1" fill="#1A1C28" />
+            </svg>
+          </div>
         </div>
-        <span></span>
+        <div class="controls__lang-list">
+          <div class="controls__lang-list-item lang" data-lang="ru">
+            <div class="controls__lang-changer-img">
+              <img class="lang-changer-img" src="/img/flags/ru.svg" alt="flag of Russia" width="21" height="14">
+            </div>
+            <span>Ру</span>
+          </div>
+          <div class="controls__lang-list-item lang" data-lang="en">
+            <div class="controls__lang-changer-img">
+              <img class="lang-changer-img" src="/img/flags/en.svg" alt="flag of Russia" width="21" height="14">
+            </div>
+            <span>En</span>
+          </div>
+          <div class="controls__lang-list-item lang" data-lang="hi">
+            <div class="controls__lang-changer-img">
+              <img class="lang-changer-img" src="/img/flags/hi.svg" alt="flag of Russia" width="21" height="14">
+            </div>
+            <span>हिंदी</span>
+          </div>
+          <div class="controls__lang-list-item lang" data-lang="es">
+            <div class="controls__lang-changer-img">
+              <img class="lang-changer-img" src="/img/flags/es.svg" alt="flag of Russia" width="21" height="14">
+            </div>
+            <span>Es</span>
+          </div>
+        </div>
+      </div>
+      <div class="controls__btn-reg">
+        <a href="https://app.lemonadcard.com/signUp" target="_blank" class="base-btn"
+          aria-label="Перейти на сайт компании lemonadcard для регистрации или входа">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
+              <path fill="#fff"
+                d="M18.25 12.25A3.75 3.75 0 0 1 22 16h-1.5a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 16H0a3.75 3.75 0 0 1 3.75-3.75z" />
+              <path fill="#fff" fill-rule="evenodd"
+                d="M11 0a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </a>
       </div>
 
-      <div class="header__lang-list">
-        <div class="header__lang-list-item lang" data-lang="ru">Russian</div>
-        <div class="header__lang-list-item lang" data-lang="en">English</div>
-        <div class="header__lang-list-item lang" data-lang="es">Español</div>
-        <div class="header__lang-list-item lang" data-lang="hi">Hindi</div>
-      </div>
     </div>
     <div class="controls__btn-scroll">
       <span class="btn-scroll-text"></span>
@@ -242,7 +271,9 @@
                     <path d="M1 36H0L15 0H16L1 36Z" fill="white" />
                   </svg>
                 </span>
-                <p class="hero__info-text title-s"><span data-translate="hero-subtext-3">от лидера рынка нутры</span> <a class="hero__info-link" href="https://lemonadcard.com/" target="_blank" data-translate="hero-subtext-3.1">CPA Lemonad</a></p>
+                <p class="hero__info-text title-s"><span data-translate="hero-subtext-3">от лидера рынка нутры</span> <a
+                    class="hero__info-link" href="https://lemonadcard.com/" target="_blank"
+                    data-translate="hero-subtext-3.1">CPA Lemonad</a></p>
               </div>
               <div class="hero__benf">
                 <div class="hero__benf-card">
@@ -661,8 +692,28 @@
                     </a>
                   </li>
                   <li class="footer__links-item">
-                    <a href="https://app.lemonadcard.com/signUp" target="_blank" data-translate="footer-col1-link2">Вход
-                      / Регистрация</a>
+                    <a class="second-btn" href="https://app.lemonadcard.com/signUp" target="_blank">
+                      <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
+                          <path fill="url(#a)"
+                            d="M18.25 12.25A3.75 3.75 0 0 1 22 16h-1.5a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 16H0a3.75 3.75 0 0 1 3.75-3.75z" />
+                          <path fill="url(#b)" fill-rule="evenodd"
+                            d="M11 0a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7"
+                            clip-rule="evenodd" />
+                          <defs>
+                            <linearGradient id="a" x1="11" x2="11" y1="0" y2="16" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#599cff" />
+                              <stop offset="1" stop-color="#1263da" />
+                            </linearGradient>
+                            <linearGradient id="b" x1="11" x2="11" y1="0" y2="16" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#599cff" />
+                              <stop offset="1" stop-color="#1263da" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </span>
+                      <p data-translate="footer-col1-link2">Вход / Регистрация</p>
+                    </a>
                   </li>
                   <li class="footer__links-item footer-pp"><a href="/privacy.html" target="_blank"
                       data-translate="footer-col1-link3" data-translate-href="data-translate-privacy">Защита
