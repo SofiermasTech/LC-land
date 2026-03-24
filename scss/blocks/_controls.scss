@@ -241,7 +241,7 @@
     visibility: hidden;
     transition:
       height 0.28s ease-out,
-      opacity 0.28s ease-out 0.02s, // лёгкий лаг opacity — выглядит естественнее
+      opacity 0.28s ease-out 0.02s,
       visibility 0s linear 0.28s;
   }
 

@@ -1325,13 +1325,16 @@ html::-webkit-scrollbar-thumb {
     width: 310px;
   }
 }
+.hero__content-wrapper {
+  position: relative;
+}
 .hero__title {
   margin: 0;
   margin-left: -12px;
   font-weight: 800;
-  font-size: 116px;
-  line-height: 80%;
-  letter-spacing: -0.09em;
+  font-size: 94px;
+  line-height: 81%;
+  letter-spacing: -0.1em;
   text-transform: uppercase;
   color: var(--white);
 }
@@ -1355,6 +1358,19 @@ html::-webkit-scrollbar-thumb {
   .hero__title {
     font-size: 7dvh;
   }
+}
+.hero__subtitle {
+  max-width: 200px;
+  margin: 0;
+  position: absolute;
+  right: -194px;
+  top: 84px;
+  font-weight: 800;
+  font-size: 42px;
+  line-height: 86%;
+  letter-spacing: -0.1em;
+  text-transform: uppercase;
+  color: var(--white);
 }
 .hero__info {
   max-width: 600px;
@@ -1448,7 +1464,7 @@ html::-webkit-scrollbar-thumb {
 }
 .hero__info-link {
   text-decoration: none;
-  color: inherit;
+  color: var(--blue);
   cursor: pointer;
   -webkit-transition: 0.5s;
   transition: 0.5s;
@@ -1573,6 +1589,7 @@ html::-webkit-scrollbar-thumb {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  min-width: 36px;
 }
 @media (max-width: 1050px) {
   .hero__benf-item.empty {
@@ -1584,7 +1601,7 @@ html::-webkit-scrollbar-thumb {
   }
 }
 .hero__benf-item.empty.min {
-  width: 40px;
+  width: 36px;
   -webkit-box-flex: 0;
       -ms-flex-positive: 0;
           flex-grow: 0;
@@ -2108,20 +2125,6 @@ html::-webkit-scrollbar-thumb {
   margin: 0 auto;
   position: relative;
   z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 16px;
   opacity: 1;
   background: transparent;
   will-change: scroll-position;
@@ -2156,6 +2159,14 @@ html::-webkit-scrollbar-thumb {
   background: url("../img/hero.png") top center/cover no-repeat;
   width: 100%;
   height: 100%;
+}
+.numbers__title {
+  margin-bottom: 64px;
+  color: var(--white);
+  text-align: center;
+}
+.numbers__title-accent {
+  color: var(--green);
 }
 .numbers__items {
   margin: 0 auto;

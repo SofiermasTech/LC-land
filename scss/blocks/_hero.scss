@@ -67,15 +67,18 @@
     }
   }
 
+  &__content-wrapper {
+    position: relative;
+  }
+
   &__title {
     margin: 0;
     margin-left: -12px;
     font-weight: 800;
-    font-size: 116px;
-    line-height: 80%;
-    letter-spacing: -0.09em;
+    font-size: 94px;
+    line-height: 81%;
+    letter-spacing: -0.1em;
     text-transform: uppercase;
-    // text-align: center;
     color: var(--white);
 
     @include tablet {
@@ -92,6 +95,20 @@
     @include mobile {
       font-size: 7dvh;
     }
+  }
+
+  &__subtitle {
+    max-width: 200px;
+    margin: 0;
+    position: absolute;
+    right: -194px;
+    top: 84px;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 86%;
+    letter-spacing: -0.1em;
+    text-transform: uppercase;
+    color: var(--white);
   }
 
   &__info {
@@ -170,7 +187,7 @@
 
   &__info-link {
     text-decoration: none;
-    color: inherit;
+    color: var(--blue);
     cursor: pointer;
     transition: 0.5s;
 
@@ -272,6 +289,7 @@
 
     &.empty {
       flex-grow: 1;
+      min-width: 36px;
 
       @include tablet {
         flex-grow: 0;
@@ -281,7 +299,7 @@
     }
 
     &.empty.min {
-      width: 40px;
+      width: 36px;
       flex-grow: 0;
       padding: 0;
 
