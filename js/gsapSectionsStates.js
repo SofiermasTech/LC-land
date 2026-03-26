@@ -15,13 +15,13 @@ const UI_SECTION_STATES = {
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {
       opacity: 1,
-      blur: {default: 20, mobile: 13},
+      blur: {default: 13, mobile: 12},
       visible: true,
       position: true,
     },
     firstImg: {opacity: 1},
     numBtn: {opacity: 1},
-    numbersOverlay: {opacity: 1, bg: 'rgba(1,3,16,0.4)', fixed: true},
+    numbersOverlay: {opacity: 1, bg: 'rgba(1, 3, 16, 0.55)', fixed: true},
     pagination: {opacity: 0, visible: false},
     sliderTitle: {opacity: 0},
     slider: {opacity: 0},
@@ -463,16 +463,18 @@ function section1_enterForward() {
     tl.add(scrollImgState1(1));
   }
 
-  tl.to('.hero__blur', {
+  tl
+  .to('.hero__blur', {
     duration: 0.3,
-    backdropFilter: 'blur(20px)',
+    backdropFilter: 'blur(13px)',
     opacity: 1,
     visibility: 'visible',
     ease: 'power2.out',
-  }).to('.numbers__overlay', {
+  })
+  .to('.numbers__overlay', {
     duration: 0.3,
     opacity: 1,
-    background: 'rgba(1, 3, 16, 0.3)',
+    background: 'rgba(1, 3, 16, 0.55)',
     ease: 'power2.out',
   });
 
@@ -508,6 +510,7 @@ function section1_leaveForward() {
       '.numbers__overlay',
       '.first-wrapper__img',
       '.first-wrapper__img .img-paralax--l4-d',
+      '.numbers__btn',
     ],
     {
       opacity: 0,
@@ -543,7 +546,9 @@ function section1_leaveBackward() {
   // console.log('section1_leaveBackward');
   const tl = gsap.timeline();
 
-  tl.to('.numbers__overlay', {opacity: 0, duration: 0.3}).to(
+  tl
+  .to(['.numbers__overlay', '.numbers__btn',], {opacity: 0, duration: 0.3})
+  .to(
     '.hero__blur',
     {
       opacity: 0,

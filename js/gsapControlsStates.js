@@ -11,11 +11,6 @@ const iconDown = document.querySelector('.icon-down');
 const iconDownSvg = iconDown.querySelector('svg');
 const iconUp = document.querySelector('.icon-up');
 const nextBtnText = document.querySelector('.btn-scroll-text');
-// const nextBtnTexts = [
-//   'У нас условия<br> с ума сойдешь',
-//   'А что там за фичи<br> у вас такие?',
-//   'Хочу еще<br>подробностей',
-// ];
 
 let footerVisible = false;
 let isStaticLogoApplied = false;
@@ -35,6 +30,8 @@ const UI_CONTROL_STATES = {
     iconUpVisible: false,
     buttonShadow: 'dark',
     controlsLeft: {visibility: {default: true, mobile: true}, width: 'auto'},
+    langTop: true,
+    langFooter: false,
   },
 
   firstIndex: {
@@ -50,6 +47,8 @@ const UI_CONTROL_STATES = {
     iconUpVisible: false,
     buttonShadow: 'dark',
     controlsLeft: {visibility: {default: true, mobile: true}, width: 'auto'},
+    langTop: true,
+    langFooter: false,
   },
 
   afterSecond: {
@@ -65,6 +64,8 @@ const UI_CONTROL_STATES = {
     iconUpVisible: false,
     buttonShadow: 'light',
     controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
+    langTop: false,
+    langFooter: false,
   },
   // оставила т.к. вдруг захотят вернуть особые состояния послед слайда
   // lastSlide: {
@@ -94,6 +95,8 @@ const UI_CONTROL_STATES = {
     iconUpVisible: false,
     buttonShadow: 'light',
     controlsLeft: {visibility: {default: true, mobile: false}, width: 'auto'},
+    langTop: false,
+    langFooter: false,
   },
 
   lastSectionBottom: {
@@ -109,6 +112,8 @@ const UI_CONTROL_STATES = {
     iconUpVisible: true,
     buttonShadow: 'light',
     controlsLeft: {visibility: {default: true, mobile: false}, width: '80px'},
+    langTop: false,
+    langFooter: true,
   },
 };
 
@@ -131,13 +136,21 @@ function animateLogo(mode) {
       .to(
         '.logo-main__text',
         {
-          width: 0,
           opacity: 0,
+          duration: 0.2,
+          ease: 'power2.in',
+        },
+        0,
+      )
+      .to(
+        '.logo-main__text',
+        {
+          width: 0,
           display: 'none',
           duration: 0.4,
           ease: 'power2.in',
         },
-        0,
+        '+=0.1',
       )
       .to(
         '.logo-main__name',
@@ -171,8 +184,6 @@ function animateLogo(mode) {
   }
 
   if (mode === 'middle') {
-    console.log('mmmmm');
-
     logoAnimation
       .set('.logo-main__name', {
         display: 'inline-block',
@@ -182,11 +193,26 @@ function animateLogo(mode) {
       .to(
         '.logo-main__text',
         {
-          width: 0,
           opacity: 0,
-          display: 'none',
-          duration: 0.3,
+          duration: 0.5,
           ease: 'power2.in',
+        },
+        '>',
+      )
+      .to(
+        '.logo-main__split',
+        {
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.in',
+        },
+        0,
+      )
+      .set(
+        '.logo-main__text',
+        {
+          width: 0,
+          display: 'none',
         },
         0,
       )
@@ -196,14 +222,11 @@ function animateLogo(mode) {
         {opacity: 1, duration: 0.3, ease: 'power2.out'},
         0,
       )
-      .to(
+      .set(
         '.logo-main__split',
         {
           width: 0,
-          opacity: 0,
           display: 'none',
-          duration: 0.3,
-          ease: 'power2.in',
         },
         0,
       );
@@ -226,10 +249,11 @@ function animateLogo(mode) {
         {width: 26, height: 16, duration: 0.5, ease: 'power2.out'},
         0,
       )
+      .set('.logo-main__text', {width: 'auto'})
       .to(
         '.logo-main__text',
-        {width: 'auto', opacity: 1, duration: 0.6, ease: 'power2.out'},
-        0.3,
+        {opacity: 1, duration: 0.6, ease: 'power2.out'},
+        '+=0.3',
       )
       .to(
         '.logo-main__name',
@@ -276,6 +300,13 @@ function applyUIState(config) {
     ease: 'power2.out',
   });
 
+  gsap.to(changerLangFooter, {
+    opacity: config.langFooter ? 1 : 0,
+    display: config.langFooter ? 'flex' : 'none',
+    duration: 0.2,
+    ease: 'power2.out',
+  });
+
   iconDownSvg.classList.toggle('rotate', config.nextBtn.rotate);
 
   if (config.nextBtn.visible) {
@@ -300,6 +331,7 @@ function applyUIState(config) {
       color: targetColor,
       opacity: 1,
       y: 0,
+      display: 'block',
       duration: 0.6,
       ease: 'power2.out',
       overwrite: 'auto',
@@ -307,6 +339,7 @@ function applyUIState(config) {
   } else {
     gsap.to(nextBtnText, {
       opacity: 0,
+      display: 'none',
       y: -15,
       duration: 0.3,
     });
@@ -314,6 +347,13 @@ function applyUIState(config) {
 
   iconDown.style.display = config.iconDownVisible ? 'block' : 'none';
   iconUp.style.display = config.iconUpVisible ? 'block' : 'none';
+
+  gsap.to(changerLangTop, {
+    opacity: config.langTop ? 1 : 0,
+    display: config.langTop ? 'flex' : 'none',
+    duration: 0.2,
+    ease: 'power2.out',
+  });
 
   const shadow =
     config.buttonShadow === 'dark'

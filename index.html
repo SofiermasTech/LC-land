@@ -122,7 +122,7 @@
   </div>
   <div class="controls controls--right">
     <div class="controls__wrapper">
-      <div class="controls__languages">
+      <div class="controls__languages lang-top">
         <div class="controls__lang-changer current-lang">
           <div class="controls__lang-changer-img">
             <img class="lang-changer-img" data-translate-img="header-img" src="/img/flags/en.svg" alt="flag of England"
@@ -179,8 +179,8 @@
       </div>
 
     </div>
-    <div class="controls__wrapper">
-      <div class="controls__languages">
+    <div class="controls__wrapper controls__wrapper--footer">
+      <div class="controls__languages lang-footer">
         <div class="controls__lang-changer current-lang">
           <div class="controls__lang-changer-img">
             <img class="lang-changer-img" data-translate-img="header-img" src="/img/flags/en.svg" alt="flag of England"
@@ -221,6 +221,7 @@
             <span>Es</span>
           </div>
         </div>
+
       </div>
       <div class="controls__btn-scroll">
         <span class="btn-scroll-text"></span>
@@ -250,6 +251,16 @@
     </div>
   </div>
   <div class="menu">
+    <a class="numbers__btn base-btn" href="https://t.me/m/GWkXrDsWMzQ5" target="_blank">
+      <span>
+        <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M15.3201 15.8236C15.4522 15.9139 15.6054 15.9717 15.7663 15.9919C15.9271 16.0122 16.0906 15.9942 16.2426 15.9396C16.3936 15.8849 16.5279 15.7947 16.6333 15.6773C16.7387 15.5599 16.8118 15.4191 16.8459 15.2676C17.57 12.0004 19.3267 3.73066 19.9858 0.758622C20.0103 0.648182 20.003 0.533454 19.9648 0.426664C19.9267 0.319873 19.8591 0.225021 19.7692 0.152214C19.6788 0.0785488 19.5697 0.0293381 19.4529 0.00965142C19.3362 -0.0100353 19.2161 0.000513847 19.105 0.040212C15.6109 1.28183 4.8502 5.15788 0.451918 6.7203C0.316383 6.76801 0.199876 6.85538 0.118837 6.97006C0.0377987 7.08475 -0.00367943 7.22098 0.00025629 7.35951C0.0102562 7.64272 0.208587 7.88832 0.494417 7.97072C2.46689 8.53713 5.05603 9.32514 5.05603 9.32514C5.05603 9.32514 6.26601 12.8332 6.89684 14.6172C6.97601 14.8412 7.1585 15.0172 7.39933 15.078C7.51738 15.1075 7.64128 15.1078 7.75947 15.0788C7.87766 15.0498 7.98627 14.9926 8.07516 14.9124L10.6551 12.574C10.6551 12.574 13.6318 14.6692 15.3201 15.8236ZM6.14518 8.88193L7.54433 13.3124L7.85516 10.5068L16.3426 3.15786C16.3861 3.12031 16.4132 3.06826 16.4183 3.01226C16.4234 2.95627 16.4062 2.9005 16.3701 2.85625C16.3338 2.81191 16.2816 2.7821 16.2237 2.77264C16.1658 2.76318 16.1063 2.77473 16.0567 2.80505L6.14518 8.88193Z"
+            fill="white" />
+        </svg>
+      </span>
+      <p data-translate="number-btn">Хочу условия еще лучше!</p>
+    </a>
     <div class="menu__wrapper">
       <nav class="menu__nav">
         <span class="menu__indicator"></span>
@@ -297,8 +308,8 @@
           <div class="hero__fix-wrapper">
             <div class="hero__content">
               <div class="hero__content-wrapper">
-                <h1 class="hero__title"><span data-translate="hero-text-1">Платежный</span><br><span
-                    style="letter-spacing: -0.065em;" data-translate="hero-text-2">сервис</span>
+                <h1 class="hero__title"><span data-translate="hero-text-1">Платежный</span><span
+                    data-translate="hero-text-2">сервис</span>
                 </h1>
                 <p class="hero__subtitle" data-translate="hero-subtext-1">уровень бог</p>
               </div>
@@ -330,13 +341,13 @@
                     <p data-translate="hero-list-2">Без скрытых комиссий</p>
                   </div>
                   <div class="hero__benf-item empty min order-6"></div>
-                  <div class="hero__benf-item empty"></div>
-                  <div class="hero__benf-item">
+                  <div class="hero__benf-item empty order-10"></div>
+                  <div class="hero__benf-item order-8">
                     <p data-translate="hero-list-3">Пополнение от 2%</p>
                   </div>
-                  <div class="hero__benf-item empty min"></div>
+                  <div class="hero__benf-item empty min order-7"></div>
                   <div class="hero__benf-item empty order-1"></div>
-                  <div class="hero__benf-item empty min"></div>
+                  <div class="hero__benf-item empty min order-9"></div>
                   <div class="hero__benf-item order-2">
                     <p data-translate="hero-list-4">Крепкие бины</p>
                   </div>
@@ -384,9 +395,8 @@
                     <rect width="100%" height="100%" fill="white" opacity="0.2" mask="url(#cutout)" />
                   </svg>
                 </h2>
-                <!-- <div class="numbers__bg-layer"></div> -->
                 <p class="numbers__label title-s"><span data-translate="number-text-1.1">Комиссия
-                    за&nbsp;пополнение</span><br /><span data-translate="number-text-1.2">с Lemonad</span>
+                    за&nbsp;пополнение</span><span data-translate="number-text-1.2">с Lemonad</span>
                 </p>
               </div>
               <div class="numbers__item">
@@ -406,9 +416,8 @@
                     <rect width="100%" height="100%" fill="white" opacity="0.2" mask="url(#cutout2)" />
                   </svg>
                 </h2>
-                <!-- <div class="numbers__bg-layer"></div> -->
                 <p class="numbers__label title-s"><span data-translate="number-text-2.1">Бесплатных карт
-                    сразу</span><br><span data-translate="number-text-2.2">после регистрации</span></p>
+                    сразу</span><span data-translate="number-text-2.2">после регистрации</span></p>
               </div>
               <div class="numbers__item">
 
@@ -427,21 +436,11 @@
                     <rect width="100%" height="100%" fill="white" opacity="0.2" mask="url(#cutout3)" />
                   </svg>
                 </h2>
-                <!-- <div class="numbers__bg-layer"></div> -->
                 <p class="numbers__label title-s"><span data-translate="number-text-3.1">Комиссия за
-                    пополнение</span><br><span data-translate="number-text-3.2">с крипты</span></p>
+                    пополнение</span><span data-translate="number-text-3.2">с крипты</span></p>
               </div>
             </div>
-            <a class="numbers__btn base-btn" href="https://t.me/m/GWkXrDsWMzQ5" target="_blank">
-              <span>
-                <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M15.3201 15.8236C15.4522 15.9139 15.6054 15.9717 15.7663 15.9919C15.9271 16.0122 16.0906 15.9942 16.2426 15.9396C16.3936 15.8849 16.5279 15.7947 16.6333 15.6773C16.7387 15.5599 16.8118 15.4191 16.8459 15.2676C17.57 12.0004 19.3267 3.73066 19.9858 0.758622C20.0103 0.648182 20.003 0.533454 19.9648 0.426664C19.9267 0.319873 19.8591 0.225021 19.7692 0.152214C19.6788 0.0785488 19.5697 0.0293381 19.4529 0.00965142C19.3362 -0.0100353 19.2161 0.000513847 19.105 0.040212C15.6109 1.28183 4.8502 5.15788 0.451918 6.7203C0.316383 6.76801 0.199876 6.85538 0.118837 6.97006C0.0377987 7.08475 -0.00367943 7.22098 0.00025629 7.35951C0.0102562 7.64272 0.208587 7.88832 0.494417 7.97072C2.46689 8.53713 5.05603 9.32514 5.05603 9.32514C5.05603 9.32514 6.26601 12.8332 6.89684 14.6172C6.97601 14.8412 7.1585 15.0172 7.39933 15.078C7.51738 15.1075 7.64128 15.1078 7.75947 15.0788C7.87766 15.0498 7.98627 14.9926 8.07516 14.9124L10.6551 12.574C10.6551 12.574 13.6318 14.6692 15.3201 15.8236ZM6.14518 8.88193L7.54433 13.3124L7.85516 10.5068L16.3426 3.15786C16.3861 3.12031 16.4132 3.06826 16.4183 3.01226C16.4234 2.95627 16.4062 2.9005 16.3701 2.85625C16.3338 2.81191 16.2816 2.7821 16.2237 2.77264C16.1658 2.76318 16.1063 2.77473 16.0567 2.80505L6.14518 8.88193Z"
-                    fill="white" />
-                </svg>
-              </span>
-              <p data-translate="number-btn">Хочу условия еще лучше!</p>
-            </a>
+
           </div>
         </div>
 
@@ -742,19 +741,19 @@
                     <a class="second-btn" href="https://app.lemonadcard.com/signUp" target="_blank">
                       <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="none" viewBox="0 0 22 16">
-                          <path fill="url(#a)"
+                          <path fill="url(#c)"
                             d="M18.25 12.25A3.75 3.75 0 0 1 22 16h-1.5a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 16H0a3.75 3.75 0 0 1 3.75-3.75z" />
-                          <path fill="url(#b)" fill-rule="evenodd"
+                          <path fill="url(#d)" fill-rule="evenodd"
                             d="M11 0a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7"
                             clip-rule="evenodd" />
                           <defs>
-                            <linearGradient id="a" x1="11" x2="11" y1="0" y2="16" gradientUnits="userSpaceOnUse">
-                              <stop stop-color="#599cff" />
-                              <stop offset="1" stop-color="#1263da" />
+                            <linearGradient id="c" x1="11" x2="11" y1="0" y2="16" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="var(--c1)" />
+                              <stop offset="1" stop-color="var(--c2)" />
                             </linearGradient>
-                            <linearGradient id="b" x1="11" x2="11" y1="0" y2="16" gradientUnits="userSpaceOnUse">
-                              <stop stop-color="#599cff" />
-                              <stop offset="1" stop-color="#1263da" />
+                            <linearGradient id="d" x1="11" x2="11" y1="0" y2="16" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="var(--c1)" />
+                              <stop offset="1" stop-color="var(--c2)" />
                             </linearGradient>
                           </defs>
                         </svg>

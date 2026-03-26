@@ -8,7 +8,7 @@
   --blue: #599cff;
   --green: #b2ee51;
   --bg-light: #f2f2f2;
-  --negative: #e90482;
+  --negative: rgba(1, 3, 16, 0.431);
 
   --font-family: "Wix Madefor Display", sans-serif;
   --font-size-body: 15px;
@@ -25,14 +25,14 @@
   --section-offset: 96px;
   --controls-margin: 40px;
 
-  @media screen and (max-height: 740px) and (max-width: 1600px) {
+  @media screen and (max-height: 680px) and (max-width: 1440px) {
     --controls-margin: 16px;
     --section-offset: 80px;
   }
 
   @include desktop {
     --section-offset: 64px;
-    --controls-margin: 16px;
+
   }
 
   @media screen and (min-height: 1000px) and (max-width: 1440px) {
@@ -41,6 +41,7 @@
   }
 
   @include laptop {
+    --controls-margin: 16px;
     --section-offset: 48px;
   }
 

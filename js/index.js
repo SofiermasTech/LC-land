@@ -249,8 +249,10 @@ function updateSliders() {
 
   if (mobileMode) {
     initMobileSwiper();
+    addLangClass();
   } else {
     initServiceSwiper();
+    addLangClass();
   }
 }
 
@@ -362,12 +364,12 @@ function getCollapsedWidth(item) {
 
   const baseWidths = {
     a1: currentLang === 'en' ? 390 : currentLang === 'es' ? 510 : 480,
-    a2: 450,
+    a2: currentLang === 'en' ? 425 : 450,
     a3: currentLang === 'es' ? 460 : 405,
     a4: currentLang === 'en' ? 320 : 390,
-    a5: currentLang === 'en' ? 310 : 370,
+    a5: currentLang === 'en' ? 310 : currentLang === 'es' ? 310 : 370,
     a6: currentLang === 'en' ? 330 : currentLang === 'es' ? 455 : 425,
-    a7: currentLang === 'es' ? 445 : 430,
+    a7: currentLang === 'es' ? 445 : currentLang === 'en' ? 390 : 430,
     a8: currentLang === 'en' ? 380 : 460,
     a9: 315,
   };

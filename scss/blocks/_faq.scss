@@ -49,8 +49,18 @@
       width: 100%;
     }
 
+
+
     span:last-child {
       text-align: right;
+    }
+
+    &.en {
+      flex-wrap: wrap;
+
+      span:first-child {
+        width: fit-content;
+      }
     }
 
     @include tablet-bottom {
@@ -87,6 +97,7 @@
       width: 100%;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 32px;
 
       p {
@@ -166,6 +177,10 @@
 
     &.a2 {
       max-width: 450px;
+
+      &.en {
+        max-width: 425px;
+      }
     }
 
     &.a3 {
@@ -190,6 +205,10 @@
       &.en {
         max-width: 310px;
       }
+
+      &.es {
+        max-width: 310px;
+      }
     }
 
     &.a6 {
@@ -206,6 +225,10 @@
 
     &.a7 {
       max-width: 430px;
+
+      &.en {
+        max-width: 390px;
+      }
 
       &.es {
         max-width: 445px;

@@ -88,6 +88,7 @@ function goToSection(index) {
 
       updateScrollLock();
       updatePaginationWhithSlides(nextIndex);
+      updateLangSwitcher();
 
       // аним комет
       if (currentIndex === 0) {
@@ -417,14 +418,15 @@ lastWrapper.addEventListener('scroll', () => {
   if (footerVisible === lastFooterState) return;
 
   lastFooterState = footerVisible;
-  // console.log(footerVisible);
 
   if (footerVisible) {
     hideMenu();
     updateUI();
+    updateLangSwitcher();
   } else {
     showMenu();
     updateUI();
+    updateLangSwitcher();
   }
 });
 
@@ -995,6 +997,7 @@ window.addEventListener('resize', () => {
   lastWidth = window.innerWidth;
 
   hardResetOnResize();
+  updateLangSwitcher();
 });
 
 // ПОДДЕРЖКА СВАЙПОВ НА МОБИЛЬНЫХ
@@ -1095,35 +1098,70 @@ function stopLightning() {
   scene.classList.remove(...lightnings);
 }
 
-const langList = document.querySelector('.controls__lang-list');
-const changerLang = document.querySelector('.controls__languages');
-const langChanger = document.querySelector('.controls__lang-changer');
+let langChanger = mainLangSwitcher.querySelector('.controls__lang-changer');
+let langList = mainLangSwitcher.querySelector('.controls__lang-list');
 
-langChanger.addEventListener('click', (e) => {
-  e.stopPropagation();
+function updateLangSwitcher() {
+  mainLangSwitcher =
+    changerLangTop &&
+    getComputedStyle(changerLangTop).display !== 'none' &&
+    getComputedStyle(changerLangTop).opacity !== '0'
+      ? changerLangTop
+      : changerLangFooter;
 
-  changerLang.classList.toggle('show');
-  langList.classList.toggle('show');
-});
+  console.log(textLang);
+  langChanger = mainLangSwitcher.querySelector('.controls__lang-changer');
+  langList = mainLangSwitcher.querySelector('.controls__lang-list');
+  textLang = mainLangSwitcher.querySelector('.current-lang span');
+  textLang.textContent = langDisplayNames[currentLang];
 
-document.querySelectorAll('.lang').forEach((langBtn) => {
-  langBtn.addEventListener('click', (e) => {
-    const langItem = e.currentTarget;
-    const lang = langItem.dataset.lang;
-    console.log(lang);
-    document.querySelectorAll('.lang').forEach((elem) => {
-      elem.classList.remove('active');
-    });
-
-    langItem.classList.add('active');
-    langList.classList.remove('show');
-    changerLang.classList.remove('show');
-
-    setLanguage(lang);
-    updateUI();
-    setActiveSlide(currentSlide);
-    safeCheckInnerScroll();
+  mainLangSwitcher.querySelectorAll('.lang').forEach((langBtn) => {
+    if (langBtn.getAttribute('data-lang') === currentLang) {
+      langBtn.classList.add('active');
+    }
   });
-});
 
-document.addEventListener('DOMContentLoaded', init);
+  callLangListeners();
+}
+
+function callLangListeners() {
+  langChanger.removeEventListener('click', handleLangClick);
+  langChanger.addEventListener('click', handleLangClick);
+
+  mainLangSwitcher.querySelectorAll('.lang').forEach((langBtn) => {
+    langBtn.removeEventListener('click', handleLangChoice);
+  });
+  mainLangSwitcher.querySelectorAll('.lang').forEach((langBtn) => {
+    langBtn.addEventListener('click', handleLangChoice);
+  });
+}
+
+function handleLangClick(evt) {
+  evt.stopPropagation();
+
+  mainLangSwitcher.classList.toggle('show');
+  langList.classList.toggle('show');
+}
+
+function handleLangChoice(evt) {
+  const langItem = evt.currentTarget;
+  const lang = langItem.dataset.lang;
+  console.log(lang);
+  document.querySelectorAll('.lang').forEach((elem) => {
+    elem.classList.remove('active');
+  });
+
+  langItem.classList.add('active');
+  langList.classList.remove('show');
+  mainLangSwitcher.classList.remove('show');
+
+  setLanguage(lang);
+  updateUI();
+  setActiveSlide(currentSlide);
+  safeCheckInnerScroll();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  callLangListeners();
+  init();
+});

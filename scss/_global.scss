@@ -453,12 +453,18 @@ html {
 
   &.hero__info-text {
     @include desktop {
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 138%;
+      letter-spacing: -0.03em;
+      text-transform: none;
     }
 
     @include mobile {
       font-size: 16px;
+      line-height: 1;
+      font-weight: 800;
+      text-transform: uppercase;
     }
   }
 

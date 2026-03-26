@@ -30,13 +30,18 @@
     max-width: 600px;
     width: 100%;
     margin-left: var(--controls-margin);
+    margin-top: 18px;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 32px;
 
     @media screen and (max-height: 680px) and (max-width: 1600px) {
-      gap: 8px;
+      gap: 16px;
+    }
+
+    @include desktop {
+      max-width: 530px;
     }
 
     @include tablet {
@@ -65,6 +70,163 @@
     @media screen and (max-width: 360px) {
       width: 310px;
     }
+
+    &.en {
+
+      @include tablet {
+        max-width: 265px;
+      }
+
+      .hero__title {
+        font-size: 132px;
+        line-height: 77%;
+        letter-spacing: -0.06em;
+
+        @include desktop {
+          font-size: 116px;
+          line-height: 78%;
+        }
+
+        @include mobile {
+          font-size: 10dvh;
+        }
+      }
+
+      .hero__subtitle {
+        max-width: 180px;
+        font-size: 56px;
+        line-height: 86%;
+        letter-spacing: -0.06em;
+        right: -178px;
+        top: 109px;
+
+        @include desktop {
+          top: 96px;
+          right: -174px;
+          font-size: 52px;
+          line-height: 83%;
+        }
+      }
+
+      .hero__info-text-wrapper .hero__info-text {
+        min-width: 228px;
+
+        @include desktop {
+          min-width: 170px;
+        }
+      }
+
+      .hero__benf-item.order-1 {
+        min-width: 140px;
+
+        @include desktop {
+          width: 106px;
+          min-width: auto;
+        }
+      }
+
+      .hero__benf-item.empty.order-3 {
+        @include desktop {
+          width: 85px;
+        }
+
+        @include tablet {
+          width: 32px;
+        }
+      }
+
+      .hero__benf-item.empty.min.order-9 {
+        @include desktop {
+          width: 64px;
+        }
+
+        @include tablet {
+          display: none;
+        }
+      }
+
+      .hero__benf-item.empty.order-10 {
+        width: 102px;
+
+        @include tablet {
+          width: 32px;
+        }
+      }
+    }
+
+    &.es {
+
+      @include tablet {
+        max-width: 312px;
+      }
+
+      .hero__title {
+        font-size: 132px;
+        line-height: 77%;
+        letter-spacing: -0.06em;
+
+        @include desktop {
+          font-size: 116px;
+          line-height: 78%;
+        }
+
+        @include mobile {
+          font-size: 10dvh;
+        }
+      }
+
+      .hero__subtitle {
+        max-width: 180px;
+        font-size: 56px;
+        line-height: 86%;
+        letter-spacing: -0.06em;
+        right: -174px;
+        top: 109px;
+
+        @include desktop {
+          top: 96px;
+          font-size: 52px;
+          line-height: 83%;
+        }
+      }
+
+      .hero__info {
+        @include tablet {
+          max-width: 290px;
+        }
+      }
+
+      .hero__info-text-wrapper .hero__info-text {
+        min-width: 200px;
+
+        @include desktop {
+          min-width: 160px;
+        }
+      }
+
+      .hero__benf-item.empty.order-1 {
+        @include desktop {
+          width: 97px;
+        }
+      }
+
+      .hero__benf-item.empty.order-3 {
+        @include tablet {
+          width: 32px;
+        }
+      }
+
+      .hero__benf-item.empty.min.order-9 {
+        @include desktop {
+          width: 49px;
+        }
+
+        @include tablet {
+          display: none;
+        }
+      }
+
+    }
   }
 
   &__content-wrapper {
@@ -73,13 +235,21 @@
 
   &__title {
     margin: 0;
-    margin-left: -12px;
+    margin-left: -8px;
     font-weight: 800;
     font-size: 94px;
     line-height: 81%;
     letter-spacing: -0.1em;
     text-transform: uppercase;
     color: var(--white);
+    display: flex;
+    flex-direction: column;
+
+    @include desktop {
+      font-size: 82px;
+      line-height: 80%;
+      letter-spacing: -0.1em;
+    }
 
     @include tablet {
       margin-left: -4px;
@@ -101,7 +271,7 @@
     max-width: 200px;
     margin: 0;
     position: absolute;
-    right: -194px;
+    right: -198px;
     top: 84px;
     font-weight: 800;
     font-size: 42px;
@@ -109,6 +279,16 @@
     letter-spacing: -0.1em;
     text-transform: uppercase;
     color: var(--white);
+
+    @include desktop {
+      font-size: 37px;
+      right: -117px;
+      top: 70px;
+    }
+
+    @include mobile {
+      display: none;
+    }
   }
 
   &__info {
@@ -116,7 +296,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 22px;
+    gap: 8px;
+
+    @include desktop {
+      max-width: 522px;
+    }
 
     &>p:last-child {
       min-width: 270px;
@@ -128,36 +312,43 @@
       }
     }
 
-    @media screen and (max-height: 680px) and (max-width: 1440px) {
-      p:first-child {
-        display: none;
-      }
-
-      span:nth-of-type(1) {
-        display: none;
-      }
-    }
 
     @include tablet {
-      max-width: 200px;
+      max-width: 265px;
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
       gap: 2px;
+    }
+  }
 
-      p:first-child {
-        display: none;
-      }
+  &__info-icon {
+    svg {
+      width: 16px;
+      height: 36px;
 
-      span {
-        display: none;
+      @include desktop {
+        width: 11px;
+        height: 24px;
       }
+    }
+
+    @include tablet {
+      display: none;
     }
   }
 
   &__info-text-wrapper {
     display: flex;
     align-items: center;
+
+    .hero__info-text {
+      min-width: 200px;
+
+      @include desktop {
+        min-width: 160px;
+      }
+    }
 
     @include tablet {
       gap: 1px;
@@ -202,6 +393,10 @@
     grid-template-rows: 106px;
     gap: 24px;
 
+    @include desktop {
+      gap: 16px;
+    }
+
     @include tablet {
       display: flex;
     }
@@ -240,7 +435,7 @@
     gap: 8px;
     line-height: 20px;
 
-    &:not(:nth-child(1), :nth-child(2), :nth-child(3)) {
+    &:not(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4)) {
       margin-top: -0.9px;
 
       @include tablet {
@@ -254,6 +449,7 @@
 
     p {
       margin: 0;
+      font-size: 15px;
       line-height: 20px;
       letter-spacing: -0.03em;
       color: var(--white);
@@ -296,6 +492,16 @@
         width: 32px;
         height: 32px;
       }
+
+      &.order-10 {
+        width: 96px;
+        flex-grow: 0;
+
+        @include tablet {
+          min-width: auto;
+          width: 32px;
+        }
+      }
     }
 
     &.empty.min {
@@ -303,18 +509,24 @@
       flex-grow: 0;
       padding: 0;
 
-      @include tablet {
-        width: 32px;
-        height: 32px;
+      &.order-6 {
+        margin-left: -0.8px;
 
-        &.order-6 {
-          order: -6;
-
-          @include tablet {
-            margin-top: 0;
-          }
+        @include desktop {
+          display: none;
         }
       }
+
+      &.order-7 {
+        margin-left: -0.8px;
+        width: 36px;
+
+        @include desktop {
+          display: none;
+        }
+      }
+
+
     }
 
     &.with-block {
@@ -328,60 +540,81 @@
         margin-left: -1.5px;
       }
 
-      &.link {
-        text-decoration: none;
-        padding-right: 4px;
-        color: inherit;
-        cursor: pointer;
-      }
     }
 
+    &.order-8 {
+      margin-left: -0.8px;
+    }
+
+
+
     &.order-5 {
+      margin-left: -0.8px;
+
       @include tablet {
-        order: -5;
+        // order: -5;
         margin-left: -1.5px;
       }
     }
 
     &.order-4 {
       @include tablet {
-        order: -4;
+        // order: -4;
         margin-top: -1.3px;
       }
     }
 
     &.order-3 {
-      margin-left: -0.75px;
+      margin-left: -0.8px;
+
+      @include desktop {
+        min-width: auto;
+        flex-grow: 0;
+        padding: 0;
+        width: 23px;
+      }
 
       @include tablet {
-        order: -3;
+        // order: -3;
         margin-top: -1.3px;
         margin-left: -1.5px;
       }
     }
 
     &.order-2 {
+      margin-left: -0.8px;
+
       @include tablet {
-        order: -2;
+        // order: -2;
         margin-left: -1.5px;
       }
     }
 
     &.order-1 {
-      margin-left: -0.6px;
+      margin-left: -0.8px;
+      min-width: 100px;
+
+      @include desktop {
+        min-width: auto;
+        flex-grow: 0;
+        width: 89px;
+      }
 
       @include tablet {
-        order: -1;
-        margin-left: 0;
+        display: none;
       }
     }
 
     &.order-0 {
       margin-left: -0.8px;
 
-      @include tablet {
+      @include desktop {
         display: none;
       }
+
+      // @include tablet {
+      //   display: none;
+      // }
     }
 
     &:last-child {
@@ -389,6 +622,12 @@
       padding: 1px 2px;
       padding-left: 12px;
       transition: 0.9s;
+
+      &.link {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+      }
 
       @include tablet {
         padding: 4px 4px 4px 12px;

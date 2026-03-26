@@ -13,7 +13,14 @@ let translations = {};
 let slidesToUse = [];
 const pp = document.querySelectorAll('.footer-pp a');
 
-const textLang = document.querySelector('.current-lang span');
+const changerLangTop = document.querySelector('.controls__languages.lang-top');
+const changerLangFooter = document.querySelector(
+  '.controls__languages.lang-footer',
+);
+
+let mainLangSwitcher = changerLangTop ? changerLangTop : changerLangFooter;
+
+let textLang = mainLangSwitcher.querySelector('.current-lang span');
 const langDisplayNames = {
   ru: 'Ру',
   en: 'En',
@@ -60,6 +67,7 @@ function getAllSlidesForCurrentLang() {
     console.warn('slidesData ещё не загружены');
     return [];
   }
+
   // console.log(window.slidesData);
   return window.slidesData.map(getTranslatedSlide);
 }
@@ -141,7 +149,7 @@ function setLanguage(lang) {
   localStorage.setItem('language', lang);
   translatePage(lang);
   updateSliders();
-
+  addLangClass();
   console.log(lang);
 
   const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
@@ -149,7 +157,9 @@ function setLanguage(lang) {
 
   textLang.textContent =
     langDisplayNames[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
+}
 
+function addLangClass() {
   if (currentLang === 'ru') {
     document.querySelector('.hero__content').classList.add('ru');
   } else {
@@ -157,7 +167,10 @@ function setLanguage(lang) {
   }
 
   if (currentLang === 'es') {
-    document.querySelector('.numbers .base-btn').classList.add('es');
+    document.querySelector('.hero__content').classList.add('es');
+    document.querySelectorAll('.service-swiper__slide').forEach((item) => {
+      item.classList.add('es');
+    });
     document.querySelector('.faq__else-ask .base-btn').classList.add('es');
     document.querySelector('.together__content').classList.add('es');
     document.querySelectorAll('.faq__item').forEach((item) => {
@@ -165,7 +178,10 @@ function setLanguage(lang) {
       item.classList.add('es');
     });
   } else {
-    document.querySelector('.numbers .base-btn').classList.remove('es');
+    document.querySelector('.hero__content').classList.remove('es');
+    document.querySelectorAll('.service-swiper__slide').forEach((item) => {
+      item.classList.remove('es');
+    });
     document.querySelector('.faq__else-ask .base-btn').classList.remove('es');
     document.querySelector('.together__content').classList.remove('es');
     document.querySelectorAll('.faq__item').forEach((item) => {
@@ -175,13 +191,24 @@ function setLanguage(lang) {
   }
 
   if (currentLang === 'en') {
-    document.querySelector('.numbers .base-btn').classList.add('en');
+    document.querySelector('.hero__content').classList.add('en');
+    document.querySelector('.numbers__overlay').classList.add('en');
+    document.querySelectorAll('.service-swiper__slide').forEach((item) => {
+      item.classList.add('en');
+    });
+
+    document.querySelector('.faq__title').classList.add('en');
     document.querySelectorAll('.faq__item').forEach((item) => {
       item.style.maxWidth = '';
       item.classList.add('en');
     });
   } else {
-    document.querySelector('.numbers .base-btn').classList.remove('en');
+    document.querySelector('.hero__content').classList.remove('en');
+    document.querySelector('.numbers__overlay').classList.remove('en');
+    document.querySelectorAll('.service-swiper__slide').forEach((item) => {
+      item.classList.remove('en');
+    });
+    document.querySelector('.faq__title').classList.remove('en');
     document.querySelectorAll('.faq__item').forEach((item) => {
       item.style.maxWidth = '';
       item.classList.remove('en');
@@ -196,13 +223,28 @@ async function init() {
   const savedLang = localStorage.getItem('language');
 
   const lang = savedLang || (translations[browserLang] ? browserLang : 'ru');
-  console.log(lang);
+  // console.log(lang);
   setLanguage(lang);
+  // updateLangSwitcher();
   updateUI();
 
-  document.querySelectorAll('.lang').forEach((langBtn) => {
+  document.querySelectorAll('.lang').forEach((elem) => {
+    elem.classList.remove('active');
+  });
+
+  mainLangSwitcher.querySelectorAll('.lang').forEach((langBtn) => {
     if (langBtn.getAttribute('data-lang') === lang) {
       langBtn.classList.add('active');
+    }
+  });
+
+  document.addEventListener('click', (evt) => {
+    if (!evt.target.closest('.controls__languages')) {
+      document
+        .querySelectorAll('.controls__lang-list, .controls__languages')
+        .forEach((el) => {
+          el.classList.remove('show');
+        });
     }
   });
 }

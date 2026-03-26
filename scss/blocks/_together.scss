@@ -68,17 +68,22 @@
       padding-right: 36px;
       column-gap: 24px;
 
+      @include laptop {
+        grid-template-columns: 1fr 1fr;
+      }
+
       .together__content-subtitle {
         max-width: 252px;
 
 
         @include mobile {
-           max-width: 100%;
+          max-width: 100%;
         }
       }
     }
 
     @include laptop {
+      grid-template-columns: 1.1fr 1fr;
       column-gap: 20px;
     }
 

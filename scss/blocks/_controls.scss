@@ -92,6 +92,10 @@
     align-items: flex-start;
     justify-content: flex-end;
     gap: 7px;
+
+    &--footer {
+      align-items: flex-end;
+    }
   }
 
   &__btn-reg {
@@ -132,7 +136,6 @@
   }
 
   &__btn-scroll {
-    margin: var(--controls-margin);
     display: flex;
     align-items: center;
     gap: 16px;
@@ -162,7 +165,7 @@
       transform: translateZ(0);
 
       @include tablet {
-        display: none;
+        display: none !important;
       }
     }
 
@@ -180,10 +183,24 @@
     border-radius: var(--br-s);
     overflow: hidden;
     transition: all 0.28s ease-out;
+    will-change: max-height;
+
+    &.lang-footer {
+      flex-direction: column-reverse;
+      box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
+
+      .controls__lang-changer {
+        background-color: #fff;
+      }
+
+      .controls__lang-list {
+        margin-top: auto;
+        transform-origin: top;
+      }
+    }
 
     &.show {
-      max-height: 100%;
-      // transition: max-height 0.1s;
+      max-height: 182px;
 
       .current-lang__dot-1 {
         transform: translateY(1px);
@@ -200,11 +217,24 @@
     display: flex;
     align-items: center;
     gap: 8px;
-
+    position: relative;
+    z-index: 3;
     font-size: 15px;
     line-height: 20px;
     font-weight: 500;
     cursor: pointer;
+
+    @include hover {
+      background-image: linear-gradient(180deg, #eaeaea 0%, #fff 100%);
+      box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    }
+
+    @include mobile {
+      padding: 7px 8px;
+      font-size: 13px;
+      line-height: 18px;
+      gap: 6px;
+    }
   }
 
 
@@ -235,24 +265,29 @@
     max-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 4px;
 
     opacity: 0;
     visibility: hidden;
     transition:
       height 0.28s ease-out,
-      opacity 0.28s ease-out 0.02s,
-      visibility 0s linear 0.28s;
+      opacity 0.28s ease-out,
+      visibility 0s linear 0.1s;
   }
 
   &__lang-list.show {
     max-height: 100%;
+    padding: 0 4px 4px;
     opacity: 1;
     visibility: visible;
     transition:
       height 0.28s ease-out,
       opacity 0.22s ease-out,
       visibility 0s linear 0s;
+
+    @include mobile {
+      padding: 0 2px 2px;
+
+    }
   }
 
   &__lang-list-item {
@@ -262,6 +297,17 @@
     gap: 8px;
     border-radius: var(--br-xs);
     cursor: pointer;
+
+    @include hover {
+      color: var(--blue);
+    }
+
+    @include mobile {
+      padding: 5px 6px;
+      font-size: 13px;
+      line-height: 18px;
+      gap: 6px;
+    }
   }
 
   .current-lang {
@@ -305,6 +351,7 @@
   &__text {
     margin: 0;
     font-size: 11px;
+    font-weight: 500;
     line-height: 109%;
     letter-spacing: -0.02em;
     text-transform: uppercase;
