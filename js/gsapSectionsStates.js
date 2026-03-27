@@ -6,7 +6,7 @@ const UI_SECTION_STATES = {
     firstImg: {opacity: 1},
     sliderTitle: {opacity: 0},
     slider: {opacity: 0},
-    numBtn: {opacity: 0},
+    numBtn: {opacity: 0, visible: false},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 0, visible: false},
   },
@@ -20,7 +20,7 @@ const UI_SECTION_STATES = {
       position: true,
     },
     firstImg: {opacity: 1},
-    numBtn: {opacity: 1},
+    numBtn: {opacity: 1, visible: true},
     numbersOverlay: {opacity: 1, bg: 'rgba(1, 3, 16, 0.55)', fixed: true},
     pagination: {opacity: 0, visible: false},
     sliderTitle: {opacity: 0},
@@ -31,7 +31,7 @@ const UI_SECTION_STATES = {
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 0},
-    numBtn: {opacity: 0},
+    numBtn: {opacity: 0, visible: false},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 1, visible: true},
     sliderTitle: {y: 0, opacity: 1},
@@ -42,7 +42,7 @@ const UI_SECTION_STATES = {
     heroFix: {x: '-150%', opacity: 0},
     heroBlur: {opacity: 0, blur: 0, visible: false, position: false},
     firstImg: {opacity: 0},
-    numBtn: {opacity: 0},
+    numBtn: {opacity: 0, visible: false},
     numbersOverlay: {opacity: 0, bg: 'rgba(1,3,16,0)', fixed: false},
     pagination: {opacity: 0, visible: 'hidden'},
     sliderTitle: {opacity: 0},
@@ -87,6 +87,7 @@ function applySectionUIState(config) {
 
   tl.set('.numbers__btn', {
     opacity: config.numBtn.opacity,
+    display: config.numBtn.visible ? 'flex' : 'none',
   });
 
   tl.to('.numbers__overlay', {
@@ -401,6 +402,19 @@ function section0_enterBackward() {
     '<',
   );
 
+  if (mobileMode) {
+    tl.to(
+      '.logo-main__text',
+      {
+        duration: 0.5,
+        display: 'block',
+        opacity: 1,
+        ease: 'power2.out',
+      },
+      '-=0.2',
+    );
+  }
+
   setTimeout(() => {
     const sec2 = document.querySelector('.numbers__overlay');
     sec2.classList.remove('section-fixed');
@@ -424,6 +438,19 @@ function section0_leaveForward() {
     opacity: 0,
     ease: 'power2.out',
   });
+
+  if (mobileMode) {
+    tl.to(
+      '.logo-main__text',
+      {
+        duration: 0.3,
+        display: 'none',
+        opacity: 0,
+        ease: 'power2.out',
+      },
+      '-=0.2',
+    );
+  }
 
   return tl;
 }
@@ -463,15 +490,20 @@ function section1_enterForward() {
     tl.add(scrollImgState1(1));
   }
 
-  tl
-  .to('.hero__blur', {
+  if (mobileMode) {
+    tl.set('.logo-main__text', {
+      display: 'none',
+      opacity: 0,
+    });
+  }
+
+  tl.to('.hero__blur', {
     duration: 0.3,
     backdropFilter: 'blur(13px)',
     opacity: 1,
     visibility: 'visible',
     ease: 'power2.out',
-  })
-  .to('.numbers__overlay', {
+  }).to('.numbers__overlay', {
     duration: 0.3,
     opacity: 1,
     background: 'rgba(1, 3, 16, 0.55)',
@@ -493,7 +525,7 @@ function section1_enterForward() {
       '<',
     );
   }
-
+  tl.set('.numbers__btn', {display: 'flex'});
   tl.fromTo('.numbers__btn', {opacity: 0}, {opacity: 1, duration: 0.2});
 
   return tl;
@@ -518,7 +550,7 @@ function section1_leaveForward() {
       ease: 'power2.inOut',
     },
     0,
-  );
+  ).set('.numbers__btn', {display: 'none'});
 
   return tl;
 }
@@ -532,6 +564,7 @@ function section1_enterBackward() {
   document.querySelector('.hero__blur').style.position = 'fixed';
 
   tl.add(section1_enterForward());
+
   tl.to('.menu', {
     duration: 0.3,
     y: 0,
@@ -546,18 +579,18 @@ function section1_leaveBackward() {
   // console.log('section1_leaveBackward');
   const tl = gsap.timeline();
 
-  tl
-  .to(['.numbers__overlay', '.numbers__btn',], {opacity: 0, duration: 0.3})
-  .to(
-    '.hero__blur',
-    {
-      opacity: 0,
-      backdropFilter: 'blur(0px)',
-      visibility: 'hidden',
-      duration: 0.3,
-    },
-    '<',
-  );
+  tl.to(['.numbers__overlay', '.numbers__btn'], {opacity: 0, duration: 0.3})
+    .to(
+      '.hero__blur',
+      {
+        opacity: 0,
+        backdropFilter: 'blur(0px)',
+        visibility: 'hidden',
+        duration: 0.3,
+      },
+      '<',
+    )
+    .set('.numbers__btn', {display: 'none'});
 
   return tl;
 }

@@ -34,17 +34,6 @@ updateSliders();
 
 // render slide
 function initServiceSwiper() {
-  // if (window.slidesToUse || translations[currentLang]) {
-  //   // updateSliders();
-  //   console.warn('ok');
-  // } else {
-  //   console.warn('Ожидание данных слайдов или переводов...');
-  //   setTimeout(() => {
-  //     initServiceSwiper();
-  //   }, 500);
-  //   return
-  // }
-
   if (!mobileMode) {
     const template = document.getElementById('slide-template');
     const containerSlides = document.querySelector('.service-swiper__wrapper');
@@ -116,12 +105,6 @@ function initServiceSwiper() {
 function initMobileSwiper() {
   if (!mobileMode) return;
 
-  if (!window.slidesData || !translations[currentLang]) {
-    console.warn('Ожидание данных слайдов или переводов...');
-    setTimeout(initMobileSwiper, 300);
-    return;
-  }
-
   loadSwiper().then(() => {
     const containerMob = document.querySelector('.swiper-mob__wrapper');
 
@@ -155,6 +138,9 @@ function initMobileSwiper() {
     sliderMain.innerHTML = '';
     sliderThumbs.innerHTML = '';
 
+    const slidesToUse = getAllSlidesForCurrentLang();
+    // console.log(slidesToUse);
+
     slidesToUse.forEach((data, index) => {
       // Основной слайд с контентом
       const mainSlide = slideTemplateMain.cloneNode(true);
@@ -169,6 +155,10 @@ function initMobileSwiper() {
       mainSlide.querySelector('.slider-main__text').textContent = data.text;
       mainSlide.classList.add(`slider-main__slide--${index + 1}`);
       mainSlide.id = `slide-${index + 1}`;
+
+      const button = mainSlide.querySelector('.slide__btn p');
+      button.textContent = data.btn;
+      console.log(button);
 
       sliderMain.appendChild(mainSlide);
 
@@ -214,7 +204,6 @@ function initMobileSwiper() {
 
       slides.forEach((slide) => {
         const button = slide.querySelector('.slide__btn');
-        button.setAttribute('data-translate', 'hero-list-5');
         if (slide.classList.contains('swiper-slide-active')) {
           button.style.opacity = '1';
         } else {
@@ -420,15 +409,23 @@ function getTitleCorrection() {
 
 function fitHeroTitle() {
   const content = document.querySelector('.hero__content');
-  const title = document.querySelector('.hero__title');
+  const wrapper = document.querySelector('.hero__content-wrapper');
+  const title = wrapper.querySelector('.hero__title');
 
   if (!content || !title) return;
 
+  // console.log(content);
+  // console.log(title);
+
   // все элементы кроме заголовка
-  const siblings = [...content.children].filter((el) => el !== title);
+  const siblings = [...content.children].filter((el) => el !== wrapper);
+
+  // console.log(siblings);
 
   // сколько высоты занято НЕ заголовком
   const occupiedHeight = siblings.reduce((sum, el) => sum + el.offsetHeight, 0);
+
+  // console.log(occupiedHeight);
 
   // на айфоне не правильно вычисляет свободное пространство, костыль для него
   const isIOS =
@@ -447,14 +444,16 @@ function fitHeroTitle() {
   // padding-top у заголовка
   const titleStyles = getComputedStyle(title);
   const paddingTop = parseFloat(titleStyles.paddingTop) || 154;
-
+  // console.log(titleStyles);
   const availableHeight = contentHeight - occupiedHeight - paddingTop;
-
+  // console.log(contentHeight);
+  // console.log(paddingTop);
+  // console.log(availableHeight);
   if (availableHeight <= 0) return;
 
   // бинарный поиск размера шрифта
   let min = 24;
-  let max = 160;
+  let max = 150;
   let best = min;
 
   while (min <= max) {
@@ -477,9 +476,9 @@ function fitHeroTitle() {
   }
 
   if (isIOS && window.visualViewport) {
-    title.style.fontSize = `${best * 0.63}px`;
+    title.style.fontSize = `${best * 0.6}px`;
   } else {
-    title.style.fontSize = `${best}px`;
+    title.style.fontSize = `${best - 2}px`;
   }
 }
 

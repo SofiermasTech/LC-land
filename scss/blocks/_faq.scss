@@ -89,6 +89,10 @@
 
       &.es {
         width: 210px;
+
+        @media (max-width: 395px) {
+          max-width: 175px;
+        }
       }
     }
 
@@ -114,8 +118,8 @@
 
     @include mobile {
       gap: 16px;
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
+      display: flex;
+      align-items: center;
 
       .base-btn {
         max-width: 200px;

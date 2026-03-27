@@ -95,6 +95,12 @@
 
     &--footer {
       align-items: flex-end;
+
+      @include tablet {
+        .controls__languages {
+          display: none !important;
+        }
+      }
     }
   }
 
@@ -161,7 +167,7 @@
     }
 
     .btn-scroll-text {
-      will-change: color, opacity, transform;
+      will-change: opacity, transform;
       transform: translateZ(0);
 
       @include tablet {
@@ -173,6 +179,7 @@
 
   &__languages {
     max-height: 40px;
+    width: fit-content;
     height: 100%;
     position: relative;
     font-family: var(--second-family);
@@ -185,22 +192,43 @@
     transition: all 0.28s ease-out;
     will-change: max-height;
 
-    &.lang-footer {
+    &.lang-footer-mobile.lang-footer {
+      background-color: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    &.lang-footer,
+    &.lang-footer-mobile.lang-footer {
       flex-direction: column-reverse;
       box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
 
       .controls__lang-changer {
         background-color: #fff;
+        border-radius: var(--br-s);
       }
 
       .controls__lang-list {
         margin-top: auto;
         transform-origin: top;
+        flex-direction: column-reverse;
       }
     }
 
+
     &.show {
       max-height: 182px;
+
+      &.lang-footer-mobile {
+
+        .lang-footer-mobile__wrapper {
+          max-height: 182px;
+        }
+      }
+
+      &.lang-footer-mobile.lang-footer {
+        max-height: 32px;
+      }
 
       .current-lang__dot-1 {
         transform: translateY(1px);
@@ -427,4 +455,59 @@
     }
   }
 
+}
+
+.lang-footer-mobile.lang-footer {
+  max-width: 114px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: var(--br-s);
+
+  .lang-footer-mobile__wrapper {
+    width: 100%;
+    max-height: 0;
+    background-color: #fff;
+    border-radius: var(--br-s);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-top: auto;
+    transform-origin: top;
+    display: flex;
+    flex-direction: column-reverse;
+    transition: all 0.28s ease-out;
+    will-change: max-height;
+  }
+
+  .lang.active {
+    background-color: var(--light);
+    color: #fff;
+  }
+
+  .current-lang__dots {
+    margin-left: auto;
+  }
+
+  .controls__lang-list {
+    transition:
+      height 0.3s ease-out,
+      opacity 0.3s ease-out,
+      visibility 0s linear 0s;
+  }
+
+  .controls__lang-list.show {
+    transition:
+      height 0.22s ease-out,
+      opacity 0.22s ease-out,
+      visibility 0s linear 0.1s;
+
+    @include mobile {
+      padding: 0 2px 2px;
+
+    }
+  }
 }

@@ -252,12 +252,12 @@
     }
 
     @include tablet {
-      margin-left: -4px;
+      margin-left: -2px;
       text-orientation: mixed;
       writing-mode: sideways-lr;
       text-align: left;
       flex-grow: 1;
-      overflow: hidden;
+      // overflow: hidden;
       padding-top: 154px;
       font-size: 80px;
     }
@@ -526,7 +526,12 @@
         }
       }
 
+      &.order-9 {
 
+        @include tablet {
+          display: none;
+        }
+      }
     }
 
     &.with-block {
@@ -545,8 +550,6 @@
     &.order-8 {
       margin-left: -0.8px;
     }
-
-
 
     &.order-5 {
       margin-left: -0.8px;

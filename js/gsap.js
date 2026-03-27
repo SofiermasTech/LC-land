@@ -1102,12 +1102,21 @@ let langChanger = mainLangSwitcher.querySelector('.controls__lang-changer');
 let langList = mainLangSwitcher.querySelector('.controls__lang-list');
 
 function updateLangSwitcher() {
-  mainLangSwitcher =
-    changerLangTop &&
-    getComputedStyle(changerLangTop).display !== 'none' &&
-    getComputedStyle(changerLangTop).opacity !== '0'
-      ? changerLangTop
-      : changerLangFooter;
+  if (!mobileMode) {
+    mainLangSwitcher =
+      changerLangTop &&
+      getComputedStyle(changerLangTop).display !== 'none' &&
+      getComputedStyle(changerLangTop).opacity !== '0'
+        ? changerLangTop
+        : changerLangFooter;
+  } else {
+    mainLangSwitcher =
+      changerLangTop &&
+      getComputedStyle(changerLangTop).display !== 'none' &&
+      getComputedStyle(changerLangTop).opacity !== '0'
+        ? changerLangTop
+        : changerLangFooterMobile;
+  }
 
   console.log(textLang);
   langChanger = mainLangSwitcher.querySelector('.controls__lang-changer');

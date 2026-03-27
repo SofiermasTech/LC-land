@@ -37,7 +37,7 @@
   }
 
   @include mobile-bottom {
-    grid-template-columns: 1fr 1.45fr;
+    grid-template-columns: 0.9fr 1.45fr;
   }
 
   @media screen and (max-width: 360px) {
@@ -163,6 +163,10 @@
 
     .second-btn {
       gap: 12px;
+
+      @include mobile {
+        gap: 7px;
+      }
     }
 
     @include tablet-bottom {

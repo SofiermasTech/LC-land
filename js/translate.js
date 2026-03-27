@@ -17,8 +17,17 @@ const changerLangTop = document.querySelector('.controls__languages.lang-top');
 const changerLangFooter = document.querySelector(
   '.controls__languages.lang-footer',
 );
+const changerLangFooterMobile = document.querySelector(
+  '.controls__languages.lang-footer-mobile.lang-footer',
+);
 
-let mainLangSwitcher = changerLangTop ? changerLangTop : changerLangFooter;
+let mainLangSwitcher;
+
+if (!mobileMode) {
+  mainLangSwitcher = changerLangTop ? changerLangTop : changerLangFooter;
+} else {
+  mainLangSwitcher = changerLangTop ? changerLangTop : changerLangFooterMobile;
+}
 
 let textLang = mainLangSwitcher.querySelector('.current-lang span');
 const langDisplayNames = {
@@ -27,6 +36,8 @@ const langDisplayNames = {
   hi: 'हिंदी',
   es: 'Es',
 };
+
+console.log(mainLangSwitcher)
 
 async function loadTranslations() {
   try {
@@ -151,6 +162,10 @@ function setLanguage(lang) {
   updateSliders();
   addLangClass();
   console.log(lang);
+
+  if (mobileMode) {
+    fitHeroTitle();
+  }
 
   const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
   console.log(valueLang);
