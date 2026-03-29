@@ -27,7 +27,8 @@
 
     "hero-text-1": "Платежный",
     "hero-text-2": "сервис",
-    "hero-subtext-1": "уровень бог",
+    "hero-subtext-1.1": "уровень",
+    "hero-subtext-1.2": "бог",
     "hero-subtext-2": "Лей трафик без\u00A0проблем",
     "hero-subtext-3": "с картами от лидера рынка\u00A0нутры",
     "hero-subtext-3.1": "CPA\u00A0Lemonad",
@@ -38,8 +39,8 @@
     "hero-list-5": "Хочу ваши карты",
 
     "number-title-1.1": "условия \u2009",
-    "number-title-1.2": "без \u2009",
-    "number-title-1.2.1": "",
+    "number-title-1.2": "без\u2009",
+    "number-title-1.2.1": "\u2009",
     "number-title-1.3": "сюрпризов",
     "number-text-1.1": "Комиссия за\u00A0пополнение",
     "number-text-1.2": "с Lemonad",
@@ -163,7 +164,8 @@
 
     "hero-text-1": "Payment",
     "hero-text-2": "service",
-    "hero-subtext-1": "god level",
+    "hero-subtext-1.1": "god \u2009",
+    "hero-subtext-1.2": "level",
     "hero-subtext-2": "Run traffic without\u00A0problems ",
     "hero-subtext-3": "with cards from the market leader in nutra",
     "hero-subtext-3.1": "CPA Lemonad",
@@ -299,7 +301,8 @@
 
     "hero-text-1": "Servicio",
     "hero-text-2": "de pago",
-    "hero-subtext-1": "nivel dios",
+    "hero-subtext-1.1": "nivel \u2009",
+    "hero-subtext-1.2": "dios",
     "hero-subtext-2": "lanza tráfico sin\u00A0problemas",
     "hero-subtext-3": "con tarjetas del líder del mercado de nutra",
     "hero-subtext-3.1": "CPA Lemonad",
@@ -310,8 +313,8 @@
     "hero-list-5": "Quiero sus tarjetas",
 
     "number-title-1.1": "condiciones",
-    "number-title-1.2": "sin \u2009",
-    "number-title-1.2.1": "",
+    "number-title-1.2": "sin\u2009",
+    "number-title-1.2.1": "\u2009",
     "number-title-1.3": "sorpresas",
     "number-text-1.1": "Comisión por\u00A0recarga",
     "number-text-1.2": "con \u00A0Lemonad",
@@ -435,7 +438,8 @@
 
     "hero-text-1": "भुगतान",
     "hero-text-2": "सेवा",
-    "hero-subtext-1": " ",
+    "hero-subtext-1.1": "गॉड",
+    "hero-subtext-1.2": "टियर",
     "hero-subtext-2": "वर्चुअल कार्ड",
     "hero-subtext-3": "मार्केट लीडर न्यूट्रा से",
     "hero-subtext-3.1": "CPA Lemonad",

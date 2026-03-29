@@ -48,9 +48,10 @@
       height: calc(100% - 130px);
       margin-bottom: 0;
       max-width: 300px;
+      gap: 24px;
 
       &.ru {
-        max-width: 330px;
+        max-width: 320px;
       }
     }
 
@@ -63,8 +64,8 @@
     }
 
     @include mobile {
-      height: calc(100dvh - 76px);
-      gap: 24px;
+      height: calc(100dvh - 62px);
+      gap: 16px;
     }
 
     @media screen and (max-width: 360px) {
@@ -75,6 +76,14 @@
 
       @include tablet {
         max-width: 265px;
+      }
+
+      .hero__content-wrapper {
+        @include tablet {
+          display: flex;
+          // flex-direction: column;
+          gap: 2px;
+        }
       }
 
       .hero__title {
@@ -93,18 +102,26 @@
       }
 
       .hero__subtitle {
-        max-width: 180px;
         font-size: 56px;
         line-height: 86%;
         letter-spacing: -0.06em;
-        right: -178px;
+        right: -175px;
         top: 109px;
 
         @include desktop {
           top: 96px;
-          right: -174px;
+          right: -156px;
           font-size: 52px;
           line-height: 83%;
+        }
+
+        @include tablet {
+          flex-direction: row;
+          // width: fit-content;
+          // height: fit-content;
+          position: static;
+          font-size: 0.45em;
+          // transform: rotate(0deg);
         }
       }
 
@@ -160,14 +177,30 @@
         max-width: 312px;
       }
 
+      .hero__content-wrapper {
+        @include tablet {
+          display: flex;
+          // flex-direction: column;
+          gap: 2px;
+        }
+      }
+
       .hero__title {
         font-size: 132px;
         line-height: 77%;
-        letter-spacing: -0.06em;
+        letter-spacing: -0.05em;
 
         @include desktop {
           font-size: 116px;
           line-height: 78%;
+        }
+
+        @include tablet {
+
+          span:last-child {
+            text-align: justify;
+            text-align-last: justify;
+          }
         }
 
         @include mobile {
@@ -176,17 +209,25 @@
       }
 
       .hero__subtitle {
-        max-width: 180px;
         font-size: 56px;
         line-height: 86%;
-        letter-spacing: -0.06em;
+        letter-spacing: -0.05em;
         right: -174px;
         top: 109px;
 
         @include desktop {
           top: 96px;
+          right: -160px;
           font-size: 52px;
           line-height: 83%;
+        }
+
+        @include tablet {
+          flex-direction: row;
+          position: static;
+          font-size: 0.495em;
+          padding-top: 149px;
+          justify-content: flex-end;
         }
       }
 
@@ -197,7 +238,7 @@
       }
 
       .hero__info-text-wrapper .hero__info-text {
-        min-width: 200px;
+        min-width: 196px;
 
         @include desktop {
           min-width: 160px;
@@ -227,10 +268,26 @@
       }
 
     }
+
+    &.ru {
+      .hero__subtitle {
+
+        @include tablet {
+          position: relative;
+        }
+      }
+    }
   }
 
   &__content-wrapper {
     position: relative;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+
+    @include mobile {
+      font-size: 7dvh;
+    }
   }
 
   &__title {
@@ -258,7 +315,7 @@
       text-align: left;
       flex-grow: 1;
       // overflow: hidden;
-      padding-top: 154px;
+      padding-top: 146px;
       font-size: 80px;
     }
 
@@ -268,7 +325,6 @@
   }
 
   &__subtitle {
-    max-width: 200px;
     margin: 0;
     position: absolute;
     right: -198px;
@@ -279,15 +335,22 @@
     letter-spacing: -0.1em;
     text-transform: uppercase;
     color: var(--white);
+    display: flex;
+    flex-direction: column;
 
     @include desktop {
       font-size: 37px;
-      right: -117px;
-      top: 70px;
+      right: -95px;
+      top: 68px;
     }
 
-    @include mobile {
-      display: none;
+    @include tablet {
+      right: 0px;
+      top: 148px;
+      font-size: 0.41em;
+      text-orientation: sideways;
+      writing-mode: sideways-lr;
+      text-align: right;
     }
   }
 

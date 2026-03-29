@@ -18,7 +18,7 @@
 
   @include mobile {
     z-index: 110;
-    // top: calc(100dvh - var(--controls-margin) - 36px);
+    bottom: 10px;
   }
 
   &__wrapper {

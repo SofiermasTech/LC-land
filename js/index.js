@@ -47,7 +47,7 @@ function initServiceSwiper() {
     const dotsFragment = document.createDocumentFragment();
 
     const slidesToUse = getAllSlidesForCurrentLang();
-    console.log(slidesToUse);
+    // console.log(slidesToUse);
 
     slidesToUse.forEach((data, index) => {
       const slide = template.content.cloneNode(true);
@@ -158,7 +158,7 @@ function initMobileSwiper() {
 
       const button = mainSlide.querySelector('.slide__btn p');
       button.textContent = data.btn;
-      console.log(button);
+      // console.log(button);
 
       sliderMain.appendChild(mainSlide);
 
@@ -411,16 +411,22 @@ function fitHeroTitle() {
   const content = document.querySelector('.hero__content');
   const wrapper = document.querySelector('.hero__content-wrapper');
   const title = wrapper.querySelector('.hero__title');
+  const subtitle = wrapper.querySelector('.hero__subtitle');
 
   if (!content || !title) return;
 
-  // console.log(content);
-  // console.log(title);
+  subtitle.style.fontSize = '';
+  subtitle.style.position = '';
+  subtitle.style.right = '';
+  subtitle.style.top = '';
+
+  console.log(content);
+  console.log(title);
 
   // все элементы кроме заголовка
   const siblings = [...content.children].filter((el) => el !== wrapper);
 
-  // console.log(siblings);
+  console.log(siblings);
 
   // сколько высоты занято НЕ заголовком
   const occupiedHeight = siblings.reduce((sum, el) => sum + el.offsetHeight, 0);
@@ -434,7 +440,7 @@ function fitHeroTitle() {
   const HERO_UI_OFFSET = 76;
 
   let contentHeight;
-  // console.log(isIOS);
+  console.log(isIOS);
   if (isIOS && window.visualViewport) {
     contentHeight = window.visualViewport.height - HERO_UI_OFFSET;
   } else {
@@ -471,14 +477,28 @@ function fitHeroTitle() {
       max = mid - 1;
     }
 
-    // console.log(titleSize);
+    console.log(title.offsetWidth);
     // console.log(best);
   }
 
+  title.offsetHeight;
+  const titleWidth = title.offsetWidth;
+
   if (isIOS && window.visualViewport) {
-    title.style.fontSize = `${best * 0.6}px`;
+    title.style.fontSize = `${best * 0.93}px`;
+    wrapper.style.fontSize = `${best * 0.93}px`;
   } else {
     title.style.fontSize = `${best - 2}px`;
+    wrapper.style.fontSize = `${best - 2}px`;
+  }
+
+  if (currentLang === 'ru') {
+    subtitle.style.position = `relative`;
+    subtitle.style.right = `${titleWidth * 0.41}px`;
+  } else {
+    subtitle.style.position = '';
+    subtitle.style.right = '';
+    subtitle.style.top = '';
   }
 }
 

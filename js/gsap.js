@@ -1101,6 +1101,10 @@ function stopLightning() {
 let langChanger = mainLangSwitcher.querySelector('.controls__lang-changer');
 let langList = mainLangSwitcher.querySelector('.controls__lang-list');
 
+const isIOS =
+  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 function updateLangSwitcher() {
   if (!mobileMode) {
     mainLangSwitcher =
@@ -1118,7 +1122,7 @@ function updateLangSwitcher() {
         : changerLangFooterMobile;
   }
 
-  console.log(textLang);
+  // console.log(textLang);
   langChanger = mainLangSwitcher.querySelector('.controls__lang-changer');
   langList = mainLangSwitcher.querySelector('.controls__lang-list');
   textLang = mainLangSwitcher.querySelector('.current-lang span');
@@ -1155,7 +1159,7 @@ function handleLangClick(evt) {
 function handleLangChoice(evt) {
   const langItem = evt.currentTarget;
   const lang = langItem.dataset.lang;
-  console.log(lang);
+  // console.log(lang);
   document.querySelectorAll('.lang').forEach((elem) => {
     elem.classList.remove('active');
   });
@@ -1164,10 +1168,15 @@ function handleLangChoice(evt) {
   langList.classList.remove('show');
   mainLangSwitcher.classList.remove('show');
 
-  setLanguage(lang);
-  updateUI();
-  setActiveSlide(currentSlide);
-  safeCheckInnerScroll();
+  if (isMobile && isIOS) {
+    hardResetOnResize();
+    setLanguage(lang);
+  } else {
+    setLanguage(lang);
+    updateUI();
+    setActiveSlide(currentSlide);
+    safeCheckInnerScroll();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

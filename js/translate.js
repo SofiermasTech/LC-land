@@ -37,7 +37,7 @@ const langDisplayNames = {
   es: 'Es',
 };
 
-console.log(mainLangSwitcher)
+// console.log(mainLangSwitcher)
 
 async function loadTranslations() {
   try {
@@ -161,14 +161,15 @@ function setLanguage(lang) {
   translatePage(lang);
   updateSliders();
   addLangClass();
-  console.log(lang);
+  // console.log(lang);
 
   if (mobileMode) {
     fitHeroTitle();
+    console.log('ghjghjhj')
   }
 
   const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
-  console.log(valueLang);
+  // console.log(valueLang);
 
   textLang.textContent =
     langDisplayNames[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
