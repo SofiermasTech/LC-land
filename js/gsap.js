@@ -1159,6 +1159,11 @@ function handleLangClick(evt) {
 function handleLangChoice(evt) {
   const langItem = evt.currentTarget;
   const lang = langItem.dataset.lang;
+
+  // if (isMobile && isIOS) {
+  //   hardResetOnResize();
+  //   setLanguage(lang);
+  // }
   // console.log(lang);
   document.querySelectorAll('.lang').forEach((elem) => {
     elem.classList.remove('active');
@@ -1168,15 +1173,10 @@ function handleLangChoice(evt) {
   langList.classList.remove('show');
   mainLangSwitcher.classList.remove('show');
 
-  if (isMobile && isIOS) {
-    hardResetOnResize();
-    setLanguage(lang);
-  } else {
-    setLanguage(lang);
-    updateUI();
-    setActiveSlide(currentSlide);
-    safeCheckInnerScroll();
-  }
+  setLanguage(lang);
+  updateUI();
+  setActiveSlide(currentSlide);
+  safeCheckInnerScroll();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

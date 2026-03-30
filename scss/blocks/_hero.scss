@@ -116,12 +116,16 @@
         }
 
         @include tablet {
+          right: 0px;
+          top: 0px;
           flex-direction: row;
-          // width: fit-content;
-          // height: fit-content;
-          position: static;
+          width: fit-content;
+          transform: translateX(0) !important;
           font-size: 0.45em;
-          // transform: rotate(0deg);
+
+          @supports (-webkit-touch-callout: none) {
+            display: none;
+          }
         }
       }
 
@@ -223,11 +227,17 @@
         }
 
         @include tablet {
+          right: 0px;
+          top: 0px;
           flex-direction: row;
-          position: static;
+          transform: translateX(0) !important;
           font-size: 0.495em;
           padding-top: 149px;
           justify-content: flex-end;
+
+          @supports (-webkit-touch-callout: none) {
+            display: none;
+          }
         }
       }
 
@@ -273,8 +283,63 @@
       .hero__subtitle {
 
         @include tablet {
-          position: relative;
+          padding-top: 148px;
+          width: fit-content;
+          height: fit-content;
+          z-index: 12;
+          transform: translateX(-100%);
+
+          @supports (-webkit-touch-callout: none) {
+            display: none;
+          }
         }
+      }
+    }
+
+    &.hi {
+      margin-top: 44px;
+
+      .hero__content-wrapper {
+        // gap: 24px;
+        // align-items: flex-start;
+        // align-items: center;
+      }
+
+      .hero__title {
+        margin-left: -12px;
+        flex-direction: row;
+        font-size: 120px;
+        line-height: 45px;
+        letter-spacing: 0;
+        padding-top: 37px;
+        overflow: visible;
+      }
+
+      .hero__subtitle {
+        top: 7px;
+        right: -112px;
+        font-weight: 800;
+        font-size: 49px;
+        line-height: 53px;
+
+        @include tablet {
+
+          @supports (-webkit-touch-callout: none) {
+            display: none;
+          }
+        }
+      }
+
+      .hero__info-text-wrapper .hero__info-text {
+        min-width: 120px;
+      }
+
+      .hero__benf-item.empty.order-10 {
+        width: 140px;
+      }
+
+      .hero__benf-item.order-1 {
+        min-width: 130px;
       }
     }
   }
@@ -345,12 +410,17 @@
     }
 
     @include tablet {
+      position: relative;
       right: 0px;
-      top: 148px;
+      top: 0px;
       font-size: 0.41em;
       text-orientation: sideways;
       writing-mode: sideways-lr;
       text-align: right;
+
+      @supports (-webkit-touch-callout: none) {
+        display: none;
+      }
     }
   }
 

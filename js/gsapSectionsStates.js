@@ -408,6 +408,7 @@ function section0_enterBackward() {
       {
         duration: 0.5,
         display: 'block',
+        visibility: 'visible',
         opacity: 1,
         ease: 'power2.out',
       },
@@ -445,6 +446,7 @@ function section0_leaveForward() {
       {
         duration: 0.3,
         display: 'none',
+        visibility: 'hidden',
         opacity: 0,
         ease: 'power2.out',
       },
@@ -493,6 +495,7 @@ function section1_enterForward() {
   if (mobileMode) {
     tl.set('.logo-main__text', {
       display: 'none',
+       visibility: 'hidden',
       opacity: 0,
     });
   }
@@ -562,6 +565,14 @@ function section1_enterBackward() {
   const sec2 = document.querySelector('.numbers__overlay');
   sec2.classList.add('section-fixed');
   document.querySelector('.hero__blur').style.position = 'fixed';
+
+  if (mobileMode) {
+    tl.set('.logo-main__text', {
+      display: 'none',
+      visibility: 'hidden',
+      opacity: 0,
+    });
+  }
 
   tl.add(section1_enterForward());
 

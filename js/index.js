@@ -415,18 +415,10 @@ function fitHeroTitle() {
 
   if (!content || !title) return;
 
-  subtitle.style.fontSize = '';
-  subtitle.style.position = '';
-  subtitle.style.right = '';
-  subtitle.style.top = '';
-
-  console.log(content);
-  console.log(title);
-
   // все элементы кроме заголовка
   const siblings = [...content.children].filter((el) => el !== wrapper);
 
-  console.log(siblings);
+  // console.log(siblings);
 
   // сколько высоты занято НЕ заголовком
   const occupiedHeight = siblings.reduce((sum, el) => sum + el.offsetHeight, 0);
@@ -440,7 +432,7 @@ function fitHeroTitle() {
   const HERO_UI_OFFSET = 76;
 
   let contentHeight;
-  console.log(isIOS);
+
   if (isIOS && window.visualViewport) {
     contentHeight = window.visualViewport.height - HERO_UI_OFFSET;
   } else {
@@ -477,12 +469,8 @@ function fitHeroTitle() {
       max = mid - 1;
     }
 
-    console.log(title.offsetWidth);
     // console.log(best);
   }
-
-  title.offsetHeight;
-  const titleWidth = title.offsetWidth;
 
   if (isIOS && window.visualViewport) {
     title.style.fontSize = `${best * 0.93}px`;
@@ -492,14 +480,14 @@ function fitHeroTitle() {
     wrapper.style.fontSize = `${best - 2}px`;
   }
 
-  if (currentLang === 'ru') {
-    subtitle.style.position = `relative`;
-    subtitle.style.right = `${titleWidth * 0.41}px`;
-  } else {
-    subtitle.style.position = '';
-    subtitle.style.right = '';
-    subtitle.style.top = '';
-  }
+  // void title.offsetWidth;
+  // let titleWidth = title.offsetWidth;
+
+  // if (currentLang === 'ru') {
+  //   subtitle.style.right = `${titleWidth * 0.415}px`;
+  // } else {
+  //   subtitle.style.right = '0px';
+  // }
 }
 
 if (mobileMode) {
@@ -523,7 +511,7 @@ function updateViewBox() {
     });
   } else {
     svgViewbox.forEach((svg) => {
-      svg.setAttribute('viewBox', '0 0 1000 440');
+      svg.setAttribute('viewBox', '0 0 1000 420');
     });
   }
 }

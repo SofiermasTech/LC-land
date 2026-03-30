@@ -82,6 +82,18 @@
       }
     }
 
+    &.hi {
+      grid-template-columns: 1fr 1.15fr;
+
+      .together__content-subtitle {
+        max-width: 245px;
+      }
+
+      .together__content-btn .base-btn {
+        width: 130px;
+      }
+    }
+
     @include laptop {
       grid-template-columns: 1.1fr 1fr;
       column-gap: 20px;

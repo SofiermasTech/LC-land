@@ -164,11 +164,12 @@ function setLanguage(lang) {
   // console.log(lang);
 
   if (mobileMode) {
-    fitHeroTitle();
-    console.log('ghjghjhj')
+    setTimeout(() => {
+      fitHeroTitle();
+    }, 50);
   }
 
-  const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
+  // const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
   // console.log(valueLang);
 
   textLang.textContent =
@@ -228,6 +229,32 @@ function addLangClass() {
     document.querySelectorAll('.faq__item').forEach((item) => {
       item.style.maxWidth = '';
       item.classList.remove('en');
+    });
+  }
+
+  if (currentLang === 'hi') {
+    document.querySelector('.hero__content').classList.add('hi');
+    document.querySelector('.numbers__overlay').classList.add('hi');
+    document.querySelectorAll('.service-swiper__slide').forEach((item) => {
+      item.classList.add('hi');
+    });
+    document.querySelector('.together__content').classList.add('hi');
+    document.querySelector('.faq__else-ask .base-btn').classList.add('hi');
+    document.querySelectorAll('.faq__item').forEach((item) => {
+      item.style.maxWidth = '';
+      item.classList.add('hi');
+    });
+  } else {
+    document.querySelector('.hero__content').classList.remove('hi');
+    document.querySelector('.numbers__overlay').classList.remove('hi');
+    document.querySelectorAll('.service-swiper__slide').forEach((item) => {
+      item.classList.remove('hi');
+    });
+    document.querySelector('.together__content').classList.remove('hi');
+    document.querySelector('.faq__else-ask .base-btn').classList.remove('hi');
+    document.querySelectorAll('.faq__item').forEach((item) => {
+      item.style.maxWidth = '';
+      item.classList.remove('hi');
     });
   }
 }

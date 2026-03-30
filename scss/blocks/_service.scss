@@ -103,6 +103,8 @@
     flex-shrink: 0;
     flex-grow: 1;
     width: 100%;
+
+
   }
 
   &__pagination {
@@ -161,6 +163,12 @@
     flex-direction: column;
   }
 
+  &.hi {
+    .base-btn {
+      width: 194px;
+    }
+  }
+
   &__img {
     max-width: 632px;
     width: 100%;
@@ -212,6 +220,7 @@
     display: flex;
     flex-direction: column;
     white-space: nowrap;
+    line-height: 1.1;
 
     span {
       width: 100%;
@@ -276,6 +285,14 @@
     }
   }
 
+  &--2 {
+    &.hi {
+      .slide__title span:nth-child(3) {
+        text-align: left;
+      }
+    }
+  }
+
   &--4 {
     .slide__title {
       min-width: 380px;
@@ -290,6 +307,17 @@
     &.es {
       .slide__title {
         min-width: 320px;
+        max-width: 360px;
+      }
+    }
+
+    &.hi {
+
+      .slide__title {
+        min-width: 346px;
+      }
+
+      .slide__body {
         max-width: 360px;
       }
     }

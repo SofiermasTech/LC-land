@@ -94,6 +94,11 @@
           max-width: 175px;
         }
       }
+
+
+      &.hi {
+        width: 130px;
+      }
     }
 
     @include tablet-bottom {
