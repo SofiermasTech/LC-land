@@ -182,6 +182,10 @@
       &.en {
         max-width: 390px;
       }
+
+      &.hi {
+        max-width: 425px;
+      }
     }
 
     &.a2 {
@@ -189,6 +193,10 @@
 
       &.en {
         max-width: 425px;
+      }
+
+      &.hi {
+        max-width: 415px;
       }
     }
 
@@ -198,6 +206,10 @@
       &.es {
         max-width: 460px;
       }
+
+      &.hi {
+        max-width: 330px;
+      }
     }
 
     &.a4 {
@@ -205,6 +217,10 @@
 
       &.en {
         max-width: 320px;
+      }
+
+      &.hi {
+        max-width: 370px;
       }
     }
 
@@ -218,6 +234,10 @@
       &.es {
         max-width: 310px;
       }
+
+      &.hi {
+        max-width: 285px;
+      }
     }
 
     &.a6 {
@@ -229,6 +249,10 @@
 
       &.en {
         max-width: 330px;
+      }
+
+      &.hi {
+        max-width: 385px;
       }
     }
 
@@ -249,6 +273,10 @@
 
       &.en {
         max-width: 380px;
+      }
+
+      &.hi {
+        max-width: 350px;
       }
     }
 
@@ -281,23 +309,30 @@
       &.a1,
       &.a1.es,
       &.a1.en,
+      &.a1.hi,
       &.a2,
       &.a2.en,
+      &.a2.hi,
       &.a3,
       &.a3.es,
+      &.a3.hi,
       &.a4,
       &.a4.en,
+      &.a4.hi,
       &.a5,
       &.a5.es,
       &.a5.en,
+      &.a5.hi,
       &.a6,
       &.a6.es,
       &.a6.en,
+      &.a6.hi,
       &.a7,
       &.a7.es,
       &.a7.en,
       &.a8,
       &.a8.en,
+      &.a8.hi,
       &.a9 {
         max-width: 100%;
       }

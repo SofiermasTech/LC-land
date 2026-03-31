@@ -352,14 +352,35 @@ function getCollapsedWidth(item) {
   if (mobileMode) return '100%';
 
   const baseWidths = {
-    a1: currentLang === 'en' ? 390 : currentLang === 'es' ? 510 : 480,
-    a2: currentLang === 'en' ? 425 : 450,
-    a3: currentLang === 'es' ? 460 : 405,
-    a4: currentLang === 'en' ? 320 : 390,
-    a5: currentLang === 'en' ? 310 : currentLang === 'es' ? 310 : 370,
-    a6: currentLang === 'en' ? 330 : currentLang === 'es' ? 455 : 425,
+    a1:
+      currentLang === 'en'
+        ? 390
+        : currentLang === 'es'
+          ? 510
+          : currentLang === 'hi'
+            ? 425
+            : 480,
+    a2: currentLang === 'en' ? 425 : currentLang === 'hi' ? 415 : 450,
+    a3: currentLang === 'es' ? 460 : currentLang === 'hi' ? 330 : 405,
+    a4: currentLang === 'en' ? 320 : currentLang === 'hi' ? 370 : 390,
+    a5:
+      currentLang === 'en'
+        ? 310
+        : currentLang === 'es'
+          ? 310
+          : currentLang === 'hi'
+            ? 285
+            : 370,
+    a6:
+      currentLang === 'en'
+        ? 330
+        : currentLang === 'es'
+          ? 455
+          : currentLang === 'hi'
+            ? 385
+            : 425,
     a7: currentLang === 'es' ? 445 : currentLang === 'en' ? 390 : 430,
-    a8: currentLang === 'en' ? 380 : 460,
+    a8: currentLang === 'en' ? 380 : currentLang === 'hi' ? 350 : 460,
     a9: 315,
   };
 
@@ -411,7 +432,7 @@ function fitHeroTitle() {
   const content = document.querySelector('.hero__content');
   const wrapper = document.querySelector('.hero__content-wrapper');
   const title = wrapper.querySelector('.hero__title');
-  const subtitle = wrapper.querySelector('.hero__subtitle');
+  // const subtitle = wrapper.querySelector('.hero__subtitle');
 
   if (!content || !title) return;
 
@@ -479,15 +500,6 @@ function fitHeroTitle() {
     title.style.fontSize = `${best - 2}px`;
     wrapper.style.fontSize = `${best - 2}px`;
   }
-
-  // void title.offsetWidth;
-  // let titleWidth = title.offsetWidth;
-
-  // if (currentLang === 'ru') {
-  //   subtitle.style.right = `${titleWidth * 0.415}px`;
-  // } else {
-  //   subtitle.style.right = '0px';
-  // }
 }
 
 if (mobileMode) {

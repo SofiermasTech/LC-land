@@ -113,6 +113,20 @@
           max-width: 240px;
         }
       }
+
+      .numbers__label {
+        @include mobile {
+          width: 120px;
+
+          span.numbers__replace-text {
+            display: none;
+          }
+
+          span.numbers__replace-text-mob {
+            display: inline;
+          }
+        }
+      }
     }
 
   }
