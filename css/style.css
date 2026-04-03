@@ -1782,7 +1782,7 @@ html::-webkit-scrollbar-thumb {
   .hero__content.hi .hero__title {
     line-height: 1;
     padding-top: 146px;
-    margin-left: 0;
+    margin-left: -4px;
   }
 }
 .hero__content.hi .hero__subtitle {
