@@ -362,6 +362,7 @@ function applyUIState(config) {
 
   gsap.to('.tg .base-btn', {boxShadow: shadow, duration: 0.3});
   gsap.to('.controls__btn-reg .base-btn', {boxShadow: shadow, duration: 0.3});
+  gsap.to('.controls__btn-in .base-btn', {boxShadow: shadow, duration: 0.3});
   gsap.to('.btn-scroll', {boxShadow: shadow, duration: 0.3});
 
   const isLaptop = window.matchMedia('(max-width: 1400px)').matches;

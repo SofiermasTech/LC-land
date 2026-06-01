@@ -734,6 +734,11 @@ html::-webkit-scrollbar-thumb {
           justify-content: flex-end;
   gap: 7px;
 }
+@media (max-width: 610px) {
+  .controls__wrapper {
+    gap: 4px;
+  }
+}
 .controls__wrapper--footer {
   -webkit-box-align: end;
       -ms-flex-align: end;
@@ -775,12 +780,67 @@ html::-webkit-scrollbar-thumb {
   }
 }
 .controls__btn-reg span {
-  width: 22px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .controls__btn-reg svg {
-  width: 22px;
+  width: 20px;
   height: 16px;
+}
+.controls__btn-in a {
+  width: 64px;
+  height: 40px;
+  padding: 0;
+}
+@media (max-width: 610px) {
+  .controls__btn-in a {
+    width: 48px;
+    height: 32px;
+  }
+}
+.controls__btn-in .base-btn {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#c3ff63), to(#80be1c));
+  background-image: linear-gradient(180deg, #c3ff63 0%, #80be1c 100%);
+  -webkit-box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
+}
+@media (hover: hover) {
+  .controls__btn-in .base-btn:hover {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#80be1c), to(#c3ff63));
+    background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
+    -webkit-box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+  }
+}
+@media (hover: none) {
+  .controls__btn-in .base-btn:active {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#80be1c), to(#c3ff63));
+    background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
+    -webkit-box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
+  }
+}
+.controls__btn-in span {
+  width: 24px;
+  height: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .controls__btn-scroll {
   display: -webkit-box;
@@ -1083,8 +1143,8 @@ html::-webkit-scrollbar-thumb {
 }
 
 .btn-scroll.base-btn {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#c3ff63), to(#80be1c));
-  background-image: linear-gradient(180deg, #c3ff63 0%, #80be1c 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eaeaea));
+  background-image: linear-gradient(180deg, #fff 0%, #eaeaea 100%);
   -webkit-box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
           box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.4);
   width: 64px;
@@ -1093,16 +1153,16 @@ html::-webkit-scrollbar-thumb {
 }
 @media (hover: hover) {
   .btn-scroll.base-btn:hover {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#80be1c), to(#c3ff63));
-    background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#eaeaea), to(#fff));
+    background-image: linear-gradient(180deg, #eaeaea 0%, #fff 100%);
     -webkit-box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
             box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
   }
 }
 @media (hover: none) {
   .btn-scroll.base-btn:active {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#80be1c), to(#c3ff63));
-    background-image: linear-gradient(180deg, #80be1c 0%, #c3ff63 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#eaeaea), to(#fff));
+    background-image: linear-gradient(180deg, #eaeaea 0%, #fff 100%);
     -webkit-box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
             box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.15) !important;
   }
@@ -3609,7 +3669,7 @@ html::-webkit-scrollbar-thumb {
   border-radius: var(--br-l);
 }
 .slide__content {
-  padding: 92px 64px;
+  padding: 64px;
   -webkit-box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.02);
           box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.02);
   background-color: var(--white);

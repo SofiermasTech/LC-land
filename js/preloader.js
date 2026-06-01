@@ -10,7 +10,7 @@ function loadbar() {
 
   const MIN_SHOW_TIME = 1600;
   const startTime = Date.now();
-  console.log('start load');
+  // console.log('start load');
 
   function imgLoaded() {
     percentage += 1;
@@ -27,7 +27,7 @@ function loadbar() {
 
     setTimeout(
       () => {
-        console.log('finish load');
+        // console.log('finish load');
         loader.classList.add('hidden');
         animationOnStart();
         startLightning();
@@ -46,6 +46,7 @@ function loadbar() {
     tImg.src = documentElements[i].src;
   });
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   currentIndex = 0;
   loadbar();

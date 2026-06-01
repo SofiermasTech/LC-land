@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @font-face {
   font-family: "Wix Madefor Display";
   src: local("Wix Madefor Display"), url("../fonts/WixMadeforDisplay-ExtraBold.woff") format("woff"), url("../fonts/WixMadeforDisplay-ExtraBold.woff2") format("woff2");
@@ -73,6 +72,7 @@
           flex-direction: column;
   gap: 6px;
 }
+
 .percentage span {
   font-weight: 800;
   font-size: 48px;
@@ -103,7 +103,6 @@
   border: 2px solid transparent;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.8)), color-stop(11.1%, rgba(255, 255, 255, 0.6)), color-stop(32.7%, rgba(43, 43, 43, 0.6)), color-stop(60.6%, rgba(255, 255, 255, 0.4)), color-stop(76%, rgba(43, 43, 43, 0.6)), to(rgba(255, 255, 255, 0.2))) border-box;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 11.1%, rgba(43, 43, 43, 0.6) 32.7%, rgba(255, 255, 255, 0.4) 60.6%, rgba(43, 43, 43, 0.6) 76%, rgba(255, 255, 255, 0.2) 100%) border-box;
-  /* ← ключевой трюк */
   -webkit-mask: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff)) padding-box, -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff));
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;

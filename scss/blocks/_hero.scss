@@ -81,7 +81,6 @@
       .hero__content-wrapper {
         @include tablet {
           display: flex;
-          // flex-direction: column;
           gap: 2px;
         }
       }
@@ -184,7 +183,6 @@
       .hero__content-wrapper {
         @include tablet {
           display: flex;
-          // flex-direction: column;
           gap: 2px;
         }
       }
@@ -480,7 +478,6 @@
       writing-mode: sideways-lr;
       text-align: left;
       flex-grow: 1;
-      // overflow: hidden;
       padding-top: 146px;
       font-size: 80px;
     }
@@ -848,10 +845,6 @@
       @include desktop {
         display: none;
       }
-
-      // @include tablet {
-      //   display: none;
-      // }
     }
 
     &:last-child {

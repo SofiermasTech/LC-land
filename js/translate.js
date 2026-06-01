@@ -4,7 +4,6 @@ function isMobile() {
 }
 
 let mobileMode = isMobile();
-// console.log(mobileMode);
 
 mobileMode = isMobile();
 
@@ -37,8 +36,6 @@ const langDisplayNames = {
   es: 'Es',
 };
 
-// console.log(mainLangSwitcher)
-
 async function loadTranslations() {
   try {
     const response = await fetch('../locales/translations.json');
@@ -55,9 +52,7 @@ function getTranslatedSlide(slide) {
   const t = translations[currentLang] || translations['ru'] || {};
   // console.log(t);
   let titleArray = t[slide.title];
-  // console.log(slidesData);
-
-  // console.log(titleArray);
+ 
   if (!Array.isArray(titleArray)) {
     titleArray = String(titleArray || '')
       .split(' ')
@@ -126,6 +121,16 @@ function translateMeta(lang) {
   if (ogLocale) {
     ogLocale.setAttribute('content', t['html.locale']);
   }
+
+  const twTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twTitle && t['meta.tw_title']) {
+    twTitle.setAttribute('content', t['meta.tw_title']);
+  }
+
+  const twDesc = document.querySelector('meta[name="twitter:description"]');
+  if (twDesc && t['meta.tw_description']) {
+    twDesc.setAttribute('content', t['meta.tw_description']);
+  }
 }
 
 function translateImg(lang) {
@@ -168,9 +173,6 @@ function setLanguage(lang) {
       fitHeroTitle();
     }, 50);
   }
-
-  // const valueLang = lang.charAt(0).toUpperCase() + lang.slice(1);
-  // console.log(valueLang);
 
   textLang.textContent =
     langDisplayNames[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
@@ -268,7 +270,6 @@ async function init() {
   const lang = savedLang || (translations[browserLang] ? browserLang : 'ru');
   // console.log(lang);
   setLanguage(lang);
-  // updateLangSwitcher();
   updateUI();
 
   document.querySelectorAll('.lang').forEach((elem) => {

@@ -1159,11 +1159,6 @@ function handleLangClick(evt) {
 function handleLangChoice(evt) {
   const langItem = evt.currentTarget;
   const lang = langItem.dataset.lang;
-
-  // if (isMobile && isIOS) {
-  //   hardResetOnResize();
-  //   setLanguage(lang);
-  // }
   // console.log(lang);
   document.querySelectorAll('.lang').forEach((elem) => {
     elem.classList.remove('active');
